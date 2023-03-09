@@ -1,0 +1,450 @@
+
+# .bashrc
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+if [ -f /share/nas6/zhouxy/.bashrc ]; then
+	.  /share/nas6/zhouxy/.bashrc
+fi
+
+# source ~/.bashrc
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+# User specific aliases and functions
+
+#xul------------------------------------------------------------------------------------------------------------------------------------------------------
+alias ir="/share/nas6/xul/program/chloroplast/scope/yelvti_sc.pl -i"
+alias check='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/assembly/src/assembly_highcovfinder_cpDNA/highcovfinder_cpDNA.pl'
+alias correct='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/assembly/src/gapfill_kmer_cpDNA_fasta/kmer_gapfill.pl'
+alias togbk='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/annotation/src/to_genbank.pl'
+alias totbl='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/annotation/src/gb2tbl.pl'
+alias st='/share/nas6/xul/program/chloroplast/annotation/statistic.sh'
+alias getass='perl /share/nas6/pub/pipline/genome-assembly-seq/mitochondrial-genome-seq/v2.0/assembly/src/get_ass_cfg.pl '
+alias filter_contig='perl /share/nas6/xul/program/fungi/assembly/pipline/src/GC-depth/filter_contig.pl'
+alias rs='/share/nas6/xul/program/nuclear/assembly/soft/NECAT/NECAT/Linux-amd64/bin/fsa_rd_stat'
+alias igv='/share/nas6/xul/soft/IGV/IGV_Linux_2.6.3/igv.sh'
+alias Mauve='/share/nas6/zhangxq/biosoft/mauve-py-master/mauve_snapshot_2015-02-13/Mauve'
+ref='/share/nas6/xul/program/mt2/assembly/database/ref.gene.fa'
+#yuj------------------------------------------------------------------------------------------------------------------------------------------------------
+alias nuc='nucmer'
+alias qhsot='qhost'
+alias ir.py='python3 /share/nas1/yuj/script/chloroplast/ir_fasta.py'
+alias trans.py='python3 /share/nas1/yuj/script/Custom_Modules_Template/M_dna2acid.py'
+alias cp_add.py='python3 /share/nas1/yuj/script/chloroplast/annotation/cp_add_gene_seq.py'
+alias mt_add.py='python3 /share/nas1/yuj/script/mitochondrion/annotation/mt_add_gene_seq.py'
+alias cp_get_cds.py='python3 /share/nas1/yuj/script/chloroplast/phytree/cp_from_gbk_get_cds_V2.5.py'
+alias mt_get_cds.py='python3 /share/nas1/yuj/script/mitochondrion/phytree/mt_from_gbk_get_cds_V1.0.py'
+alias tie='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/assembly_tie/tie_cpDNA.pl'
+alias extend.pl='cp_extend_with_dump3.pl'
+alias togbk.pl='perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/annotation/src/to_genbank.pl'
+alias showline-="awk 'END{print NR}' map_pair_hits.1.fq && awk 'END{print NR}' map_pair_hits.2.fq"
+alias CDN-='cdn-'
+alias RM='rm'
+alias CD='cd'
+alias LL='ll'
+#system----------------------------------------------------------------------------------------------------------------------------------------------------
+alias len='expr length'
+alias ll='ls -lh'
+alias qsub='qsub -V'
+alias dos2unix='python /share/nas6/lihf/biosoft/dos2unix/dos2unix/dos2unix.py'
+for i in {0..10}; do alias s$i='ssh -Y compute-0-'$i; done
+alias fl='/share/nas6/zhouxy/biosoft/exonerate/current/bin/fastalength'
+
+#----------- home ---------
+export TEMP=/share/nas1/yuj/tmpdir
+export SENTIEON_LICENSE=172.29.125.4:8990
+export SENTIEON_INSTALL_DIR=/share/nas6/zhouxy/biosoft/sentieon/current/sentieon-genomics-201911/
+export SENTIEON_TMPDIR=/share/nas6/zhouxy/tmpdir
+#---------- BIN -----------
+BIOSOFT_BIN_PATH=/share/nas6/zhouxy/biosoft/bin
+LIBRARY_BIN_PATH=/share/nas6/zhouxy/library/bin
+SOFTWARE_BIN_PATH=/share/nas6/zhouxy/software/bin
+BIOSOFT_BIN_PATH2=/share/nas4/jiangchb/biosoft/bin/
+lihf_biosoft_pATH=/share/nas6/lihf/biosoft/bin/
+BIOSOFT_BIN_PATH=/share/nas6/pub/biosoft/bin:$BIOSOFT_BIN_PATH:$lihf_biosoft_pATH
+
+#----------- software1 --------------
+export PERL_PATH=/share/nas6/zhouxy/biosoft/perl/current/bin/
+export PYTHONPATH=/share/nas6/zhouxy/biosoft/python/2.7.18/bin/:/share/nas6/zhouxy/biosoft/python/3.8.2/bin/:/share/nas6/zhouxy/biosoft/python/2.7.18/pythonlib/:/share/nas6/zhouxy/biosoft/python/current/bin:/share/nas6/zhouxy/biosoft/python/lib
+export R_PATH=/share/nas6/zhouxy/biosoft/R/current/bin
+#export R_PATH=/share/nas1/yuj/software/R/R-4.1.2/bin
+GCC_PATH=/share/nas6/zhouxy/software/gcc/current/bin/
+CURL_PATH=/share/nas6/zhouxy/software/curl/current/bin
+AUTOCONF_PATH=/share/nas6/zhouxy/software/autoconf/current/bin
+GSL_PATH=/share/nas6/zhouxy/library/gsl/current/bin
+ImageMagic=/share/nas6/zhouxy/biosoft/ImageMagick/current/bin
+Ghostscript=/share/nas6/zhouxy/library/ghostscript/current/bin
+GIT_PATH=/share/nas6/zhouxy/biosoft/git/current/bin
+export JAVA_HOME=/share/nas6/zhouxy/software/java/current/bin/
+export JAVA_BIN=${JAVA_HOME}/bin
+#export JRE_HOME=${JAVA_HOME}/jre
+export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib
+SVG2XXX_PATH=/share/nas6/zhouxy/biosoft/svg2xxx/current
+CARGO_PATH=/home/pipline/.cargo/bin/
+CMAKE_PATH=/share/nas6/zhouxy/biosoft/cmake/current/bin/
+AUTOCONF_PATH=/share/nas6/zhouxy/software/autoconf/current/bin/
+AUTOMAKE_PATH=/share/nas6/zhouxy/software/automake/current/bin/
+LIBTOOL_PATH=/share/nas6/zhouxy/software/libtool/2.4.6/bin/
+GETTEXT_PATH=/share/nas6/zhouxy/software/gettext/current/bin/
+PCRE2_PATH=/share/nas6/zhouxy/software/pcre2/current/bin/
+LIBJPEG_TURBO_PATH=/share/nas6/zhouxy/library/libjpeg-turbo/current/bin/
+TEXINFO_PATH=/share/nas6/zhouxy/software/texinfo/current/bin
+MPICH_PATH=/share/nas6/zhouxy/software/mpich/current/bin/
+ASCP_PATH=/home/zhouxy/.aspera/connect/bin/
+GS_PATH=/share/nas6/zhouxy/biosoft/ghostscript/current/bin/
+SOFTWARE=$GCC_PATH:$SVG2XXX_PATH:$Ghostscript:$JAVA_PATH:$R_PATH:$BIOSOFT_BIN_PATH:$PERL_PATH:$CURL_PATH:$AUTOCONF_PATH:$GSL_PATH:$ImageMagic:$GIT_PATH:$PYTHONPATH
+SOFTWARE=$SOFTWARE:$CARGO_PATH:$JAVA_HOME:$R_PATH:$CMAKE_PATH:$MPICH_PATH:$AUTOCONF_PATH:$AUTOMAKE_PATH:c:$GETTEXT_PATH:$PCRE2_PATH:$LIBJPEG_TURBO_PATH:$TEXINFO_PATH:$ASCP_PATH
+SOFTWARE=$SOFTWARE:$GS_PATH
+
+#----------- biosoft2 --------------
+BLASTALL_PATH=/share/nas6/zhouxy/biosoft/blast/current/bin
+BLAST_PATH=/share/nas6/zhouxy/biosoft/blast+/current/bin
+HMMER_PATH=/share/nas6/zhouxy/biosoft/hmmer/current/bin/
+HISAT2_PATH=/share/nas6/zhouxy/biosoft/hisat2/current/bin
+BZIP2_PATH=/share/nas6/zhouxy/library/bzip2/current/bin/
+XZ_PATH=/share/nas6/zhouxy/library/xz/current/bin
+SAMTOOLS_PATH=/share/nas6/zhouxy/biosoft/samtools/current/bin
+BCFTOOLS_PATH=/share/nas6/zhouxy/biosoft/bcftools/current/bin
+BOWTIE2_PATH=/share/nas6/zhouxy/biosoft/bowtie2/bin/
+BOWTIE_PATH=/share/nas6/zhouxy/biosoft/bowtie/current/bin
+VCFTOOLS_PATH=/share/nas6/zhouxy/biosoft/vcftools/current/bin
+SRATOOLS_PATH=/share/nas6/zhouxy/biosoft/sratools/current/bin/
+STAR_PATH=/share/nas6/zhouxy/biosoft/star/STAR-2.7.3a/bin/Linux_x86_64
+UCSC_PATH=/share/nas6/zhouxy/biosoft/ucsc/bin
+MAFFT_PATH=/share/nas6/zhouxy/biosoft/mafft/current/bin
+KronaTools_PATH=/share/nas6/zhouxy/biosoft/KronaTools/current/bin
+export BUGBASE_PATH=/share/nas6/zhouxy/biosoft/BugBase/current
+export BugBase_PATH=/share/nas6/zhouxy/biosoft/BugBase/current/bin/
+PICRUST2_PATH=/share/nas6/zhouxy/biosoft/picrust2/current/bin/
+Bismark_PATH=/share/nas6/zhouxy/biosoft/Bismark/current/
+bison_PATH=/share/nas6/zhouxy/biosoft/bison/current/bin/
+LEFSE_PATH=/share/nas6/zhouxy/biosoft/lefse/
+GNUPLOT_PATH=/share/nas6/pub/biosoft/gnuplot/current/bin/
+ImageMagick_PATH=/share/nas6/zhouxy/biosoft/ImageMagick/current/bin/
+EXONERATE_PATH=/share/nas4/jiangchb/biosoft/exonerate/2.2.0/bin/
+BEDTOOLS_PATH=/share/nas6/zhouxy/biosoft/bedtools/current/bin/
+BEDOPS_PATH=/share/nas4/jiangchb/biosoft/bedops/current/bin/
+CDHIT_PATH=/share/nas6/zhouxy/biosoft/cdhit/current
+AUGUSTUS_PATH=/share/nas6/zhouxy/biosoft/augustus/current/bin/:/share/nas6/zhouxy/biosoft/augustus/current/scripts/
+AUGUSTUS_CONFIG_PATH=/share/nas6/zhouxy/biosoft/augustus/current/config/
+BUSCO_CONFIG_FILE=/share/nas6/zhouxy/biosoft/busco/busco-5.2.1/config/config.ini
+ViennaRNA_PATH=/share/nas6/zhouxy/biosoft/ViennaRNA/current/bin
+BOWTIE_PATH=/share/nas6/zhouxy/biosoft/bowtie/bin/
+PANDASEQ_PATH=/share/nas4/jiangchb/biosoft/pandaseq/current/bin/
+CUFFLINKS_PATH=/share/nas4/jiangchb/biosoft/cufflinks/current/bin/
+PSMC_PATH=/share/nas6/zhouxy/biosoft/psmc/current/bin/
+SMRTCMDS_PATH=/share/nas6/zhouxy/biosoft/SMRTlink/smrtlink/smrtcmds/bin/
+STAR_PATH=/share/nas6/zhouxy/biosoft/STAR/current/bin/Linux_x86_64/
+HOMER_PATH=/share/nas6/zhouxy/biosoft/homer/bin/
+MUMmer_PATH=/share/nas4/jiangchb/biosoft/MUMmer/current/
+TREEMIX_PATH=/share/nas6/zhouxy/biosoft/treemix/current/bin/
+RSEM_PATH=/share/nas6/zhouxy/biosoft/RSEM/current/bin/
+meme_PATH=/share/nas6/zhouxy/biosoft/meme/current/bin/
+TRINITY_HOME=/share/nas6/zhouxy/biosoft/Trinity/current/
+TRINITY_PLUGINS=/share/nas6/zhouxy/biosoft/Trinity/current/trinity-plugins
+qualimap_PATH=/share/nas6/gongxf/biosoft/qualimap2/qualimap_v2.2.1/
+stem_PATH=/share/nas6/zhouxy/biosoft/stem/current/
+blat_PATH=/share/nas6/zhouxy/biosoft/blat/current/bin/
+#picard_PATH=/share/nas6/lihf/biosoft/minconda3/20210108/envs/celescope/bin/
+EMBOSS_PATH=/share/nas6/zhouxy/biosoft/EMBOSS/current/bin/
+GDAL_PATH=/share/nas6/zhouxy/biosoft/gdal/current/bin/
+AA_SRC=/share/nas6/zhouxy/biosoft/AmpliconArchitect/AmpliconArchitect/src/
+MOSEK_PATH=/share/nas6/zhouxy/biosoft/mosek/mosek/8/tools/platform/linux64x86/bin/
+#mincoda_PATH=/share/nas6/lihf/biosoft/minconda3/20210108/bin/
+BIOSOFT_PATH=$STAR_PATH:$BLASTALL_PATH:$BLAST_PATH:$HMMER_PATH:$HISAT2_PATH:$BZIP2_PATH:$XZ_PATH:$SAMTOOLS_PATH:$BCFTOOLS_PATH:$BOWTIE2_PATH:$BOWTIE_PATH:$VCFTOOLS_PATH:$SRATOOLS_PATH:$UCSC_PATH:$MAFFT_PATH
+BIOSOFT_PATH=$BIOSOFT_PATH:$KronaTools_PATH:$BUGBASE_PATH:$BugBase_PATH:$PICRUST2_PATH:$Bismark_PATH:$bison_PATH:$LEFSE_PATH:$GNUPLOT_PATH:$ImageMagick_PATH:$EXONERATE_PATH:$BEDTOOLS_PATH:$BEDOPS_PATH:$CDHIT_PATH:$AUGUSTUS_PATH:$AUGUSTUS_CONFIG_PATH:$ViennaRNA_PATH:$BOWTIE_PATH:$PANDASEQ_PATH:$CUFFLINKS_PATH:$PSMC_PATH:$SMRTCMDS_PATH:$STAR_PATH:$HOMER_PATH:$MUMmer_PATH:$TREEMIX_PATH:$RSEM_PATH:$meme_PATH:$TRINITY_HOME:$TRINITY_PLUGINS:$qualimap_PATH:$stem_PATH:$blat_PATH:$mincoda_PATH:$picard_PATH:$EMBOSS_PATH:$GDAL_PATH
+BIOSOFT_PATH=$BIOSOFT_PATH:$AA_SRC:$MOSEK_PATH
+
+#----------- PATH3 -----------------
+export PATH=/share/nas6/xul/soft/miniconda3/envs/pb-assembly/bin/:$PATH
+export PATH=/share/nas6/xul/program/chloroplast/bin:$PATH
+export PATH=/share/nas6/xul/program/mt/bin:$PATH
+export PATH=/share/nas6/xul/program/linux:$PATH
+export PATH=/share/nas6/xul/program/mt/tRNA:$PATH
+export PATH=/share/nas6/xul/program/mt2/assembly/src:$PATH
+#export PATH=/share/nas4/jiangchb/biosoft/perl/5.26.0/lib/site_perl/5.26.0:$PATH
+#export PATH=/share/nas4/jiangchb/biosoft/perl/5.26.0/lib/site_perl/5.26.0/x86_64-linux-thread-multi/auto/:$PATH
+export PATH=/share/nas6/pub/biosoft/gnuplot/current/bin/:$PATH
+export PATH=$PATH:/share/nas6/xul/soft/raxml/RAxML-8.2.12
+export PATH=/share/nas6/xul/soft/prodigal:$PATH
+export PATH=/share/nas6/xul/soft/aragorn/aragorn1.2.38:$PATH
+export PATH=/share/nas6/xul/soft/spades/SPAdes-3.14.1-Linux/bin:$PATH
+export PATH=/share/nas1/yuj/software/miniconda3/envs/getorganelle/bin:$PATH
+export PATH=/share/nas6/xul/program/bacterial/assembly/Unicycler:$PATH
+export PATH=/share/nas6/xul/soft/pilon:$PATH
+export PATH=/share/nas6/xul/soft/kaks_calculator2/KaKs_Calculator2.0/bin/Linux:$PATH
+export PATH=$PATH:/share/nas6/xul/program/nuclear/assembly/soft/NECAT/NECAT/Linux-amd64/bin
+export PATH=/share/nas6/xul/program/nuclear/assembly/soft/wtdbg2:$PATH
+export PATH=/share/nas6/xul/soft/RepeatMasker/RepeatMasker:$PATH
+export PATH=/share/nas6/xul/soft/RepeatModeler/RepeatModeler-2.0.1:$PATH
+export PATH=/share/nas6/zhouxy/biosoft/augustus/current/bin/:$PATH
+export PATH=/share/nas6/xul/soft/barrnap/barrnap/bin/:$PATH
+export HISTTIMEFORMAT="%F %T  " 
+export kmer=" 27, 47, 63, 77, 89, 99, 107, 115, 121, 127 "
+export PATH=/share/nas6/xul/soft/hifiasm/hifiasm:$PATH
+#export PATH=/share/nas6/xul/soft/python:$PATH
+export PATH=/share/nas6/xul/soft/ALLHic/ALLHiC/bin:$PATH
+export PATH=/share/nas6/xul/soft/ALLHic/ALLHiC/scripts:$PATH
+
+#------------library_bin-----------
+LIBGD_BIN_PATH=/share/nas6/zhouxy/library/libgd/current/bin/
+LIBART_BIN_PATH=/share/nas6/zhouxy/library/libart/current/bin/
+sqlite_BIN_PATH=/share/nas6/zhouxy/library/sqlite/current/bin/
+LIBXML2_BIN_PATH=/share/nas6/zhouxy/library/libxml2/current/bin/
+LIBGD_BIN_PATH=/share/nas6/zhouxy/library/libgd/current/bin/
+LIBRARY_BIN_PATH=$LIBRARY_BIN_PATH:$LIBGD_BIN_PATH:$LIBART_BIN_PATH:$sqlite_BIN_PATH:$LIBXML2_BIN_PATH:$LIBGD_BIN_PATH
+
+#----------- library --------------#C_LIB
+export LD_LIBRARY_PATH=/share/nas6/zhouxy/biosoft/R/current/lib64/R/lib:/share/nas6/zhouxy/biosoft/R/current/lib64/R/library/:/share/nas6/zhouxy/biosoft/R/current/lib64/:$LD_LIBRARY_PATH
+export PERL5LIB=/share/nas6/zhouxy/biosoft/perl/current/lib/lib/perl5/:/share/nas6/zhouxy/biosoft/perl/current/lib/site_perl/5.28.3/:/share/nas6/zhouxy/biosoft/perl/current/lib/5.28.3/:/share/nas6/zhouxy/biosoft/perl/current/lib/site_perl/5.28.3/x86_64-linux-thread-multi/:/usr/share/perl5/vendor_perl/
+export PERL5LIB=$PERL5LIB:/share/nas6/zhouxy/library/perl5lib:/share/nas6/zhouxy/library/perl5lib/lib/perl5:/share/nas6/zhouxy/biosoft/swDMR/v1.0.7/lib/module/lib/site_perl/5.26.0/:/share/nas6/zhouxy/biosoft/circos/current/lib/:/share/nas6/zhouxy/biosoft/ViennaRNA/current/lib/site_perl/5.28.3/:/share/nas6/zhouxy/biosoft/pfamscan/current/:/share/nas6/zhouxy/biosoft/weblogo/weblogo/:/share/nas6/zhouxy/biosoft/vcftools/current/lib/site_perl/5.28.1/:/share/nas6/pub/pipline/rna-seq/denovo-rna-seq/v1.3/trinity/trinityrnaseq-2.1.1/PerlLib/
+RLIB_PATH=/share/nas6/zhouxy/biosoft/R/current/lib64/R/library
+ZLIB_LIB_PATH=/share/nas6/zhouxy/library/zlib/current/lib
+BZIP2_LIB_PATH=/share/nas6/zhouxy/library/bzip2/current/lib
+XZ_LIB_PATH=/share/nas6/zhouxy/library/xz/current/lib
+CURL_LIB_PATH=/share/nas6/zhouxy/software/curl/current/lib
+GSL_LIB_PATH=/share/nas6/zhouxy/library/gsl/current/lib
+PCRE_LIB_PATH=/share/nas6/zhouxy/library/pcre/current/lib
+OpenSSL_LIB_PATH=/share/nas6/zhouxy/software/OpenSSL/current/lib
+EXPAT_LIB_PATH=/share/nas6/zhouxy/library/expat/current/lib
+LIBGD_LIB_PATH=/share/nas6/zhouxy/library/libgd/current/lib
+LIBPNG_LIB_PATH=/share/nas6/zhouxy/library/libpng/current/lib
+LIBJPEG_LIB_PATH=share/nas6/zhouxy/library/libjpeg/current/lib
+READLINE_LIB_PATH=/share/nas6/zhouxy/library/readline/current/lib
+LIBART_LIB_PATH=/share/nas6/zhouxy/library/libart/current/lib
+LIBCROCO_LIB_PATH=/share/nas6/zhouxy/library/libcroco/current/lib/
+MPICH_LIB_PATH=/share/nas6/zhouxy/library/mpich/current/lib/
+GMP_LIB_PATH=/share/nas6/zhouxy/library/gmp/current/lib/
+MPFR_LIB_PATH=/share/nas6/zhouxy/library/mpfr/current/lib/
+ISL_LIB_PATH=/share/nas6/zhouxy/library/isl/current/lib/
+MPC_LIB_PATH=/share/nas6/zhouxy/library/mpc/current/lib/
+GCC_LIB_PATH=/share/nas6/zhouxy/software/gcc/current/lib64/:/share/nas6/zhouxy/software/gcc/current/lib/gcc/x86_64-pc-linux-gnu/8.3.0/
+LIBTOOL_LIB_PATH=/share/nas6/zhouxy/software/libtool/2.4.6/lib/
+GETTEXT_LIB_PATH=/share/nas6/zhouxy/software/gettext/current/lib
+PCRE2_LIB_PATH=/share/nas6/zhouxy/software/pcre2/current/lib
+SQLITE_LIB_PATH=/share/nas6/zhouxy/library/sqlite/current/lib/
+ImageMagick_LIB_PATH=/share/nas6/zhouxy/biosoft/ImageMagick/current/lib/
+LIBJPEG_TURBO_LIB_PATH=/share/nas6/zhouxy/library/libjpeg-turbo/current/lib/
+LIBXML2_LIB_PATH=/share/nas6/zhouxy/library/libxml2/current/lib/
+gobject_introspection_LIB_PATH=/share/nas6/zhouxy/library/gobject-introspection/current/lib/
+PIXMAN_LIB_PATH=/share/nas6/zhouxy/library/pixman/current/lib/
+LIBimagequant_LIB_PATH=/share/nas6/zhouxy/library/libimagequant/current/lib/
+LIBGD_LIB_PATH=/share/nas6/zhouxy/library/libgd/current/lib
+X11_LIB_PATH=/share/nas6/zhouxy/library/libX11/current/lib/
+MOSEK_LIB_PATH=/share/nas6/zhouxy/biosoft/mosek/mosek/8/tools/platform/linux64x86/bin/
+C_LIB_PATH1=$R_LIBS:$READLINE_LIB_PATH:$LIBJPEG_LIB_PATH:$PYTHON2_LIB_PATH:$ZLIB_LIB_PATH:$BZIP2_LIB_PATH:$XZ_LIB_PATH:$CURL_LIB_PATH:$GSL_LIB_PATH:$PCRE_LIB_PATH:$OpenSSL_LIB_PATH:$EXPAT_LIB_PATH:$LIBGD_LIB_PATH
+C_LIB_PATH2=$LIBART_LIB_PATH:$LIBCROCO_LIB_PATH:$MPICH_LIB_PATH:$GMP_LIB_PATH:$MPFR_LIB_PATH:$ISL_LIB_PATH:$MPC_LIB_PATH:$GCC_LIB_PATH
+C_LIB_PATH3=$RLIB_PATH:$LIBTOOL_LIB_PATH:$GETTEXT_LIB_PATH:$PCRE2_LIB_PATH:$SQLITE_LIB_PATH:$ImageMagick_LIB_PATH
+C_LIB_PATH4=$LIBJPEG_TURBO_LIB_PATH:$LIBXML2_LIB_PATH:$gobject_introspection_LIB_PATH:$LIBPNG_LIB_PATH:$PIXMAN_LIB_PATH
+C_LIB_PATH=$C_LIB_PATH1:$C_LIB_PATH2:$C_LIB_PATH3:$C_LIB_PATH4:$LIBimagequant_LIB_PATH:$LIBGD_LIB_PATH:$X11_LIB_PATH:$MOSEK_LIB_PATH
+
+#C_INCLUDE
+PYTHON2_INCLUDE_PATH=/share/nas6/zhouxy/biosoft/python/2.7.18/include
+ZLIB_INCLUDE_PATH=/share/nas6/zhouxy/library/zlib/current/include
+BZIP2_INCLUDE_PATH=/share/nas6/zhouxy/library/bzip2/current/include
+XZ_INCLUDE_PATH=/share/nas6/zhouxy/library/xz/current/include
+CURL_INCLUDE_PATH=/share/nas6/zhouxy/software/curl/current/include
+GSL_INCLUDE_PATH=/share/nas6/zhouxy/library/gsl/current/include
+PCRE_INCLUDE_PATH=/share/nas6/zhouxy/library/pcre/current/include
+EXPAT_INCLUDE_PATH=/share/nas6/zhouxy/library/expat/current/include
+OpenSSL_INCLUDE_PATH=/share/nas6/zhouxy/software/OpenSSL/current/include
+LIBGD_INCLUDE_PATH=/share/nas6/zhouxy/library/libgd/current/include
+LIBPNG_INCLUDE_PATH=/share/nas6/zhouxy/library/libpng/current/include
+LIBJPEG_INCLUDE_PATH=/share/nas6/zhouxy/library/libjpeg/current/include
+READLINE_INCLUDE_PATH=/share/nas6/zhouxy/library/readline/current/include
+LIBART_INCLUDE_PATH=/share/nas6/zhouxy/library/libart/current/include
+LIBCROCO_INCLUDE_PATH=/share/nas6/zhouxy/library/libcroco/current/include
+MPICH_INCLUDE_PATH=/share/nas6/zhouxy/library/mpich/current/include
+GMP_INCLUDE_PATH=/share/nas6/zhouxy/library/gmp/current/include
+MPFR_INCLUDE_PATH=/share/nas6/zhouxy/library/mpfr/current/include
+ISL_INCLUDE_PATH=/share/nas6/zhouxy/library/isl/current/include
+MPC_INCLUDE_PATH=/share/nas6/zhouxy/library/mpc/current/include
+LIBTOOL_INCLUDE_PATH=/share/nas6/zhouxy/software/libtool/current/include/
+GETTEXT_INCLUDE_PATH=/share/nas6/zhouxy/software/gettext/current/include
+PCRE2_INCLUDE_PATH=/share/nas6/zhouxy/software/pcre2/current/include
+SQLITE_INCLUDE_PATH=/share/nas6/zhouxy/library/sqlite/current/include/
+ImageMagick_INCLUDE_PATH=/share/nas6/zhouxy/biosoft/ImageMagick/current/include/
+LIBJPEG_TURBO_INCLUDE_PATH=/share/nas6/zhouxy/library/libjpeg-turbo/current/include/
+LIBXML2_INCLUDE_PATH=/share/nas6/zhouxy/library/libxml2/current/include/
+gobject_introspection_INCLUDE_PATH=/share/nas6/zhouxy/library/gobject-introspection/current/include
+LIBGD_INCLUDE_PATH=/share/nas6/zhouxy/library/libgd/current/include
+X11_INCLUDE_PATH=/share/nas6/zhouxy/library/libX11/current/include/
+C_INCLUDE_PATH=$READLINE_INCLUDE_PATH:$LIBJPEG_INCLUDE_PATH:$LIBPNG_INCLUDE_PATH:$PYTHON2_INCLUDE_PATH:$ZLIB_INCLUDE_PATH:$BZIP2_INCLUDE_PATH:$XZ_INCLUDE_PATH:$CURL_INCLUDE_PATH:$GSL_INCLUDE_PATH:$PCRE_INCLUDE_PATH:$OpenSSL_INCLUDE_PATH:$EXPAT_INCLUDE_PATH
+C_INCLUDE_PATH=$C_INCLUDE_PATH:$LIBGD_INCLUDE_PATH:$LIBART_INCLUDE_PATH:$LIBCROCO_INCLUDE_PATH:$MPICH_INCLUDE_PATH:$GMP_INCLUDE_PATH:$MPFR_INCLUDE_PATH:$ISL_INCLUDE_PATH
+C_INCLUDE_PATH=$C_INCLUDE_PATH:$MPC_INCLUDE_PATH:$LIBTOOL_INCLUDE_PATH:$GETTEXT_INCLUDE_PATH:$PCRE2_INCLUDE_PATH:$SQLITE_INCLUDE_PATH:$LIBJPEG_TURBO_INCLUDE_PATH:$LIBXML2_INCLUDE_PATH:$gobject_introspection_INCLUDE_PATH:$LIBGD_INCLUDE_PATH:$X11_INCLUDE_PATH
+
+#PKG_CONFIG_PATH
+PYTHON2_CONFIG_PATH=/share/nas6/zhouxy/biosoft/python/2.7.18/lib/pkgconfig
+ZLIB_CONFIG_PATH=/share/nas6/zhouxy/library/zlib/current/lib/pkgconfig/
+XZ_CONFIG_PATH=/share/nas6/zhouxy/library/xz/current/lib/pkgconfig/
+CURL_CONFIG_PATH=/share/nas6/zhouxy/software/curl/current/lib/pkgconfig/
+GSL_CONFIG_PATH=/share/nas6/zhouxy/library/gsl/current/lib/pkgconfig/
+PCRE_CONFIG_PATH=/share/nas6/zhouxy/library/pcre/current/lib/pkgconfig/
+EXPAT_CONFIG_PATH=/share/nas6/zhouxy/library/expat/current/lib/pkgconfig/
+OPENSSL_CONFIG_PATH=/share/nas6/zhouxy/software/OpenSSL/current/lib/pkgconfig/
+LIBGD_CONFIG_PATH=/share/nas6/zhouxy/library/libgd/current/lib/pkgconfig/
+LIBJPEG_CONFIG_PATH=/share/nas6/zhouxy/library/libjpeg/current/lib/pkgconfig
+LIBCROCO_CONFIG_PATH=/share/nas6/zhouxy/library/libcroco/current/lib/pkgconfig/
+R_CONFIG=/share/nas6/zhouxy/biosoft/R/current/lib64/pkgconfig
+SYSTEM_CONFIG_PATH=/usr/lib64/pkgconfig:/usr/share/pkgconfig:/usr/lib/pkgconfig:/usr/local/lib/pkgconfig:/usr/local/share/pkgconfig
+SQLITE_CONFIG_PATH=/share/nas6/zhouxy/library/sqlite/current/lib/pkgconfig/
+ImageMagick_CONFIG_PATH=/share/nas6/zhouxy/biosoft/ImageMagick/current/lib/pkgconfig/
+gobject_introspection_CONFIG_PATH=/share/nas6/zhouxy/library/gobject-introspection/current/lib/pkgconfig/
+PIXMAN_CONFIG_PATH=/share/nas6/zhouxy/library/pixman/current/lib/pkgconfig
+LAPACK_CONFIG_PATH=/share/nas6/zhouxy/library/lapack/3.9.0/lapack/pkgconfig/
+LIBimagequant_CONFIG_PATH=/share/nas6/zhouxy/library/libimagequant/current/lib/pkgconfig/
+LIBGD_CONFIG_PATH=/share/nas6/zhouxy/library/libgd/current/lib/pkgconfig/
+X11_CONFIG_PATH=/share/nas6/zhouxy/library/libX11/current/lib/pkgconfig/
+SPARSEHASH_CONFIG_PATH=/share/nas6/zhouxy/software/sparsehash/current/lib/pkgconfig/
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$LIBJPEG_CONFIG_PATH:$PYTHON2_CONFIG_PATH:$ZLIB_CONFIG_PATH:$XZ_CONFIG_PATH:$CURL_CONFIG_PATH:$PCRE_CONFIG_PATH:$OPENSSL_CONFIG_PATH:$EXPAT_CONFIG_PATH:$LIBGD_CONFIG_PATH
+export PKG_CONFIG_PATH=$PKG_CONFIG_PATH:$LIBCROCO_CONFIG_PATH:$R_CONFIG:$SYSTEM_CONFIG_PATH:$SQLITE_CONFIG_PATH:$ImageMagick_CONFIG_PATH:$gobject_introspection_CONFIG_PATH:$PIXMAN_CONFIG_PATH:$LAPACK_CONFIG_PATH:$GSL_CONFIG_PATH:$LIBimagequant_CONFIG_PATH:$LIBGD_CONFIG_PATH:$X11_CONFIG_PATH:$SPARSEHASH_CONFIG_PATH
+
+#---------------------------------------------------------------------
+LIB_PATH=/lib64/:/usr/lib:/usr/local/lib:/usr/lib64/
+INCLUDE_PATH=/usr/local/include:/usr/include/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$PERL5LIB:$C_LIB_PATH:$LIB_PATH
+#system setting
+BIN_PATH=/usr/local/bin/:/opt/gridengine/bin/lx-amd64/:/opt/gridengine/bin/:/usr/local/sbin:/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin
+export LANG="C"
+export LC_CTYPE=""
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+#en_US.UTF-8
+#----------- PATH -----------------
+export PATH=$SOFTWARE:$BIOSOFT_PATH::$BIOSOFT_BIN_PATH2:$LIBRARY_BIN_PATH:$SOFTWARE_BIN_PATH:$BIN_PATH:$LD_LIBRARY_PATH:$PKG_CONFIG_PATH:$C_INCLUDE_PATH:$INCLUDE_PATH:$PATH
+
+
+
+#######################################################################################################################################################################################################################
+#自己安装的生信软件
+PATH=$PATH:/share/nas1/yuj/software/beast/bin
+
+#-------------------------------------------------------------------------------------------------------- 提示符 --------------------------------------------------------------------------------------------
+export PS1="\[\e[31m\][\[\e[m\]\[\e[31m\]>\[\e[m\]\[\e[31m\]\d\[\e[m\]\[\e[31m\] \[\e[m\]\[\e[31m\]\t\[\e[m\]\[\e[31m\] \[\e[m\]\[\e[31m\]@\[\e[m\]\[\e[31m\]\h\[\e[m\]\[\e[31m\] \[\e[m\]\[\e[31m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\[\e[31m\]\\$\[\e[m\] "
+
+#----------------------------------------------------------------------------------------------------功能----------------------------------------------------------------------------------------------------
+
+#目录操作
+work () {
+ . /home/xul/.bashrc || . /share/nas6/xul/.bashrc
+ echo "当前路径: `pwd`"
+ cd /share/nas1/yuj/project
+ echo "工作目录: `pwd`"
+}
+
+ylt () {
+ echo "当前路径: `pwd`"
+ cd /share/nas1/seqloader/yelvti/
+ find -iname 'GP-2021*' #忽略大小写,找出2021的文件夹
+ echo "叶绿体目录: `pwd`"
+}
+
+findn- () {
+ a=`pwd`
+ cd /share/nas6/xul/project/chloroplast/*$1*/ || cd /share/nas1/xuk/project/*/*$1*/ || cd /share/nas1/yuj/project/*$1*/ || cd /share/nas1/yuj/project/*/*$1*/ || cd /share/nas1/yuj/project/*/*/*$1*/
+ b=`pwd`
+ cd $a
+ echo "找到该项目路径: $b"
+}
+
+cdn- () {
+ work
+ if cd $1 || cd /share/nas1/yuj/project/*$1*/ || cd /share/nas1/yuj/project/*/*$1*/ || cd /share/nas1/yuj/project/*/*/*$1*/
+ then
+	echo "当前路径: `pwd`"
+ else
+	echo `date +%Y%m%d`
+	read a
+	mkdir /share/nas1/yuj/project/$a
+	cd /share/nas1/yuj/project/$a
+	echo "当前路径: `pwd`"
+ fi
+ source ~/.bashrc
+}
+
+#/share/nas1/yuj/project/422802/analysis/assembly/ND30052/pseudo/ND30052/4_Afin_Assembly
+#analysis/*$1*/*$2*/pseudo/*$2*/*$3*
+#/share/nas1/yuj/project/422802/analysis/annotation/HPL_01
+#analysis/*$1*/*$2*
+#条件判断，要有两端方括号，等等号及方括号都有空格
+cds- () {
+ work
+ if [ $1 == "ass" ]
+ then
+	cd /share/nas1/yuj/project/*/analysis/*$1*/*$2*/pseudo/*$2*/*$3* || cd /share/nas1/yuj/project/*/*/analysis/*$1*/*$2*/pseudo/*$2*/*$3* || cd /share/nas1/yuj/project/*/*/*/analysis/*$1*/*$2*/pseudo/*$2*/*$3*
+	echo "当前路径: `pwd`"
+ elif [ $1 == "ann" ]
+ then
+	cd /share/nas1/yuj/project/*/analysis/*$1*/*$2* || cd /share/nas1/yuj/project/*/*/analysis/*$1*/*$2* || cd /share/nas1/yuj/project/*/*/*/analysis/*$1*/*$2*
+	echo "当前路径: `pwd`"
+ else
+	echo $1
+ fi
+ source ~/.bashrc
+}
+
+#组装
+ll- () {
+ du -h --max-depth=$2 /share/nas1/yuj/$1
+}
+
+down- () {
+ perl /share/nas6/xul/program/chloroplast/bin/cp_get_genbank_form_ncbi_with_ACCESSION.pl -i list_$1 -o ref_$1
+}
+
+2ann- () {
+ for i in *.gbk ;do echo $i; cp_gbk2ann.pl -i $i -o $i.ann ;done
+}
+
+mum () {
+ mummerplot out.delta
+}
+
+head- () {
+ head -n $1  map_pair_hits.1.fq > map_pair_hits.1.1.fq && head -n $1  map_pair_hits.2.fq > map_pair_hits.1.2.fq
+}
+
+#叶绿体
+cpann- () {
+ if [ ! -n "$1" ] ;then #如果$1参数为空
+	perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/annotation/bin/chloroplast_annotaion.pl.v2.1.pl -i ann.cfg -d analysis/assembly/
+ else
+	perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/annotation/bin/chloroplast_annotaion.pl.v2.1.pl -i $1 -d analysis/assembly/
+ fi
+}
+
+cpdir- () {
+ perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/cp_pip_dir.pl -i analysis  -o complete_dir
+}
+
+cpreport- () {
+ perl /share/nas6/pub/pipline/genome-assembly-seq/chloroplast-genome-seq/v1.2/html_report/report2xml.yelvti.pl -id complete_dir -cfg report.cfg
+}
+
+
+logout- () {
+ echo `pwd`
+ logout
+}
+
+#备忘
+#du -h --max-depth=1 /home/yuj 仅列出yuj目录下面所有的一级目录文件大小
+#source ~/.bashrc立即生效
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/share/nas1/yuj/software/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/share/nas1/yuj/software/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/share/nas1/yuj/software/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/share/nas1/yuj/software/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
