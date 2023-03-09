@@ -1,3 +1,13 @@
+---
+title: Script说明
+description: 
+published: true
+date: 2023-03-09T03:54:56.084Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:53:19.761Z
+---
+
 # 一.叶绿体
 ## 1.1cp_from_gbk_get_cds_V?.0.py  
 生成cds和完整序列,带去重

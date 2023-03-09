@@ -1,3 +1,13 @@
+---
+title: git使用
+description: 
+published: true
+date: 2023-03-09T03:57:52.772Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:57:21.619Z
+---
+
 # 仓库初始化与远程连接
 ```bash
 1.创建远程仓库,复制链接地址 https://github.com/earnan/Obsidian.git

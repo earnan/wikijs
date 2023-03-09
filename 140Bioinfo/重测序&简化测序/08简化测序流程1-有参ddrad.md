@@ -1,3 +1,13 @@
+---
+title: 08简化测序流程1-有参ddrad
+description: 
+published: true
+date: 2023-03-09T03:57:46.308Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:57:12.411Z
+---
+
 # 一 准备数据
 ```shell
 1. 测序所在路径，一般有多个文件夹，每个样品一个文件夹

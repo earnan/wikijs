@@ -1,3 +1,13 @@
+---
+title: Beast2
+description: 
+published: true
+date: 2023-03-09T03:56:59.237Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:56:06.352Z
+---
+
 ```bash
 
 cd /share/nas1/yuj/software/zip_package

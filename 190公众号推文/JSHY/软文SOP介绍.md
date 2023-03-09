@@ -1,3 +1,13 @@
+---
+title: 软文SOP介绍
+description: 
+published: true
+date: 2023-03-09T03:58:14.859Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:57:51.643Z
+---
+
 # 标题 
 文献解读类
 正式

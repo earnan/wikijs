@@ -1,3 +1,13 @@
+---
+title: 08简化测序流程2-无参ddrad
+description: 
+published: true
+date: 2023-03-09T03:57:49.597Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:57:17.088Z
+---
+
 # 主流程
 ```shell
 没有参考基因组，直接根据序列聚类来做。

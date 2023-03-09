@@ -1,3 +1,13 @@
+---
+title: INDEX--Bioinfo
+description: 
+published: true
+date: 2023-03-09T03:55:24.373Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:53:54.507Z
+---
+
 
 [[INDEX--生物学知识]]
 

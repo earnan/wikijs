@@ -1,3 +1,13 @@
+---
+title: Project--QandA
+description: 
+published: true
+date: 2023-03-09T03:55:11.115Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:53:37.044Z
+---
+
 # 10周 20230306-20230312
 > [!todo]
 > - [ ] GP-20230213-5603-1浙江中医药一个植物叶绿体测序

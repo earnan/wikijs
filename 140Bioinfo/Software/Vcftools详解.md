@@ -1,3 +1,13 @@
+---
+title: Vcftools详解
+description: 
+published: true
+date: 2023-03-09T03:57:15.949Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:56:29.312Z
+---
+
 # 一. VCF文件
 ![[Pasted image 20221026181450.png]]
 

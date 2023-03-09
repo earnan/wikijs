@@ -1,3 +1,13 @@
+---
+title: Trnascan-se
+description: 
+published: true
+date: 2023-03-09T03:57:12.431Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:56:24.784Z
+---
+
 # 简介
 tRNAscan-SE 能在基因组水平上进行 tRNA 扫描。该软件实际上是一个 perl 脚本，整合了 tRNAscan、 EufindRNA 和 Cove 这 3 个独立的 tRNA 检测软件。tRNAscan-SE 首先调用 tRNAscan 和 EufindRNA 鉴定基因组序列中的 tRNA 区域，然后调用 Cove 进行验证。这样既保证了前者的 sensitivities， 又保证了后者较低的假阳性概率，同时在搜索速度上提升了很多。  
 有关 tRNAscan-SE 的详细说明，参考其本地化软件包中的 man 文档。

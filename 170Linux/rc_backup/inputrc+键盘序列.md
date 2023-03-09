@@ -1,3 +1,13 @@
+---
+title: inputrc+键盘序列
+description: 
+published: true
+date: 2023-03-09T03:58:04.920Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:57:37.812Z
+---
+
 # inputrc
 ```text
 

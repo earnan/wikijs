@@ -1,3 +1,13 @@
+---
+title: Bowtie2
+description: 
+published: true
+date: 2023-03-09T03:57:09.154Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:56:20.145Z
+---
+
 > [!info] 项目应用
 > ```txt 
 > 1.索引

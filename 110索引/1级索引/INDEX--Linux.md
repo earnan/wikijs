@@ -1,3 +1,13 @@
+---
+title: INDEX--Linux
+description: 
+published: true
+date: 2023-03-09T03:55:33.764Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:54:06.758Z
+---
+
 [[INDEX--命令详解]]
 
 [[Bash -- 常用命令]]

@@ -1,3 +1,13 @@
+---
+title: INDEX--细胞器基因组
+description: 
+published: true
+date: 2023-03-09T03:56:40.322Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:55:39.011Z
+---
+
 
 [[细胞器基因组组装方法]]
 

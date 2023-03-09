@@ -1,3 +1,13 @@
+---
+title: Bioinfo_software
+description: 
+published: true
+date: 2023-03-09T03:57:02.671Z
+tags: 
+editor: markdown
+dateCreated: 2023-03-09T03:56:10.912Z
+---
+
 #工具 #软件
 # Bioinfo-software
 
