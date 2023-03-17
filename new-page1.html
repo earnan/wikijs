@@ -1,0 +1,3343 @@
+<!--
+title: Untitled Page
+description: 
+published: true
+date: 2023-03-17T07:51:00.602Z
+tags: 
+editor: code
+dateCreated: 2023-03-17T07:51:00.602Z
+-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>全文阅读--XML全文阅读--中国知网</title>
+    <link rel="icon" href="/kxreader/favicon.ico" />
+    <link rel="shortcut Icon" href="/kxreader/favicon.ico" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="文献 XML KBASE CNKI 中国知网" />
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="description" content="XML文献检索" />
+    <link href="/kxreader/Content/css/detail?v=b5BU63rPoAaFutnUemfG6R_aOa394Ovw03u_H3xD7R81" rel="stylesheet"/>
+
+    <script type="text/javascript">
+        var APPPATH = '/kxreader';
+    </script>
+</head>
+
+<body>
+    <div id="mainBody">
+    
+
+
+
+<script defer id="toploginstruct" src="//login.cnki.net/toploginnew/scripts/top.js" data="style=1&amp;platform=KXReader&amp;placeid=mainBody&amp;returnurl=%2f%2fkns.cnki.net%2fKXReader%2fDetail%3finvoice%3dXYUiQ3Dl3pEGfsKJvZ2tC3T1a5RNWcyQcWH%252Fw0ZSUN1G2gkYQ6qSHqTj8dfllN40pwr24zbLOBDyM55ShR2PYZ4xRdwSfU8PGUBFWjp5GszLY6gEl9AASTyL58pepdKGL5c5V2tS%252BwqvaJlwVlby4rTMWsZdZtsi0p6IdQSx9sA%253D%26DBCODE%3dCAPJ%26FileName%3dGXNB20221219001%26TABLEName%3dcapjlast%26nonce%3dBBC2FC1949AA416EB97646F2FCC6D358%26uid%3d%26TIMESTAMP%3d1679039146297"></script>
+<script type="text/javascript" src="https://picx.cnki.net/kxreader/jquery-1.11.3.min.js"></script>
+
+
+
+<div id="headerBox" class="header">
+    <div class="topbar">
+        <div class="textalign">
+            <a v-on:click="switchFormats('icon1')" :href=textAlignUrl>
+                <i class="icon-cen active" title="居中对齐"></i>
+            </a>
+            <a v-on:click="switchFormats('icon2')" :href=textAlignUrl>
+                <i class="icon-left " title="左对齐"></i>
+            </a>
+        </div>
+        <h6 class="free-tip"><i class="icon"></i>HTML阅读开放试用阶段，欢迎体验！</h6>
+    </div>
+    <div class="Logo">
+        <a href="//www.cnki.net">
+            <img src="/kxreader/Content/images/logo.gif" alt="中国知网">
+            <img class="logohome" src="/kxreader/Content/images/home.gif">
+        </a>
+    </div>
+</div>
+
+
+
+<div id="dictTransion" style="display:none">
+    <!-- 词典百科 -->
+    <div class="wrapper textBox" v-bind:style="{textleft:textLeft,textTop:textTop}" v-cloak>
+        <div class="dic-enc-container" v-if="hasResult">
+            <div class="dict-title">
+                <div v-if="dicEncType === 'encyclopedias'">
+                    <span>知网百科</span>
+                    <a v-on:click="openMore('encyclopedias')"
+                       sensors-data='{"event_id":"READ_context_pedia_more","event_secondary_id":"READ_pedia"}' hotrep>查看更多学术释义</a>
+                </div>
+                <div v-else-if="dicEncType === 'dictionary'">
+                    <span>知网词典</span>
+                    <a v-on:click="openMore('dictionary')"
+                       sensors-data='{"event_id":"READ_context_dict_more","event_secondary_id":"READ_dict"}' hotrep>查看更多学术译名</a>
+                </div>
+                <div v-else>
+                    <span>汉语百科</span>
+                    <a v-on:click="openMore('dictionary')" class="hanyuclass"
+                       sensors-data='{"event_id":"READ_context_dict_more","event_secondary_id":"READ_dict"}' hotrep>查看更多</a>
+                </div>
+            </div>
+            <div class="divBack">
+              <ul class="list-container">
+                <!-- 百科条目 -->
+                <template v-if="dicEncType==='encyclopedias'">
+                    <li class="list-item" v-for="(bkItem, index) in bkResultData" :key="index"
+                        sensors-data='{"event_id":"READ_context_pedia_item","event_secondary_id":"READ_pedia"}' hotrep
+                        v-on:click="openUrl(bkItem.url)">
+                        <p class="item-title ellisps">{{bkItem.xkname}}</p>
+                        <p v-if="bkItem.headword" class="item-huaci"><span>{{huaciResultText(bkItem.headword)}}</span> {{pinyinResultText(bkItem.pron)}}</p>
+                        <p v-if="bkItem.translation" class="ellisps-common ellisps-line3 color999">{{bkItem.translation}}</p>
+                        <p v-if="bkItem.snapshot" class="explicate ellisps-common" v-bind:class="hasChinese(bkItem.snapshot) ? 'ellisps-line4':'ellisps-line6'" v-html="bkItem.snapshot"></p>
+                    </li>
+                </template>
+                <!-- 词典条目 -->
+                <template v-if="dicEncType==='dictionary'">
+                    <li class="list-cditem" v-for="(cdItem, cdKey) in dictResultData" :key="cdKey"
+                        sensors-data='{"event_id":"READ_context_dict_item","event_secondary_id":"READ_dict"}' hotrep
+                        v-on:click="openUrl(cdItem.url)">
+                        <p class="item-title cd-name ellisps">{{cdItem.dictname}}</p>
+                        <p v-if="cdItem.headword" class="item-huaci"><span>{{huaciResultText(cdItem.headword)}}</span></p>
+                        <template v-if="cdItem.snapshot">
+                            <p v-if="cdItem.snapshot.indexOf('④......')===-1" class="explicate ellisps-common" v-bind:class="hasChinese(cdItem.snapshot) ? 'ellisps-line4':'ellisps-line6'" v-html="cdItem.snapshot"></p>
+                            <p class="explicate" v-else>{{cdItem.snapshot.slice(0, -7)}}<span>④......</span></p>
+                        </template>
+                        <p v-if="cdItem.discript" class="more-subject color999 ellisps">{{cdItem.discript}}</p>
+                    </li>
+                </template>
+                <template v-else>
+                    <li class="list-cditem" v-for="(zhItem, cdKey) in zhResultData" :key="cdKey"
+                        sensors-data='{"event_id":"READ_context_dict_item","event_secondary_id":"READ_zh"}' hotrep
+                        v-on:click="openUrl(zhItem.url)">
+                        
+                        <p v-if="zhItem.headword" class="item-huaci"><span>{{huaciResultText(zhItem.headword)}}</span></p>
+                        <template v-if="zhItem.snapshot">
+                            <p v-if="zhItem.snapshot.indexOf('④......')===-1" class="explicate ellisps-common" v-bind:class="hasChinese(zhItem.snapshot) ? 'ellisps-line4':'ellisps-line6'" v-html="zhItem.snapshot"></p>
+                            <p class="explicate" v-else>{{zhItem.snapshot.slice(0, -7)}}<span>④......</span></p>
+                        </template>
+                        <p v-if="zhItem.discript" class="more-subject color999 ellisps">{{zhItem.discript}}</p>
+                    </li>
+                </template>
+              </ul>
+            </div>
+            <div class="divBtn" v-if="dicEncType==='encyclopedias'">
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('encyclopedias')" placeholder="查询学术释义" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('encyclopedias')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+            <div class="divBtn" v-else-if="dicEncType==='dictionary'">
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('dictionary')" placeholder="查询学术译名" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('dictionary')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+            <div class="divBtn" v-else>
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('dictionary')" placeholder="查询汉语字词语句" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('zh')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+        </div>
+        <div class="other-result" v-else>
+            <div class="loading" v-if="!hasResult&&isLoading">
+                查询中，请稍候......
+            </div>
+            <div class="fuzzyQuery" v-else-if="!hasResult&&!isLoading&fuzzyQuery">
+                <img class="fuzzyQueryImg" src="https://kns.cnki.net/kxreader/Content/images/RetrievalEmpty.png" />
+                <div class="fuzzyQueryList" v-if="dicEncType==='encyclopedias'">未查到结果，请点击“<a v-on:click="openMore('encyclopedias')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+                <div class="fuzzyQueryList" v-else-if="dicEncType==='dictionary'">未查到结果，请点击“<a v-on:click="openMore('dictionary')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+                <div class="fuzzyQueryList" v-else>未查到结果，请点击“<a v-on:click="openMore('dictionary')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+                <div class="otherResultList">
+                    <div class="otherResult">看看其他结果</div>
+                    <div class="everyData" v-on:click="openUrl(oRItem.url)" v-for="(oRItem, index) in otherResultList" :key="index">
+                        <span class="everyDataSpan" v-html="oRItem.headword"></span>
+                    </div>
+                </div>
+            </div>
+            <div v-else="!hasResult&&!isLoading&emptyQuery">
+                <img class="fuzzyQueryImg" src="https://kns.cnki.net/kxreader/Content/images/RetrievalEmpty.png" />
+                <div class="mptyQuery" v-if="dicEncType==='encyclopedias'">未查到结果，请点击“<a v-on:click="openMore('encyclopedias')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+                <div class="mptyQuery" v-else-if="dicEncType==='dictionary'">未查到结果，请点击“<a v-on:click="openMore('dictionary')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+                <div class="mptyQuery" v-else>未查到结果，请点击“<a v-on:click="openMore('dictionary')" :sensors-data="shiyiSensorsData[dicEncType]" hotrep target="_blank">释义搜索</a>”进行查询</div>
+            </div>
+            <div class="divBtn" v-if="dicEncType==='encyclopedias'">
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('encyclopedias')" placeholder="查询学术释义" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('encyclopedias')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+            <div class="divBtn" v-else-if="dicEncType==='dictionary'">
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('dictionary')" placeholder="查询学术译名" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('dictionary')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+            <div class="divBtn" v-else>
+                <input type="text" maxlength="32" v-on:keyup.enter="searchEnterFun('dictionary')" placeholder="查询汉语字词语句" ref="searchWord" class="search-input isResourceVisible" />
+                <a href="javascript:;" class="search-btn" v-on:click="searchBtn('zh')"><svg aria-hidden="true" class="icon"><use xlink:href="#icon-search"></use></svg></a>
+            </div>
+            <div class="queryFailClass" v-on:click="refreshBtn()" v-else-if="!hasResult&&!isLoading&queryFails">数据加载异常，请点击<span id="trySearch">重试</span></div>
+        </div>
+    </div>
+</div>
+
+<script src="/kxreader/Scripts/vue.js" type="text/javascript"></script>
+<script >
+    //猫头鹰
+    var baseheaderBox = new Vue({
+        el: "#headerBox",
+        data: {
+            textAlignUrl: '',
+
+            originUrlone: "/kxreader/Detail?dbcode=CAPJ&amp;filename=GXNB20221219001&amp;align=md;",
+
+            originUrlTwo: "/kxreader/Detail?dbcode=CAPJ&amp;filename=GXNB20221219001&amp;align=lt",
+
+
+            originTestUrlOne: '',
+            originTestUrlTwo: ''
+        },
+        created: function () {
+            this.originTestUrlOne = this.originUrlone.replace(/amp;/ig, "");
+            this.originTestUrlTwo = this.originUrlTwo.replace(/amp;/ig, "");
+        },
+        methods: {
+            // 切换模式的时候
+            switchFormats:function(type) {
+                if (type == 'icon1') {
+                    this.textAlignUrl =  this.originTestUrlOne;
+                    localStorage.setItem("locationHash", '123');
+                    this.LoadCss('../KXReader/Content/css/detail.css');
+                    localStorage.setItem("alignmentStyle", "centerStyle");
+                } else if (type == 'icon2') {
+                    this.textAlignUrl =  this.originTestUrlTwo;
+                    localStorage.setItem("locationHash", '456');
+                    this.LoadCss('../KXReader/Content/css/ldetail.css');
+                    if (window.DBcode == 'CYFD') {
+                        localStorage.setItem("alignmentStyle", "leftStyle");
+                    }
+                    //this.loadCss("https://login.cnki.net/toploginnew/scripts/top.js");
+                }
+
+            },
+
+            //css加載原生css文件
+            LoadCss: function (path){
+                var head = document.getElementsByTagName('head')[0];
+                var link = document.createElement('link');
+                link.href = path;
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                head.appendChild(link);
+            },
+         }
+    });
+
+
+    //百科 词典 汉语词典  加载页面
+    var dictionaryTranslation = new Vue({
+        el: "#dictTransion",
+        data: {
+            hasResult: false,
+            isLoading: false,
+            textBoxShow: false,
+            dicEncType: "",
+            //百科&词典弹层的位置数据
+            textLeft: "",
+            textTop: "",
+            cdName: {
+                "DICT_V3_TERM": '学科词典',
+                "DICT_V3_ABBR": '缩略语',
+                "DICT_V3_M_RM": '人名',
+                "DICT_V3_M_DM": '地名',
+                "DICT_V3_M_ZW": '植物',
+                "DICT_V3_YW_EN_ZH": '英汉',
+                "DICT_V3_YW_ZH_EN": '汉英',
+                "ECPD_BASE": '百科'
+            },
+            bkResultData: [],
+            dictResultData: [],
+            zhResultData: [],
+            text: "",
+            shiyiSensorsData: {
+                'encyclopedias': '{"event_id":"READ_context_pedia_search","event_secondary_id":"READ_pedia"}',
+                'dictionary': '{"event_id":"READ_context_dict_search","event_secondary_id":"READ_dict"}'
+            },
+            //203页面
+            fuzzyQuery: false,
+            otherResultList: [],
+            //400页面
+            emptyQuery: false,
+            //查询失败，请刷新
+            queryFails: false,
+            searchword: ""
+        },
+        created: function () { },
+        computed: {
+            shiyiUrl: function () {
+                if (!this.hasResult) {
+                    if (this.dicEncType === 'encyclopedias') {
+                        console.log(window.Text)
+                        return "https://baike.cnki.net/#/result?kw=" + encodeURIComponent(window.Text) + "&option=0"
+                    } else {
+                        return "https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + encodeURIComponent(window.Text)
+                    }
+                }
+            }
+        },
+        methods: {
+            openUrl: function (url) {
+                window.open(url);
+            },
+
+            huaciResultText: function (val) {
+                if (this.hasChinese(val)) {
+                    return val.length > 10 ? val.substr(0, 10) + '...' : val;
+                } else {
+                    return val.length > 20 ? val.substr(0, 20) + '...' : val;
+                }
+            },
+           
+            hasChinese: function (val) {
+                var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+                return reg.test(val);
+            },
+
+            pinyinResultText: function (val) {
+                var pinyinArr = val.split(' ');
+                return pinyinArr.length > 10 ? pinyinArr.slice(0, 10).join(' ') + '...' : val;
+            },
+
+            
+            searchBtn: function (evt) {
+                var _this = this;
+                _this.searchword = _this.$refs.searchWord.value
+                if (_this.searchword == "") {
+                    if (evt === 'encyclopedias') {
+                        window.open("https://baike.cnki.net/#/result?kw=" + encodeURIComponent(window.Text) + "&option=0");
+                    } else {
+                        //汉语和词典跳转的链接一致
+                        window.open("https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + encodeURIComponent(window.Text));
+                    }
+                } else {
+                    if (evt === 'encyclopedias') {
+                        window.open("https://baike.cnki.net/#/result?kw=" + _this.searchword + "&option=0");
+                    } else {
+                        //汉语和词典跳转的链接一致
+                        window.open("https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + _this.searchword);
+                    }
+                }
+            },
+
+            openMore: function (evt) {
+                if (evt === 'encyclopedias') {
+                    window.open("https://baike.cnki.net/#/result?kw=" + encodeURIComponent(window.Text) +"&option=0");
+                } else {
+                    //汉语和词典跳转的链接一致
+                    window.open("https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + encodeURIComponent(window.Text));
+                }
+            },
+
+            refreshBtn: function () {
+                var _this = this;
+                _this.encOrDicSearch(_this.dicEncType);
+            },
+
+            searchEnterFun: function (evt) {
+                var _this = this;
+                var searchText = _this.$refs.searchWord.value;
+                if (!!searchText) {
+                    if (evt === 'encyclopedias') {
+                        window.open("https://baike.cnki.net/#/result?kw=" + searchText + "&option=0");
+                    } else {
+                        //汉语和词典跳转的链接一致
+                        window.open("https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + searchText);
+                    }
+                } else {
+                    if (evt === 'encyclopedias') {
+                        window.open("https://baike.cnki.net/#/result?kw=" + encodeURIComponent(window.Text) + "&option=0");
+                    } else {
+                        //汉语和词典跳转的链接一致
+                        window.open("https://cidian.cnki.net/urtpweb/result?sysid=112&s=vs1&f=vs1&v=" + encodeURIComponent(window.Text));
+                    }
+                }
+            },
+            //计算词典弹层的位置
+            showDictionaryBox: function () {
+                var _this = this;
+                $("#dictTransion").css("display", "block");
+                var evt = window.mouseupPositon;
+                evt = (evt) ? evt : ((window.event) ? window.event : "");
+                evt = (evt) ? evt : ((window.event) ? window.event : "");
+                var obj = $(".textBox");
+                var sDivWidth = 88; //检索框“Google搜索”的宽度
+                // 选择了文本，显示 复制 和 搜索 按钮
+                var windowWidth; //窗口的宽
+                //取得窗口的宽
+                if (self.innerWidth) {
+                    windowWidth = self.innerWidth;
+                } else if (document.documentElement && document.documentElement.clientWidth) {
+                    windowWidth = document.documentElement.clientWidth;
+                } else if (document.body) {
+                    windowWidth = document.body.clientWidth;
+                }
+
+                var rX, rX, wT;
+                //ie6 ie7
+                if (!$.support.leadingWhitespace) {
+                    wT = (evt.clientX + sDivWidth + obj.outerWidth(true)) - windowWidth;
+                    rY = document.documentElement.scrollTop + evt.clientY;
+                    rX = document.documentElement.scrollLeft + evt.clientX;
+                    //rY = (evt.clientY < 25) ? rY + 10 : rY + 25;
+                    rY = (evt.clientY + obj.outerHeight(true) < $(window).height()) ? rY + 20 : rY - obj.outerHeight(true) - 20;
+                    rX = (wT > 0) ? rX - obj.outerWidth(true) : rX - 10;
+                }
+                else {
+                    var sT = (document.documentElement.scrollTop > 0) ? document.documentElement.scrollTop : document.body.scrollTop;
+                    wT = (evt.pageX + sDivWidth + obj.outerWidth(true)) - windowWidth;
+                    //rY = ((evt.pageY - sT) < 25) ? evt.pageY + 10 : evt.pageY + 15;
+                    rY = (evt.pageY - sT + obj.outerHeight(true) < $(window).height()) ? evt.pageY + 20 : evt.pageY - obj.outerHeight(true) - 20;
+                    rX = (wT > 0) ? evt.pageX - obj.outerWidth(true) : evt.pageX - 10;
+                }
+                obj.css("top", rY);
+                obj.css("left", rX);
+                obj.css("z-index", 20000);
+                ////清空input框的内部值
+                //_this.$refs.searchWord.value = "";
+                /*dictionaryTranslation.textBoxShow = true;*/
+                // GLS.Text = str;
+            },
+
+            encOrDicSearch: function (type) {
+                debugger
+                var _this = this;
+                /*判定网络延迟*/
+                $("#GLSearch").hide();
+                var start = new Date().getTime();
+                _this.dicEncType = type;
+                _this.dictResultData = [];
+                _this.bkResultData = [];
+                _this.zhResultData = [];
+                _this.otherResultList = [];
+                if (window.Text.length > 100) {
+                    layer.msg("字符数超过上限", {
+                        skin: "layui-layer tip-red"
+                    });
+                    return;
+                }
+                //去掉前后的空格
+                var searchText = window.Text.replace(/^\s+|\s+$/g, "");
+                if (type == 'dictionary') {
+                    $.ajax({
+                        //请求方式
+                        type: "POST",
+                        //请求的媒体类型
+                        contentType: "application/x-www-form-urlencoded",
+                        async: true,
+                        //dataType: "json",
+                        data: { "plat": "NZKPT", "size": "3", "stype": "dict", "title": searchText, "&timestamp": new Date().getTime()},
+                        //请求地址
+                        url: "https://kbsi.cnki.net/api/skdeSearch/dict/gethdwk",
+                        cache: false,
+                        crossDomain: true == !(document.all),
+                        //数据，json字符串
+                        //请求成功
+                        beforeSend: function () {
+                            //未加载出来数据，loading
+                            _this.hasResult = false;
+                            _this.isLoading = true;
+                            _this.showDictionaryBox();
+                            var lagTime = new Date().getTime() - start;
+                            if (lagTime > 4000) {
+                                _this.queryFails = true;
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.showDictionaryBox();
+                                console.log('lagTime', lagTime);
+                                return
+                            }
+                        },
+                        success: function (result) {
+                            var lag = new Date().getTime() - start;
+                            console.log('lag', lag);
+                            //如果网络延迟就返回，加载失败
+                            if (lag > 3000) {
+                                _this.queryFails = true;
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.showDictionaryBox();
+                                return
+                            }
+                            if (result.code == 200 || result.code == 202) {
+                                for (var i = 0; i < Object.getOwnPropertyNames(_this.cdName).length - 1; i++) {
+                                    var dictKey = Object.getOwnPropertyNames(_this.cdName)[i];
+                                    if (!!result.dataList[0][dictKey]) {
+                                        for (var j = 0; j < result.dataList[0][dictKey].length; j++) {
+                                            _this.dictResultData.push(result.dataList[0][dictKey][j]);
+                                        }
+                                    }
+                                }
+
+                                //限定字典的长度为7
+                                if (_this.dictResultData.length > 7) {
+                                    _this.dictResultData.slice(0, 7)
+                                }
+
+                                if (_this.dictResultData == null || _this.dictResultData.length === 0) {
+                                    _this.hasResult = false;
+                                    _this.isLoading = false;
+                                    return;
+                                }
+                                _this.showDictionaryBox();
+                                _this.hasResult = true;
+                            } else if (result.code == 203) {
+                                for (var i = 0; i < Object.getOwnPropertyNames(_this.cdName).length - 1; i++) {
+                                    var dictKey = Object.getOwnPropertyNames(_this.cdName)[i];
+                                    if (!!result.dataList[0][dictKey]) {
+                                        for (j = 0; j < result.dataList[0][dictKey].length; j++) {
+                                            _this.otherResultList.push(result.dataList[0][dictKey][j]);
+                                        }
+                                    }
+                                }
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.fuzzyQuery = true;
+                                _this.emptyQuery = false;
+                            } else if (result.code == 400) {
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.emptyQuery = true;
+                                _this.fuzzyQuery = false;
+                            }
+
+                        },
+                        //请求失败，包含具体的错误信息
+                        error: function (e) {
+                        }
+
+                    });
+                }
+                else if (type == 'encyclopedias') {
+                    $.ajax({
+                        //请求方式
+                        type: "POST",
+                        //请求的媒体类型
+                        contentType: "application/x-www-form-urlencoded",
+                        async: true,
+                        //dataType: "json",
+                        data: { "plat": "NZKPT", "size": "3", "stype": "bk", "title": searchText, "&timestamp": new Date().getTime() },
+                        //请求地址
+                        url: "https://kbsi.cnki.net/api/skdeSearch/dict/gethdwk",
+                        cache: false,
+                        crossDomain: true == !(document.all),
+                        //数据，json字符串
+                        //请求成功
+                        beforeSend: function () {
+                            //未加载出来数据，loading
+                            _this.hasResult = false;
+                            _this.isLoading = true;
+                            _this.showDictionaryBox();
+                        },
+                        success: function (result) {
+                            debugger
+                            var lag = new Date().getTime() - start;
+                            //如果网络延迟就返回，加载失败
+                            if (lag > 3000) {
+                                _this.showDictionaryBox();
+                                _this.queryFails = true;
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                //return
+                            }
+                            if (result.code == 200 || result.code == 202) {
+                                _this.bkResultData = result.dataList[0].ECPD_BASE;
+                                _this.showDictionaryBox();
+                                _this.hasResult = true;
+                                if (_this.bkResultData == null || _this.bkResultData.length === 0) {
+                                    _this.hasResult = false;
+                                    _this.isLoading = false;
+                                    return;
+                                }
+                            } else if (result.code == 203) {
+                                if (JSON.stringify(result.dataList) === "[{}]") {
+                                    _this.showDictionaryBox();
+                                    _this.hasResult = false;
+                                    _this.isLoading = false;
+                                    _this.emptyQuery = true;
+                                    _this.fuzzyQuery = false;
+                                    return;
+                                }
+                                _this.otherResultList = result.dataList[0].ECPD_BASE;
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.fuzzyQuery = true;
+                                _this.emptyQuery = false;
+                            } else if (result.code == 400) {
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.emptyQuery = true;
+                                _this.fuzzyQuery = false;
+                            }
+                        },
+                        //请求失败，包含具体的错误信息
+                        error: function (e) {
+                            _this.showDictionaryBox();
+                            _this.hasResult = false;
+                            _this.isLoading = false;
+                            _this.fuzzyQuery = false;
+                        }
+
+                    });
+                } else {
+                    $.ajax({
+                        //请求方式
+                        type: "POST",
+                        //请求的媒体类型
+                        contentType: "application/x-www-form-urlencoded",
+                        async: true,
+                        //dataType: "json",
+                        data: { "plat": "NZKPT", "size": "3", "stype": "zh", "title": searchText, "&timestamp": new Date().getTime() },
+                        //请求地址
+                        url: "https://kbsi.cnki.net/api/skdeSearch/dict/gethdwk",
+                        cache: false,
+                        crossDomain: true == !(document.all),
+                        //数据，json字符串
+                        //请求成功
+                        beforeSend: function () {
+                            //未加载出来数据，loading
+                            _this.hasResult = false;
+                            _this.isLoading = true;
+                            _this.showDictionaryBox();
+                        },
+                        success: function (result) {
+                            var lag = new Date().getTime() - start;
+                            //如果网络延迟就返回，加载失败
+                            if (lag > 3000) {
+                                _this.showDictionaryBox();
+                                _this.queryFails = true;
+                                _this.queryFails = true;
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                return
+                            }
+                            if (result.code == 200 || result.code == 202) {
+                                _this.zhResultData = result.dataList[0].DICT_V3_YW_ZH;
+                                _this.showDictionaryBox();
+                                _this.hasResult = true;
+                                if (_this.zhResultData == null || _this.zhResultData.length === 0) {
+                                    _this.hasResult = false;
+                                    _this.isLoading = false;
+                                    return;
+                                }
+                            } else if (result.code == 203) {
+                                _this.otherResultList = result.dataList[0].DICT_V3_YW_ZH;
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.fuzzyQuery = true;
+                                _this.emptyQuery = false;
+                            } else if (result.code == 400) {
+                                _this.showDictionaryBox();
+                                _this.hasResult = false;
+                                _this.isLoading = false;
+                                _this.emptyQuery = true;
+                                _this.fuzzyQuery = false;
+                            }
+                        },
+
+                        //请求失败，包含具体的错误信息
+                        error: function (e) {
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+</script>
+
+
+
+
+    
+
+
+
+<div class="btn-link" style="display: none"><a target="_blank" href="/kcms/detail/detail.aspx?dbcode=CAPJ&amp;filename=GXNB20221219001&amp;v=MzA1MDk3cWRaT1pzRnk3bFY3ck1KVnc9SWpYRmJMRzRITlBOclk1TVpPc09ZM2s1ekJkaDRqOTlTWHFScnhveGNNSDdS&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!">知网节</a></div>
+
+    <div class="main">
+
+        
+
+    <div class="sidebar-a">
+        <!--sidebar start-->
+        <div class="sidenav">
+            <div class="arrow"><span></span></div>
+            <!--sidebar_list start-->
+            <dl class="sidenav-list">
+                    <dt class="tit">目录结构</dt>
+                            <dd class="guide">
+                                    <p><a href="#58" data-title="1. 花卉植物的基因组测序与组装 ">1. 花卉植物的基因组测序与组装</a><i></i></p>
+                                                                    <ul class="contentbox">
+                                                <li><a href="#59" data-title="1.1测序技术介绍">1.1测序技术介绍</a></li>
+                                                <li><a href="#63" data-title="1.2 基因组组装流程">1.2 基因组组装流程</a></li>
+                                                <li><a href="#67" data-title="1.3 基因组现行组装技术">1.3 基因组现行组装技术</a></li>
+                                    </ul>
+                            </dd>
+                            <dd class="guide">
+                                    <p><a href="#76" data-title="2. 花卉植物的全基因组测序 ">2. 花卉植物的全基因组测序</a><i></i></p>
+                                                                    <ul class="contentbox">
+                                                <li><a href="#87" data-title="2.1 蔷薇科">2.1 蔷薇科</a></li>
+                                                <li><a href="#96" data-title="2.2 菊科">2.2 菊科</a></li>
+                                                <li><a href="#99" data-title="2.3 兰科">2.3 兰科</a></li>
+                                                <li><a href="#106" data-title="2.4 其他科代表物种">2.4 其他科代表物种</a></li>
+                                    </ul>
+                            </dd>
+                            <dd class="guide">
+                                    <p><a href="#112" data-title="3. 全基因组测序在花卉植物中的应用 ">3. 全基因组测序在花卉植物中的应用</a><i></i></p>
+                                                                    <ul class="contentbox">
+                                                <li><a href="#113" data-title="3.1 研究物种起源与进化">3.1 研究物种起源与进化</a></li>
+                                                <li><a href="#120" data-title="3.2功能基因研究">3.2功能基因研究</a></li>
+                                                <li><a href="#126" data-title="3.3 遗传与育种研究">3.3 遗传与育种研究</a></li>
+                                    </ul>
+                            </dd>
+                            <dd class="guide">
+                                    <p><a href="#131" data-title="4. 讨论与展望 ">4. 讨论与展望</a><i></i></p>
+                                                            </dd>
+                            <dd class="guide">
+                                    <p><a href="#134" data-title="作者贡献 ">作者贡献</a><i></i></p>
+                                                            </dd>
+                            <dd class="guide">
+                                    <p><a href="#" data-title="文内图表 ">文内图表</a><i></i></p>
+                                                                    <ul class="contentbox">
+                                                <li><a href="#83" data-title="图1 2012—2022年花卉植物的基因组测序平台统计">图1 2012—2022年花卉植物的基因组测序平台统计</a></li>
+                                                <li><a href="#85" data-title="图2 2012—2022年已测序花卉植物基因组的科名统计">图2 2012—2022年已测序花卉植物基因组的科名统计</a></li>
+                                                <li><a href="#111" data-title="表1 近两年已完成测序的花卉植物基因组列表">表1 近两年已完成测序的花卉植物基因组列表</a></li>
+                                    </ul>
+                            </dd>
+                                    <dd class="guide">
+                                        <h6>
+                                            <p><a href="#a_bibliography">参考文献</a> </p>
+                                        </h6>
+                                    </dd>
+            </dl>
+        </div>
+        <!--sidebar end-->
+        &nbsp;
+        <!--此处有一空格符 勿删-->
+    </div>
+
+                <div class="sidebar-b three-collumn" style="width:0;">
+            <div class="refer" style="width: 0;">
+                <div class="arrow off" title="参考文献"><span></span></div>
+                <div class="js-scrollbox" >
+                    
+                    <div class="subbox active">
+                        <h4>
+                            <span class="tit">参考文献</span>
+                            <a class="close" href="javascript:void(0)">x</a>
+                        </h4>
+                        <div class="side-scroller">
+                            <ul class="refer-list">
+                                <li id="4">
+
+
+                                    <a id="bibliography_1"   style="color:#aaaaaa" >
+                                        <b>[1]</b>
+                                    Cai J., Liu X., Vanneste K., Proost S., Tsai W., Liu K., Chen L., He Y., Xu Q., Bian C., Zheng Z., Sun F., Liu W., Hsiao Y., Pan Z., Hsu C., Yang Y., Hsu Y., Chuang Y., Dievart A., Dufayard J., Xu X., Wang J., Wang J., Xiao X., Zhao X., Du R., Zhang G., Wang M., Su Y., Xie G., Liu G., Li L., Huang L., Luo Y., Chen H., Van de Peer Y. and Liu Z., 2015, The genome sequence of the orchid&lt;i&gt;Phalaenopsis &lt;/i&gt;&lt;i&gt;equestris&lt;/i&gt;, Nat. Genet., 47: 65-72.</a>
+                                </li>
+                                <li id="5">
+
+
+                                    <a id="bibliography_2"   style="color:#aaaaaa" >
+                                        <b>[2]</b>
+                                    Chang D., Gao S., Zhou G., Deng S., Jia J., Wang E. and Cao W., 2022, The chromosome-level genome assembly of&lt;i&gt;Astragalus &lt;/i&gt;&lt;i&gt;sinicus&lt;/i&gt; and comparative genomic analyses provide new resources and insights for understanding legume-rhizobial interactions, Plant Commun., 3: 100263.</a>
+                                </li>
+                                <li id="6">
+
+
+                                    <a id="bibliography_3"   style="color:#aaaaaa" >
+                                        <b>[3]</b>
+                                    Chung O., Kim J., Bolser D., Kim H., Jun J. H., Choi J., Jang H., Cho Y. S., Bhak J. and Kwak M., 2022, A chromosome-scale genome assembly and annotation of the spring orchid (&lt;i&gt;Cymbidium &lt;/i&gt;&lt;i&gt;goeringii&lt;/i&gt;), Mol Ecol Resour, 22: 1168-1177.</a>
+                                </li>
+                                <li id="7">
+
+
+                                    <a id="bibliography_4"   style="color:#aaaaaa" >
+                                        <b>[4]</b>
+                                    Cui X., Meng F., Pan X., Qiu X., Zhang S., Li C. and Lu S., 2022, Chromosome-level genome assembly of&lt;i&gt;Aristolochia&lt;/i&gt;&lt;i&gt; contorta&lt;/i&gt; provides insights into the biosynthesis of benzylisoquinoline alkaloids and aristolochic acids, Hort. Res., 9: uhac005.</a>
+                                </li>
+                                <li id="8">
+
+
+                                    <a id="bibliography_5"   style="color:#aaaaaa" >
+                                        <b>[5]</b>
+                                    Dong S., Liu M., Liu Y., Chen F., Yang T., Chen L., Zhang X., Guo X., Fang D., Li L., Deng T., Yao Z., Lang X., Gong Y., Wu E., Wang Y., Shen Y., Gong X., Liu H. and Zhang S., 2021, The genome of&lt;i&gt;Magnolia &lt;/i&gt;&lt;i&gt;biondii &lt;/i&gt;Pamp. provides insights into the evolution of Magnoliales and biosynthesis of terpenoids, Hort. Res., 8: 38.</a>
+                                </li>
+                                <li id="9">
+
+
+                                    <a id="bibliography_6"   style="color:#aaaaaa" >
+                                        <b>[6]</b>
+                                    Gao S. H., Yu H. Y., Wu S. Y., Wang S., Geng J. N., Luo Y. F. and Hu S. N., 2018, Advances of sequencing and assembling technologies for complex genomes, Hereditas, 40: 944-963. (高胜寒, 禹海英, 吴双阳, 王森, 耿佳宁, 骆迎峰, 胡松年, 2018, 复杂基因组测序技术研究进展,遗传, 40: 944-963.)</a>
+                                </li>
+                                <li id="10">
+
+
+                                    <a id="bibliography_7"   style="color:#aaaaaa" >
+                                        <b>[7]</b>
+                                    Guo X., Fang D., Sahu S. K., Yang S., Guang X., Folk R., Smith S. A., Chanderbali A. S., Chen S., Liu M., Yang T., Zhang S., Liu X., Xu X., Soltis P. S., Soltis D. E. and Liu H., 2021,&lt;i&gt;Chlo&lt;/i&gt;&lt;i&gt;ranthus&lt;/i&gt; genome provides insights into the early diversification of angiosperms, Nat. Commun., 12: 6930.</a>
+                                </li>
+                                <li id="11">
+
+
+                                    <a id="bibliography_8"   style="color:#aaaaaa" >
+                                        <b>[8]</b>
+                                    He S., Dong X., Zhang G., Fan W., Duan S., Shi H., Li D., Li R., Chen G., Long G., Zhao Y., Chen M., Yan M., Yang J., Lu Y., Zhou Y., Chen W., Dong Y. and Yang S., 2021, High quality genome of&lt;i&gt;Erigeron &lt;/i&gt;&lt;i&gt;breviscapus&lt;/i&gt; provides a reference for herbal plants in Asteraceae, Mol Ecol Resour, 21: 153-169.</a>
+                                </li>
+                                <li id="12">
+
+
+                                    <a id="bibliography_9"   style="color:#aaaaaa" >
+                                        <b>[9]</b>
+                                    Hibrand Saint-Oyant L., Ruttink T., Hamama L., Kirov I., Lakhwani D., Zhou N. N., Bourke P. M., Daccord N., Leus L., Schulz D., Van de Geest H., Hesselink T., Van Laere K., Debray K., Balzergue S., Thouroude T., Chastellier A., Jeauffre J., Voisine L., Gaillard S., Borm T. J. A., Arens P., Voorrips R. E., Maliepaard C., Neu E., Linde M., Le Paslier M. C., B&#233;rard A., Bounon R., Clotault J., Choisne N., Quesneville H., Kawamura K., Aubourg S., Sakr S., Smulders M. J. M., Schijlen E., Bucher E., Debener T., De Riek J. and Foucher F., 2018, A high-quality genome sequence of&lt;i&gt;Rosa &lt;/i&gt;&lt;i&gt;chinensis&lt;/i&gt; to elucidate ornamental traits, Nat. Plants, 4: 473-484.</a>
+                                </li>
+                                <li id="13">
+
+
+                                    <a id="bibliography_10"   style="color:#aaaaaa" >
+                                        <b>[10]</b>
+                                    Hu Y., Ma D., Ning S., Ye Q., Zhao X., Ding Q., Liang P., Cai G., Ma X., Qin X. and Wei D., 2021, High-quality genome of the medicinal plant&lt;i&gt;Strobilanthes&lt;/i&gt;&lt;i&gt; cusia &lt;/i&gt;provides insights into the biosynthesis of indole alkaloids, Front. Plant Sci., 12: 742420.</a>
+                                </li>
+                                <li id="14">
+
+
+                                    <a id="bibliography_11"   style="color:#aaaaaa" >
+                                        <b>[11]</b>
+                                    Jaillon O., Aury J., Noel B., Policriti A., Clepet C., Casagrande A. and Choisne, 2007, The grapevine genome sequence suggests ancestral hexaploidization in major angiosperm phyla, Nature, 449: 463-467.</a>
+                                </li>
+                                <li id="15">
+
+
+                                    <a id="bibliography_12"   style="color:#aaaaaa" >
+                                        <b>[12]</b>
+                                    Jiao Y., Wickett N. J., Ayyampalayam S., Chanderbali A. S., Landherr L., Ralph P. E., Tomsho L. P., Hu Y., Liang H., Soltis P. S., Soltis D. E., Clifton S. W., Schlarbaum S. E., Schuster S. C., Ma H., Leebens-Mack J. and dePamphilis C. W., 2011, Ancestral polyploidy in seed plants and angiosperms, Nature, 473: 97-100.</a>
+                                </li>
+                                <li id="16">
+
+
+                                    <a id="bibliography_13"   style="color:#aaaaaa" >
+                                        <b>[13]</b>
+                                    Jin X. H., Peng J. S. and Lei C. M., 2019, Wonderful life world of Chinese orchids, Forest and Human, 11: 12-27. (金效华, 彭建生, 雷超铭, 2019, 中国兰花 精彩的生命世界, 森林与人类, 11: 12-27.)</a>
+                                </li>
+                                <li id="17">
+
+
+                                    <a id="bibliography_14"   style="color:#aaaaaa" >
+                                        <b>[14]</b>
+                                    Lam E. T., Hastie A., Lin C., Ehrlich D., Das S. K., Austin M. D., Deshpande P., Cao H., Nagarajan N., Xiao M. and Kwok P., 2012, Genome mapping on nanochannel arrays for structural variation analysis and sequence assembly, Nat. Biotechnol., 30: 771-776.</a>
+                                </li>
+                                <li id="18">
+
+
+                                    <a id="bibliography_15"   style="color:#aaaaaa" >
+                                        <b>[15]</b>
+                                    Lei W., Wang Z., Cao M., Zhu H., Wang M., Zou Y., Han Y., Wang D., Zheng Z., Li Y., Liu B. and Ru D., 2022, Chromosome-level genome assembly and characterization of&lt;i&gt;Sophora Japonica&lt;/i&gt;, DNA Res., 29: dsac009.</a>
+                                </li>
+                                <li id="19">
+
+
+                                    <a id="bibliography_16"   style="color:#aaaaaa" >
+                                        <b>[16]</b>
+                                    Li F., Gao Y., Jin C., Wen X., Geng H., Cheng Y., Qu H., Liu X., Feng S., Zhang F., Ruan J., Yang C., Zhang L. and Wang J., 2022, The chromosome-level genome of&lt;i&gt;Gypsophila &lt;/i&gt;&lt;i&gt;paniculata&lt;/i&gt; reveals the molecular mechanism of floral development and ethylene insensitivity, Hort. Res., 9: uhac176.</a>
+                                </li>
+                                <li id="20">
+
+
+                                    <a id="bibliography_17"   style="color:#aaaaaa" >
+                                        <b>[17]</b>
+                                    Li T., Chen L., Wang M., Chen J. and Huang J., 2019, The complete chloroplast genome of&lt;i&gt;Vanilla &lt;/i&gt;&lt;i&gt;shenzhenica&lt;/i&gt; (Orchidaceae), Mitochondrial DNA B Resour., 4: 2610-2611.</a>
+                                </li>
+                                <li id="21">
+
+
+                                    <a id="bibliography_18"   style="color:#aaaaaa" >
+                                        <b>[18]</b>
+                                    Li J., Shen J., Wang R., Chen Y., Zhang T., Wang H., Guo C. and Qi J., 2022, The nearly complete assembly of the&lt;i&gt;Cercis&lt;/i&gt;&lt;i&gt; chinensis&lt;/i&gt; genome and Fabaceae phylogenomic studies provide insights into new gene evolution, Plant Commun., 3: 100422.</a>
+                                </li>
+                                <li id="22">
+
+
+                                    <a id="bibliography_19"   style="color:#aaaaaa" >
+                                        <b>[19]</b>
+                                    Liang Y., Li F., Gao Q., Jin C., Dong L., Wang Q., Xu M., Sun F., Bi B., Zhao P., Li S., Ruan J., Zhou X., Zhang L. and Wang J., 2022, The genome of&lt;i&gt;Eustoma&lt;/i&gt;&lt;i&gt; grandiflorum&lt;/i&gt; reveals the whole-genome triplication event contributing to ornamental traits in cultivated lisianthus, Plant Biotechnol. J., 20: 1856-1858.</a>
+                                </li>
+                                <li id="23">
+
+
+                                    <a id="bibliography_20"   style="color:#aaaaaa" >
+                                        <b>[20]</b>
+                                    Liao X., Ye Y., Zhang X., Peng D., Hou M., Fu G., Tan J., Zhao J., Jiang R., Xu Y., Liu J., Yang J., Liu W., Tembrock L. R., Zhu G. and Wu Z., 2022, The genomic and bulked segregant analysis of&lt;i&gt;Curc&lt;/i&gt;&lt;i&gt;uma &lt;/i&gt;&lt;i&gt;alismatifolia&lt;/i&gt; revealed its diverse bract pigmentation, Abiotech, 3: 178-196.</a>
+                                </li>
+                                <li id="24">
+
+
+                                    <a id="bibliography_21"   style="color:#aaaaaa" >
+                                        <b>[21]</b>
+                                    Lian Q. L., Current Situation, Trend and Strategy of Chinese floral industry, Agricultural Engineering Technology, 3813: 28-35. (连青龙, 2018, 中国花卉产业的发展现状、趋势和战略, 农业工程技术, 3813: 28-35.)</a>
+                                </li>
+                                <li id="25">
+
+
+                                    <a id="bibliography_22"   style="color:#aaaaaa" >
+                                        <b>[22]</b>
+                                    Lieberman-Aiden E., van Berkum N. L., Williams L., Imakaev M., Ragoczy T., Telling A., Amit I., Lajoie B. R., Sabo P. J., Dorschner M. O., Sandstrom R., Bernstein B., Bender M. A., Groudine M., Gnirke A., Stamatoyannopoulos J., Mirny L. A., Lander E. S. and Dekker J., 2009, Comprehensive mapping of long-range interactions reveals folding principles of the human genome, Science, 326: 289-293.</a>
+                                </li>
+                                <li id="26">
+
+
+                                    <a id="bibliography_23"   style="color:#aaaaaa" >
+                                        <b>[23]</b>
+                                    Lu M., An H. and Li L., 2016, Genome survey sequencing for the characterization of the genetic background of&lt;i&gt;Rosa &lt;/i&gt;&lt;i&gt;roxburghii &lt;/i&gt;Tratt and leaf ascorbate metabolism Genes, PLoS One, 11: e147530.</a>
+                                </li>
+                                <li id="27">
+
+
+                                    <a id="bibliography_24"   style="color:#aaaaaa" >
+                                        <b>[24]</b>
+                                    Ma H., Liu Y., Liu D., Sun W., Liu X., Wan Y., Zhang X., Zhang R., Yun Q., Wang J., Li Z. and Ma Y., 2021, Chromosome-level genome assembly and population genetic analysis of a critically endangered rhododendron provide insights into its conservation, Plant J., 107: 1533-1545.</a>
+                                </li>
+                                <li id="28">
+
+
+                                    <a id="bibliography_25"   style="color:#aaaaaa" >
+                                        <b>[25]</b>
+                                    Nakamura N., Hirakawa H., Sato S., Otagaki S., Matsumoto S., Tabata S. and Tanaka Y., 2018, Genome structure of&lt;i&gt;Rosa multiflora&lt;/i&gt;, a wild ancestor of cultivated roses, DNA Res., 25: 113-121.</a>
+                                </li>
+                                <li id="29">
+
+
+                                    <a id="bibliography_26"   style="color:#aaaaaa" >
+                                        <b>[26]</b>
+                                    Nakano M., Hirakawa H., Fukai E., Toyoda A., Kajitani R., Minakuchi Y., Itoh T., Higuchi Y., Kozuka T., Bono H., Shirasawa K., Shiraiwa I., Sumitomo K., Hisamatsu T., Shibata M., Isobe S., Taniguchi K. and Kusaba M., 2021, A chromosome-level genome sequence of&lt;i&gt;Chrysanthemum &lt;/i&gt;&lt;i&gt;seticuspe&lt;/i&gt;, a model species for hexaploid cultivated chrysanthemum, Commun. Biol., 4: 1167.</a>
+                                </li>
+                                <li id="30">
+
+
+                                    <a id="bibliography_27"   style="color:#aaaaaa" >
+                                        <b>[27]</b>
+                                    Niu Z., Zhu F., Fan Y., Li C., Zhang B., Zhu S., Hou Z., Wang M., Yang J., Xue Q., Liu W. and Ding X., 2021, The chromosome-level reference genome assembly for&lt;i&gt;Dendrobium &lt;/i&gt;&lt;i&gt;officinale&lt;/i&gt; and its utility of functional genomics research and molecular breeding study, Acta Pharm. Sin. B, 11: 2080-2092.</a>
+                                </li>
+                                <li id="31">
+
+
+                                    <a id="bibliography_28"   style="color:#aaaaaa" >
+                                        <b>[28]</b>
+                                    Raymond O., Gouzy J., Just J., Badouin H., Verdenaud M., Lemainque A., Vergne P., Moja S., Choisne N., Pont C., Carr&#232;re S. and Caissard, 2018, The&lt;i&gt;Rosa&lt;/i&gt; genome provides new insights into the domestication of modern roses, Nat. Genet., 50: 772-777.</a>
+                                </li>
+                                <li id="32">
+
+
+                                    <a id="bibliography_29"   style="color:#aaaaaa" >
+                                        <b>[29]</b>
+                                    Shen Z., Li W., Li Y., Liu M., Cao H., Provart N., Ding X., Sun M., Tang Z., Yue C., Cao Y., Yuan D. and Zhang L., 2021, The red flower wintersweet genome provides insights into the evolution of magnoliids and the molecular mechanism for tepal color development, Plant J., 108: 1662-1678.</a>
+                                </li>
+                                <li id="33">
+
+
+                                    <a id="bibliography_30"   style="color:#aaaaaa" >
+                                        <b>[30]</b>
+                                    Nie S., Zhao S. W., Shi T. L., Zhao W., 2022, Gapless genome assembly of azalea and multi-omics investigation into divergence between two species with distinct flower color, Hort. Res., 106: uhac241.</a>
+                                </li>
+                                <li id="34">
+
+
+                                    <a id="bibliography_31"   style="color:#aaaaaa" >
+                                        <b>[31]</b>
+                                    Song C., Liu Y., Song A., Dong G., Zhao H., Sun W., Ramakrishnan S., Wang Y., Wang S., Li T., Niu Y., Jiang J., Dong B., Xia Y., Chen S., Hu Z., Chen F. and Chen S., 2018, The&lt;i&gt;Chrysanthemum &lt;/i&gt;&lt;i&gt;nankingense &lt;/i&gt;genome provides insights into the evolution and diversification of Chrysanthemum flowers and medicinal traits, Mol Plant, 11: 1482-1491.</a>
+                                </li>
+                                <li id="35">
+
+
+                                    <a id="bibliography_32"   style="color:#aaaaaa" >
+                                        <b>[32]</b>
+                                    Sun W., Li Z., Xiang S., Ni L., Zhang D., Chen D., Qiu M., Zhang Q., Xiao L., Din L., Li Y., Liao X., Liu X., Jiang Y., Zhang P., Ni H., Wang Y., Yue Y., Wu X., Din X., Huang W., Wang Z., Ma X., Liu B., Zou X., Van de Peer Y., Liu Z. and Zou S., 2021, The&lt;i&gt;Euscaphis&lt;/i&gt;&lt;i&gt; japonica&lt;/i&gt; genome and the evolution of malvids, Plant J., 108: 1382-1399.</a>
+                                </li>
+                                <li id="36">
+
+
+                                    <a id="bibliography_33"   style="color:#aaaaaa" >
+                                        <b>[33]</b>
+                                    Tuskan G. A., Difazio S., Jansson S., Bohlmann J., Grigoriev I., Hellsten U., Putnam N., Ralph S., Rombauts, Martin F., Montanini B. and Napoli, 2006, The genome of black cottonwood,&lt;i&gt;Populus&lt;/i&gt;&lt;i&gt; trichocarpa&lt;/i&gt; (Torr. &amp;amp; Gray), Science, 313: 1596-1604.</a>
+                                </li>
+                                <li id="37">
+
+
+                                    <a id="bibliography_34"   style="color:#aaaaaa" >
+                                        <b>[34]</b>
+                                    Wang P., Fang J., Lin H., Yang W., Yu J., Hong Y., Jiang M., Gu M., Chen Q., Zheng Y., Liao Z., Chen G., Yang J., Jin S., Zhang X. and Ye N., 2022, Genomes of single- and double-petal jasmines (&lt;i&gt;Jasminum &lt;/i&gt;&lt;i&gt;sambac&lt;/i&gt;) provide insights into their divergence time and structural variations, Plant Biotechnol. J., 20: 1232-1234.</a>
+                                </li>
+                                <li id="38">
+
+
+                                    <a id="bibliography_35"   style="color:#aaaaaa" >
+                                        <b>[35]</b>
+                                    Wang X., Gao Y., Wu X., Wen X., Li D., Zhou H., Li Z., Liu B., Wei J., Chen F., Chen F., Zhang C., Zhang L. and Xia Y., 2021, High-quality evergreen azalea genome reveals tandem duplication-facilitated low-altitude adaptability and floral scent evolution, Plant Biotechnol. J., 19: 2544-2560.</a>
+                                </li>
+                                <li id="39">
+
+
+                                    <a id="bibliography_36"   style="color:#aaaaaa" >
+                                        <b>[36]</b>
+                                    Wang Z., Xue J., Hu S., Zhang F., Yu R., Chen D., Van de Peer Y., Jiang J., Song A., Ni L., Hua J., Lu Z., Yu C., Yin Y. and Gu C., 2022, The genome of&lt;i&gt;H&lt;/i&gt;&lt;i&gt;ibiscus &lt;/i&gt;&lt;i&gt;hamabo&lt;/i&gt; reveals its adaptation to saline and waterlogged habitat, Hort. Res., 9: uhac067.</a>
+                                </li>
+                                <li id="40">
+
+
+                                    <a id="bibliography_37"   style="color:#aaaaaa" >
+                                        <b>[37]</b>
+                                    Xu K., Wei X., Lin C., Zhang M., Zhang Q., Zhou P., Fang Y., Xue J. and Duan Y., 2022, The chromosome-level holly (&lt;i&gt;Ilex &lt;/i&gt;&lt;i&gt;latifolia&lt;/i&gt;) genome reveals key enzymes in triterpenoid saponin biosynthesis and fruit color change, Front. Plant Sci., 13: 982323.</a>
+                                </li>
+                                <li id="41">
+
+
+                                    <a id="bibliography_38"   style="color:#aaaaaa" >
+                                        <b>[38]</b>
+                                    Yang X., Yue Y., Li H., Ding W., Chen G., Shi T., Chen J., Park M. S., Chen F. and Wang L., 2018, The chromosome-level quality genome provides insights into the evolution of the biosynthesis genes for aroma compounds of&lt;i&gt;Osmanthus &lt;/i&gt;&lt;i&gt;fragrans&lt;/i&gt;, Hort. Res., 5: 72.</a>
+                                </li>
+                                <li id="42">
+
+
+                                    <a id="bibliography_39"   style="color:#aaaaaa" >
+                                        <b>[39]</b>
+                                    Yang Y., Liu X., Shi X., Ma J., Zeng X., Zhu Z., Li F., Zhou M., Guo X. and Liu X., 2022, A high-quality, chromosome-level genome provides insights into ieterminate flowering time and color of cotton rose (&lt;i&gt;Hibiscus &lt;/i&gt;&lt;i&gt;mutabilis&lt;/i&gt;), Front. Plant Sci., 13: 818206.</a>
+                                </li>
+                                <li id="43">
+
+
+                                    <a id="bibliography_40"   style="color:#aaaaaa" >
+                                        <b>[40]</b>
+                                    Zang F., Ma Y., Tu X., Huang P., Wu Q., Li Z., Liu T., Lin F., Pei S., Zang D., Zhang X., Zheng Y. and Yu Y., 2021, A high-quality chromosome-level genome of wild&lt;i&gt;Rosa rugosa&lt;/i&gt;, DNA Res., 28: dsab017.</a>
+                                </li>
+                                <li id="44">
+
+
+                                    <a id="bibliography_41"   style="color:#aaaaaa" >
+                                        <b>[41]</b>
+                                    Zhang G., Liu K., Li Z., Lohaus R., Hsiao Y., Niu S., Wang J., Lin Y., Xu Q., Chen L., Yoshida K., Fujiwara S., Wang Z., Zhang Y., Mitsuda N., Wang M., Liu G., Pecoraro L., Huang H., Xiao X., Lin M., Wu X., Wu W., Chen Y., Chang S., Sakamoto S., Ohme-Takagi M., Yagi M., Zeng S., Shen C., Yeh C., Luo Y., Tsai W., Van de Peer Y. and Liu Z., 2017, The&lt;i&gt;Apostasia&lt;/i&gt; genome and the evolution of orchids, Nature, 549: 379-383.</a>
+                                </li>
+                                <li id="45">
+
+
+                                    <a id="bibliography_42"   style="color:#aaaaaa" >
+                                        <b>[42]</b>
+                                    Zhang L., Chen F., Zhang X., Li Z., Zhao Y., Lohaus R., Chang X., Dong W., Ho S. Y. W., Liu X., Song A., Chen J., Guo W., Wang Z., Zhuang Y., Wang H., Chen X., Hu J., Liu Y., Qin Y., Wang K., Dong S., Liu Y., Zhang S., Yu X., Wu Q., Wang L., Yan X., Jiao Y., Kong H., Zhou X., Yu C., Chen Y., Li F., Wang J., Chen W., Chen X., Jia Q., Zhang C., Jiang Y., Zhang W., Liu G., Fu J., Chen F., Ma H., Van de Peer Y. and Tang H., 2020, The water lily genome and the early evolution of flowering plants, Nature, 577: 79-84.</a>
+                                </li>
+                                <li id="46">
+
+
+                                    <a id="bibliography_43"   style="color:#aaaaaa" >
+                                        <b>[43]</b>
+                                    Zhang Q., Chen W., Sun L., Zhao F., Huang B., Yang W., Tao Y., Wang J., Yuan Z., Fan G., Xing Z., Han C., Pan H., Zhong X., Shi W., Liang X., Du D., Sun F., Xu Z., Hao R., L&#252; T., L&#252; Y., Zheng Z., Sun M., Luo L., Cai M., Gao Y., Wang J., Yin Y., Xu X., Cheng T. and Wang J., 2012, The genome of&lt;i&gt;Prunus &lt;/i&gt;&lt;i&gt;mume&lt;/i&gt;, Nat. Commun., 3: 1318.</a>
+                                </li>
+                                <li id="47">
+
+
+                                    <a id="bibliography_44"   style="color:#aaaaaa" >
+                                        <b>[44]</b>
+                                    Zhang Q., Zhang H., Sun L., Fan G., Ye M., Jiang L., Liu X., Ma K., Shi C., Bao F., Guan R., Han Y., Fu Y., Pan H., Chen Z., Li L., Wang J., L&#252; M., Zheng T., Yuan C., Zhou Y., Lee S. M., Yan X., Xu X., Wu R., Chen W. and Cheng T., 2018, The genetic architecture of floral traits in the woody plant&lt;i&gt;Prunus &lt;/i&gt;&lt;i&gt;mume&lt;/i&gt;, Nat. Commun., 9: 1702.</a>
+                                </li>
+                                <li id="48">
+
+
+                                    <a id="bibliography_45"   style="color:#aaaaaa" >
+                                        <b>[45]</b>
+                                    Zhang T., Zhang X., Hu S. and Yu J., 2011, An efficient procedure for plant organellar genome assembly, based on whole genome data from the 454 GS FLX sequencing platform, Plant Methods, 7: 38.</a>
+                                </li>
+                                <li id="49">
+
+
+                                    <a id="bibliography_46"   style="color:#aaaaaa" >
+                                        <b>[46]</b>
+                                    Zhao Y., Yin J., Guo H., Zhang Y., Xiao W., Sun C., Wu J., Qu X., Yu J., Wang X. and Xiao J., 2014, The complete chloroplast genome provides insight into the evolution and polymorphism of&lt;i&gt;Panax ginseng&lt;/i&gt;, Front. Plant Sci., 5: 696.</a>
+                                </li>
+                                <li id="50">
+
+
+                                    <a id="bibliography_47"   style="color:#aaaaaa" >
+                                        <b>[47]</b>
+                                    Zheng T., Li P., Li L. and Zhang Q., 2021, Research advances in and prospects of ornamental plant genomics, Hort. Res., 8: 65.</a>
+                                </li>
+                                <li id="51">
+
+
+                                    <a id="bibliography_48"   style="color:#aaaaaa" >
+                                        <b>[48]</b>
+                                    Zheng T., Li P., Zhuo X., Liu W., Qiu L., Li L., Yuan C., Sun L., Zhang Z., Wang J., Cheng T. and Zhang Q., 2022, The chromosome-level genome provides insight into the molecular mechanism underlying the tortuous-branch phenotype of&lt;i&gt;Prunus &lt;/i&gt;&lt;i&gt;mume&lt;/i&gt;, New Phytol., 235: 141-156.</a>
+                                </li>
+                                <li id="52">
+
+
+                                    <a id="bibliography_49"   style="color:#aaaaaa" >
+                                        <b>[49]</b>
+                                    Zhong Y., Chen Y., Zheng D., Pang J., Liu Y., Luo S., Meng S., Qian L., Wei D., Dai S. and Zhou R., 2022, Chromosomal-level genome assembly of the orchid tree&lt;i&gt;Bauhinia &lt;/i&gt;&lt;i&gt;variegata&lt;/i&gt; (Leguminosae; Cercidoideae) supports the allotetraploid origin hypothesis of Bauhinia, DNA Res., 29: dsac012.</a>
+                                </li>
+                            </ul>
+                            <div style='display: none;' class="zqscroller" >
+                                <h4 class="">附加材料</h4>
+                                <ul></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            &nbsp;
+            <!--此处有一空格符 勿删-->
+        </div>
+
+        
+<script src="/kxreader/Scripts/vue.js" type="text/javascript"></script>
+
+<div class="content">
+    
+    <div class="hello-yx-box" id="mainContent" v-if="mainContentShow&&IsOrgUser" v-cloak>
+        <div class="hello-tr">
+            <span class="co" id="clockTime">10</span>秒
+            <a href="javascript:void(0)" class="hello-x" id="CloseId" v-on:click="clickClosePop()">关闭</a>
+        </div>
+        <p class="hello-t">尊敬的用户您好：</p>
+        <p class="hello-p" v-if="indiAccountShow">登录您的个人账号后可使用笔记、摘录、复制、收藏文献、阅读历史等功能帮助您进行深度阅读，同时也支持在线写作、投稿分析及个人知识管理。</p>
+        <p class="hello-p" v-else>进入知网研学平台，可对本文做笔记、摘录、复制等操作，帮助您进行深度阅读；平台也支持收藏文献、查看阅读历史、在线写作、投稿分析及个人知识管理等功能。</p>
+        <a href="javascript:void(0)" class="btn btn-blue" id="loginBtn" v-on:click="clickLogin()" v-if="indiAccountShow">立即登录个人账号</a>
+        <a href="https://x.cnki.net/read/readonline.ashx?dbcode=CAPJ&amp;filename=&amp;fileSourceType=1&amp;fromId=CNKI_READ" class="btn btn-blue" tager="_blank" id="loginBtn" v-else>立即体验</a>
+        <a href="javascript:void(0)" class="a-cg9" id="displayId" v-on:click="clickLoginShow()">7天内不再显示</a>
+    </div>
+    
+    <div class="promptPackage" id="promptBox" v-show="promptShow" v-cloak>
+        <div class="promptBox">
+            <div class="promptBoxTitle">提示</div>
+            <p class="promptBoxContent">关闭网页后，您在本页面的笔记等操作将清空。进入<span class="promptBoxSpan">知网研学</span>,可将当前页面笔记保存至您的个人账户。是否要继续操作？</p>
+            <div class="promptButton">
+                <input type="checkbox" /> 7天内不再显示
+                <div class="promptBtn">
+                    <button class="promptBoxClose">取消</button>
+                    <button class="promptBoxGoon">继续</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="head-tag">
+   
+            <p>               
+                        <b>（录用定稿）</b>                       
+                        <b> 网络首发时间: 2022-12-20 18:44:19</b>
+            </p>
+           
+        
+</div>
+
+
+
+    <!--tips start-->
+                <div class="tips">
+                <a href="http://navi.cnki.net/KNavi/JournalDetail?pcode=CJFD&amp;pykm=GXNB" target="_blank">基因组学与应用生物学</a>
+            ,(),         </div>
+    <!--tips end-->
+        <div class="top-title" >
+            <h1 class="title" id="topTitle">
+                <span class="vm">花卉植物基因组学研究进展与展望</span>
+ <span class="shoufa"></span>                             </h1>
+
+                <div class="btn-downloads  btn-downloads-new">
+                    <a class="read read-btn-special" id="readSpecial" onclick="clickJd()"><i class="i-btn i-care"></i>精读</a>
+                    <a class="read sou-btn-cang" id="souCang" onclick="clickSc()"><i class="i-btn i-care"></i>收藏</a>
+                </div>
+
+        </div>
+                <h2>
+                            <a id="authorId" href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=au&amp;skey=%E9%AB%98%E6%95%8F&amp;code=000051462355&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">高敏</a>
+                            <a id="authorId" href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=au&amp;skey=%E9%99%88%E7%8E%B2%E7%8E%B2&amp;code=000051462354&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">陈玲玲</a>
+            </h2>
+            <h2>
+                <a id="InfoOrgId" href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=in&amp;skey=%E5%B9%BF%E8%A5%BF%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%91%BD%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2&amp;code=0088702&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">广西大学生命科学与技术学院</a>
+        </h2>
+
+    
+<div class="link">
+    <a id="aexport" class="icon icon-output"  onclick="" href="javascript:void(0);" target="_blank"><i></i>导出/参考文献</a>
+    
+    <span class="shareBoard" onmouseover="$('#sharedet').show();$('#this').addClass('shareBoardCUR')" onmouseout="$('#sharedet').hide();$('#this').removeClass('shareBoardCUR')">
+        <a class="icon icon-share" href="#"><i></i>分享<em></em></a>
+        <ul class="shareHide" id="sharedet" style="display: none;">
+            <li><a title="复制链接" class="copy" onclick="" href="#"><i></i>复制链接</a></li>
+            <li><a title="分享到新浪微博" class="xl" onclick="" href="javascript:common.ShareAction('xl');"><i></i>新浪微博</a></li>
+            
+        </ul>
+    </span>
+    
+    <a class="icon icon-print" onclick="window.print();" href="javascript:void(0);"><i></i>打印</a>
+    
+    <!--版本切换 start-->
+    <span class="otherversions">
+
+        <div class="sort">
+
+            <div class="sort-default">
+                <span id="curversion">录用定稿</span>
+                <i class="sort-icon">▼</i>
+            </div>
+
+            <ul class="sort-list" style="display: none;">
+                        <li  class="cur">
+                            <a href="/KXReader/Detail?dbcode=cjfd&filename=GXNB20221219001">      
+                                              <em> 录用定稿</em>                                  </a>
+                        </li>       
+                        <li  class="cur">
+                            <a href="/KXReader/Detail?dbcode=cjfd&filename=GXNB20221219001">      
+                                              <em>印刷版</em>                                  </a>
+                        </li>       
+
+            </ul>
+        </div>
+
+        <script>         
+            var curalabel = $(".cur a em").text();
+            if (!curalabel) {
+                $("#otherversions").hide();
+            }
+            else {
+                $("#curversion").html($(".cur a em").text());
+            }       
+        </script>
+    </span>
+    <!--版本切换 end-->
+</div>
+<script type="text/javascript">
+    //点击关注按钮
+
+    function refTrack() {
+        var data = {
+            idenID: window.Lid,
+            clientID: window.Ecp_ClientId,
+            userIP: window.Ecp_ClientIp,
+            platformURL: 'kns@platform',
+            operateType: document.getElementById('RefTrack').innerText == '关注' ? 'add': 'delete',
+            resourceType: paper,
+            resourceID:   "GXNB20221219001",
+            productID: 'CAPJ'
+        };
+        $.ajax({
+            url: "POST /api/UserDataCenter/Concern",
+            data: data,
+            type: "post",
+            success: function (result) {
+                debugger
+                console.log(result);
+                if (result.Success == true && result.Data >= 1 && document.getElementById('RefTrack').innerText == '关注') {
+                    document.getElementById('RefTrack').innerText = '已关注'
+                } else {
+                    document.getElementById('RefTrack').innerText = '关注'
+                }
+
+            }, error: function () {
+                
+            }
+        });
+        //var result = {
+        //    Success: true,
+        //    Data: 1,
+        //}
+        //if (result.Success == true && result.Data >= 1 && document.getElementById('RefTrack').innerText == '关注') {
+        //    debugger
+        //    document.getElementById('RefTrack').innerText = '已关注'
+        //} else {
+        //    document.getElementById('RefTrack').innerText = '关注'
+        //}
+    }
+
+    //點擊收藏----在點擊收藏的時候得取消---如果收藏顏色變化了就不走接口了
+    function souCang() {
+        var data = {
+            idenID: window.Lid,
+            clientID: window.Ecp_ClientId,
+            userIP: window.Ecp_ClientIp,
+            platformURL: 'kns@platform',
+            operateType: document.getElementById('ashoucang').innerText == '关注' ? 'delete': 'add',
+            productID: "",
+            fileID: "",
+        };
+        $.ajax({
+            url: "/api/UserDataCenter/CollectFile",
+            data: data,
+            type: "post",
+            success: function (result) {
+                debugger
+                console.log(result);
+                //根據返回信息去判斷innerText是什麼值
+                document.getElementById('RefTrack').innerText == '已关注'
+            }, error: function () {
+                
+            }
+        });
+
+
+    }
+
+</script>                <div class="data" id="a_abstract"><span class="keys" id="c_abstract">摘<span style="font-family: 'Times New Roman';">&nbsp;&nbsp;&nbsp;&nbsp;</span>要：</span><p id="b-abstract"><span><p id="53">花卉是农业和园艺植物的重要组成部分，具有丰富的种质资源。随着高通量测序技术的发展，基因组学研究已成为花卉植物的研究热点之一。高质量的基因组序列为研究花卉植物基因组的结构与功能、起源与进化、基因定位和遗传改良等提供了重要的信息基础。本综述介绍了蔷薇科、菊科和兰科等花卉植物基因组研究进展及应用，并对花卉植物基因组的发展前景进行了展望。</p></span></p></div>
+            <div class="data" id="a_keywords">
+            <p id="b_keywords">
+                <span class="keys">关键词：</span><span><a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=%E8%8A%B1%E5%8D%89%E6%A4%8D%E7%89%A9&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">花卉植物;</a></span><span><a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=%E9%AB%98%E9%80%9A%E9%87%8F%E6%B5%8B%E5%BA%8F&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">高通量测序;</a></span><span><a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%BB%84%E8%A3%85&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">基因组组装;</a></span>            </p>
+        </div>
+    
+    <!--brief start-->
+    
+        <div class="brief" ><p id="briefId"><b>作者简介：</b><span>陈玲玲,llchen@gxu.edu.cn;</span></p><p id="fundId"><b>基金：</b><span>国家自然科学基金（32270712）资助;</span></p></div>
+            <h1  id="EngTitle">Advances and prospects of genomics in ornamental floral plants </h1>
+            <h2  id="EngName">
+                <span>Gao Min</span>
+                <span>Chen Lingling</span>
+        </h2>
+            <h2 id="EngDepart">
+                <span>College of Life Science and Technology, Guangxi University</span>
+        </h2>
+                <div class="data" id="a_abstractEN"><span class="keys">Abstract：</span><p><p id="54">Ornamental floral plants are one of the most important part of agricultural and horticultural plants, with a wide variety of species and rich germplasm resources. With the development of sequencing technology, genomics has become one of the hot sports in the study of ornamental floral plants. High quality genome sequences provide an important genic information for the study of floral genome structure and function, plant origin and evolution, gene mapping and genetic improvement. This review introduces the research progress and application of floral plant genomes of Rosaceae, Compositae and Orchidaceae, and the development prospects of floral plant genomes are discussed.</p></p></div>
+            <div class="data" id="a_keywordsEN">
+            <span class="keys">Keyword：</span>
+            <p>
+                    <a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=Floral%20plant&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">Floral plant;</a>
+                    <a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=High-throughput%20sequencing&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">High-throughput sequencing;</a>
+                    <a href="/kcms/detail/knetsearch.aspx?dbcode=CAPJ&amp;sfield=kw&amp;skey=Genome%20assembly&amp;code=&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" target="_blank">Genome assembly;</a>
+            </p>
+        </div>
+            <div class="brief">
+            
+                <p>
+                        <b>Author：</b>
+                                                <span>
+                                Chen Lingling , llchen@gxu.edu.cn;
+                            </span>
+                </p>
+                                        <p>
+                </p>
+        </div>
+
+
+    <!--brief start-->
+    
+
+
+                <div class="p1">
+                    <p id="57">中国是世界上花卉栽培面积最大的国家之一，素有“世界园林之母”的美称 (<citation id="55"><link href="24" rel="bibliography" />连青龙, 2018</citation>)。广义的花卉除了具有观赏价值的草本植物外，还包括草本或木本的地被植物、花灌木、开花乔木以及盆景等 (陶传喜, 2008)。花卉植物在人类生活和农艺生产中具有重要的作用，不仅可以美化和改善生活环境，提高人们的生活品质，同时还有利于农业产业结构的调整和高质量发展。近年来，由于高通量测序技术和生物信息学研究的飞速发展，大量花卉植物基因组进行了测序。自从2012年第一株花卉植物（梅花）基因组测序完成以来 (<citation id="56"><link href="46" rel="bibliography" />Zhang et al., 2012</citation>)，十年来90多种花卉植物的全基因组完成测序和组装。基于高质量的参考基因组，科研人员在花卉的花发育调控、种群结构、演化历程和物种多样性等方面取得了极大的研究进展。另外全基因组序列也将为花卉遗传研究提供重要资源和基础，对于促进花卉植物保护、开发药用资源和培育花卉新品种具有重要意义。</p>
+                </div>
+                <h3 id="58" name="58" class="anchor-tag">1. 花卉植物的基因组测序与组装</h3>
+                <h4 class="anchor-tag" id="59" name="59">1.1测序技术介绍</h4>
+                <div class="p1">
+                    <p id="62">自1975年第一代Sanger测序问世以来，经过几十年的发展，测序技术取得了长足进步。从第一代测序到第二代测序再到第三代测序，测序技术的每一次变革都极大地促进了基因组学的研究。利用第一代测序技术完成了番木瓜（<i>Carica</i><i> papaya L</i><i>.</i>）、葡萄（<i>Vitis</i><i> vinifera</i>）、毛果杨（<i>Populus</i><i> trichocarpa</i>）等植物的基因组测序 (<citation id="60"><link href="14" rel="bibliography" />Jaillon et al., 2007</citation>; <citation id="61"><link href="36" rel="bibliography" />Tuskan et al., 2006</citation>)，但由于其通量低、周期长、测序成本较高，很难用于大规模的测序，目前只能作为一种辅助测序手段。第二代测序技术的出现极大地推动了全基因组测序和组装的发展，数百个动植物基因组使用二代测序技术进行了测序和组装。由于第二代测序读长较短，大多只有100-150 bp（base pairs），无法跨越基因组中的高杂合以及重复序列含量较高的区域，这为后续的基因组组装工作带来了很大的困难。另一方面，二代测序主要依靠PCR进行，而PCR扩增中往往会发生碱基错配，从而使后续的检测具有系统性的偏差。为解决二代测序技术上的不足和应用上的短板，科学家研究出一种以单分子、长读长为主要目的的三代测序技术，目前应用最广泛的三代测序是PacBio单分子荧光测序和Nanopore单分子纳米孔测序。三代测序具有较长读长（10-100 kb），可以有效提升复杂区域的组装质量，并减少拼接成本，节省内存和计算时间。此外还避免了PCR扩增引入错误，可直接读取RNA序列和包括甲基化在内的DNA修饰等。近两年发表的绝大多数花卉植物基因组测序都采用了三代测序技术。</p>
+                </div>
+                <h4 class="anchor-tag" id="63" name="63">1.2 基因组组装流程</h4>
+                <div class="p1">
+                    <p id="66">基因组组装是全基因组测序领域的核心问题。基因组组装就是把测序产生的短读（reads）片段经过拼接，生成完整的基因组序列。基因组组装可以根据有无参考基因组划分为有参组装和无参组装。有参组装的原理是将测序reads比对到参考基因组上，然后根据序列之间的联系进行拼接。目前，针对二代测序数据的比对软件主要有BWA和Bowtie2等，而在三代数据的有参组装中更加流行使用Minimap2和Blast等软件组装。相比于无参组装，有参组装相对容易，往往用于线粒体和叶绿体的基因组组装 (<citation id="64"><link href="49" rel="bibliography" />Zhao et al., 2014</citation>; <citation id="65"><link href="48" rel="bibliography" />Zhang et al., 2011</citation>)。无参组装较为复杂，需要根据基因组特征设计不同的组装策略，主要分为以下三个步骤：（1）从测序reads到contigs，利用测序reads之间的overlap区域进行拼接，从而获得没有gap的contig集群，基因组中大量的重复序列会对这一步产生极大的影响；（2）从contigs到scaffolds，这是个排序和定向的过程，通过Pair-end reads、Pacbio长reads或者Hi-C（High-throughput chromosome conformation capture）数据确定contigs的顺序和位置关系，并将未覆盖区域使用gap填充（用N表示）；（3）利用遗传图谱或Hi-C测序，对scaffolds进行聚类、排序和定向，并锚定到染色体上，实现染色体水平的基因组组装。</p>
+                </div>
+                <h4 class="anchor-tag" id="67" name="67">1.3 基因组现行组装技术</h4>
+                <div class="p1">
+                    <p id="68">近年来越来越多的花卉植物基因组信息被破译，但对于高重复或高杂合的基因组来说，想要获得高质量的参考基因组，除了使用二代或者三代测序技术外，还要借助Hi-C、10 × Genomics、BioNano光学图谱和Chicago等技术来辅助组装。结合多种测序技术的组装策略是目前针对复杂基因组主要的解决办法。</p>
+                </div>
+                <div class="p1">
+                    <p id="70">Hi-C技术是2009年由Job Dekker研究团队 (<citation id="69"><link href="25" rel="bibliography" />Lieberman-Aiden et al., 2009</citation>) 首次提出，利用Hi-C技术，可以将具有较长线性距离，但空间结构较近的DNA片段进行交联，并对其测序产生的数据进行序列分析，从而揭示出各DNA片段之间的相互作用。通常，随着染色体空间距离的增加，这种相互作用会变得越来越微弱，从而可以推断出染色体的三维空间结构以及它们之间可能的调控关系。利用Hi-C技术能够获得远程交互作用的特点，它还可以应用于构建基因组的三维模型、单体型构建和辅助基因组组装等领域。</p>
+                </div>
+                <div class="p1">
+                    <p id="71">10 × Genomics Linked-Reads技术的关键是将barcode标记加入到长序列片段中。在GemCode平台上，微流控芯片准确地划分了大量高质量的基因组 DNA，并根据来自不同系统的条形码（barcode）序列信息，对各个大片段DNA模板的多个reads进行追踪，获得更有研究价值的长片段序列信息。10 × Genomics测序技术通过其独特的建库和组装技术，能够以较低成本构建高质量、高连续性的基因组序列，并在基因组结构变异、泛基因组和基于组装的遗传研究中发挥重要作用。</p>
+                </div>
+                <div class="p1">
+                    <p id="74">BioNano光学图谱来源于单个DNA分子的高分辨率和有序的全基因组限制性内切酶酶切位点图谱 (<citation id="72"><link href="17" rel="bibliography" />Lam et al., 2012</citation>)。BioNano系统主要使用NLRS（Nicking, Labeling, Repairing and Staining）和 DLS（Direct Label and Stain）技术对基因组DNA进行特异性标记。BioNano技术在实现复杂基因组的组装上有着显著的优势，主要体现在以下两方面：（1）BioNano技术的最大读长可达1 Mb，平均长度也可达到200 kb；（2）利用BioNano技术在单倍体基因组中酶切位点的不同，可以将单倍体基因组序列分离，从而实现基因组高杂合区域的分离组装 (<citation id="73"><link href="9" rel="bibliography" />高胜寒等, 2018</citation>)。此外，BioNano技术在基因结构变异检测方面也表现出超高的灵敏度和分辨率。</p>
+                </div>
+                <div class="p1">
+                    <p id="75">Chicago技术是一种结合体外重组染色质构象捕获和高通量测序的Hi-C建库技术。与常规的Hi-C技术相比，Chicago技术的准确度更高，在较小的基因组中具有更高的分辨率。Chicago技术的优势在于可以任意结合组装策略，不论是二代Illumina测序，三代PacBio测序，还是10 × Genomics测序。自从2015年推出后，Chicago技术已经在许多植物和动物的基因组中得到了广泛应用，并对多种现有的基因组进行了更新。</p>
+                </div>
+                <h3 id="76" name="76" class="anchor-tag">2. 花卉植物的全基因组测序</h3>
+                <div class="p1">
+                    <p id="82">自从2012年第一株花卉植物（梅花）的基因组测序完成以来，在接下来的10年时间里，有90多种花卉植物相继完成全基因组测序，既包括草本植物，如荷花（<i>Nelumbo</i><i> nucifera</i>）、兰花（<i>Apostasia</i><i> odorata</i>）、菊花（<i>Dendranthema</i><i> morifolium</i>）、蝴蝶兰（<i>Phalaenopsis </i><i>aphrodite</i>）等，还包括木本植物，如梅花（<i>Prunus </i><i>mume</i>）、樱花（<i>Yoshino cherry</i>）、桂花（<i>Osmanthus </i><i>fragrans</i>）、牡丹（<i>Paeonia suffruticosa</i>）等 (<citation id="77"><link href="41" rel="bibliography" />Yang et al., 2018</citation>; <citation id="78"><link href="4" rel="bibliography" />Cai et al., 2015</citation>; <citation id="79"><link href="31" rel="bibliography" />Raymond et al., 2018</citation>; <citation id="80"><link href="47" rel="bibliography" />Zhang et al., 2018</citation>)。花卉植物的基因组大小分布范围很广，梅花（<i>P. </i><i>mume</i>）的基因组大小仅为237 Mb，而牡丹（<i>P. suffruticosa</i>）的基因组大小可高达13.79 Gb，其余花卉植物的基因组大多分布在500- 1500 Mb范围内。在2012—2020年期间公布了68种花卉植物的全基因组序列 (<citation id="81"><link href="50" rel="bibliography" />Zheng et al., 2021</citation>)，尤其是2016—2018这3年时间里，相继完成了39种花卉的基因组测序（图1 A），2021—2022年期间有20种花卉植物基因组完成了测序（表1）。目前已测序的花卉植物中，蔷薇科（11种）物种最多，其次是兰科（10种）和菊科（6种）（图2）。2012—2019年花卉植物基因组测序主要采用Illumina测序平台，少数花卉基因组也会使用PacBio测序，2020年测序的10个花卉植物基因组采用了7种不同的组装策略（图1 A）。最近两年，花卉植物基因组主要采用Illumina测序和PacBio/ONT测序相结合的方法来组装基因组，同时还利用Hi-C技术辅助组装（图1 B）。</p>
+                </div>
+                <div class="area_img" id="83">
+                                <a class="zoom-in" id="pic1">
+                                    <img class="imgPicture" alt="图1 2012—2022年花卉植物的基因组测序平台统计" data-src="images/GXNB20221219001_83.jpg" src="Detail/GetImg?filename=images/GXNB20221219001_83.jpg&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" />
+                                    
+                                </a>
+                                <p class="img_tit">图1 2012—2022年花卉植物的基因组测序平台统计  <a class="btn-zoomin" href="Detail/GetImg?filename=images/GXNB20221219001_83.jpg&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!"></a><a class="downimg">&nbsp;&nbsp;下载原图</a></p>
+                            <p class="img_tit">Figure 1 Statistics of genome sequencing platforms of floral plants from 2012 to 2022</p>
+                                <p class="img_note">注：A：2012—2022年不同测序平台完成的花卉植物基因组分布；B：2012—2022年花卉植物基因组中主流二代测序和三代测序平台的应用分布Note: A: Genome distribution of floral plants completed by different sequencing platforms from 2012 to 2022; B: Application distribution of mainstream second-generation sequencing and third-generation sequencing platforms in floral plant genomes from 2012 to 2022.</p>
+
+                </div>
+                <div class="area_img" id="85">
+                                <a class="zoom-in" id="pic1">
+                                    <img class="imgPicture" alt="图2 2012—2022年已测序花卉植物基因组的科名统计" data-src="images/GXNB20221219001_85.jpg" src="Detail/GetImg?filename=images/GXNB20221219001_85.jpg&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" />
+                                    
+                                </a>
+                                <p class="img_tit">图2 2012—2022年已测序花卉植物基因组的科名统计  <a class="btn-zoomin" href="Detail/GetImg?filename=images/GXNB20221219001_85.jpg&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!"></a><a class="downimg">&nbsp;&nbsp;下载原图</a></p>
+                            <p class="img_tit">Figure 2 Family name statistics of sequenced floral plant genomes from 2012 to 2022.                        </p>
+
+                </div>
+                <h4 class="anchor-tag" id="87" name="87">2.1 蔷薇科</h4>
+                <div class="p1">
+                    <p id="93">蔷薇科（Rosaceae）有124个属，包含3300多个品种 (<citation id="88"><link href="50" rel="bibliography" />Zheng et al., 2021</citation>)，具有较高的经济和观赏价值。目前已测序的蔷薇科花卉植物包括梅花（<i>P. </i><i>mume</i>）、樱花（<i>P. </i><i>yedoensis</i>）、月季（<i>R. </i><i>chinensis</i>）、蔷薇（<i>Rosa </i><i>multiflora</i>）、缫丝花（<i>Rosa </i><i>roxburghii</i>）等 (<citation id="89"><link href="26" rel="bibliography" />Lu et al., 2016</citation>; <citation id="90"><link href="28" rel="bibliography" />Nakamura et al., 2018</citation>; Hibrand Saint-Oyant et al., 2018)。梅花（<i>P. </i><i>mume</i>）是蔷薇科中最早测序的基因组之一，张秦等 (<citation id="91"><link href="46" rel="bibliography" />Zhang et al., 2012</citation>)通过Illumina数据（101×）和光学图谱数据组装了梅花基因组，组装后的基因组大小为237 Mb，Scaffold N50为577.8 kb，83.9%的序列锚定到了8条染色体上，这项工作标记了世界上第一个花卉植物全基因组测序研究的完成。2018年张启翔团队 (<citation id="92"><link href="47" rel="bibliography" />Zhang et al., 2018</citation>)对351份梅花和其他三种李属植物进行了重测序，平均测序深度为19.3 ×，挖掘到534万个SNP标记，为进一步深入研究李属泛基因组、全基因组关联分析奠定了基础。这项工作首次完成了梅花全基因组重测序研究，并构建了世界上首张梅花全基因组变异图谱。</p>
+                </div>
+                <div class="p1">
+                    <p id="95">月季（<i>R. </i><i>chinensis</i>）作为观赏植物和工业原料，具有极高的经济和文化价值。2018年Raymond等 (<citation id="94"><link href="31" rel="bibliography" />Raymond et al., 2018</citation>) 基于PacBio和Hi-C技术，对二倍体中国月季“Old Blush”进行了测序组装，组装后的基因组大小为560 Mb，Contig N50为24 Mb，并将97.7%的序列挂载到7条染色体上。该基因组为我们进一步理解该物种性状的分子机制提供了基础，同时高质量基因组的获得能够加速月季、蔷薇科物种及其他观赏植物的遗传改良。</p>
+                </div>
+                <h4 class="anchor-tag" id="96" name="96">2.2 菊科</h4>
+                <div class="p1">
+                    <p id="98">菊科（Asteraceae）约有1000个属，包含24000 ~ 35000个品种 (<citation id="97"><link href="34" rel="bibliography" /><link href="34" rel="bibliography" />Song et al., 2018</citation>)，物种多样性非常高，约占被子植物的10%。菊属是菊科中具有代表性的一个属，该属植物种类繁多，又包含多个栽培品种，具有观赏和药用价值，且染色体结构从2n=18到8n=72之间。开展菊科植物的基因组测序研究，是了解菊科植物的起源进化和物种多样性的基础。2016年我国科学家利用纳米孔测序（Nanopore）结合二代高通量测序（Illumina）技术首次对菊花的全基因组序列进行了测定，此外，还对杭白菊等重要药用植物的基因组序列进行了遗传信息的挖掘。2018年中药所宋驰等 (Song et al., 2018) 利用ONT和Illumina平台对二倍体的菊花脑进行了全基因组测序，组装后的基因组大小为2.53 Gb，Contig N50为130.7 Kb，共注释得到56870个蛋白编码基因。比较基因组学分析发现其演化受重复序列爆发和近期全基因组加倍（Whole genome duplication）事件的驱动，该研究完成了国内首个ONT植物基因组的测序组装，对于未来研究菊花的遗传多样性具有非常重要的参考价值。</p>
+                </div>
+                <h4 class="anchor-tag" id="99" name="99">2.3 兰科</h4>
+                <div class="p1">
+                    <p id="105">兰科（Orchidaceae）是单子叶植物中的第一大科，以花朵色彩艳丽、特化程度高、种子数量多而著名，全世界约有兰科植物800余属2.75万余种 (<citation id="100"><link href="16" rel="bibliography" />金效华等, 2019</citation>)。兰花 （<i>orchid</i>）是物种多样性最为丰富的植物之一，被誉为“植物界的大熊猫”，是保护植物多样性的旗帜物种，同时还具备吸引昆虫进行授粉的特殊机理。近年来，国家兰科中心刘仲健教授领衔团队开展“国际兰花基因组计划”，完成了世界首个兰科植物和景天酸代谢（CAM）植物的基因图谱“小兰屿蝴蝶兰（<i>Phalaenopsis </i><i>equestris</i>）全基因组基因图谱”(<citation id="101"><link href="4" rel="bibliography" />Cai et al., 2015</citation>)。此外，该团队还完成了药用兰科植物“铁皮石斛（<i>Dendrobium </i><i>officinale</i>）全基因组基因图谱”(<citation id="102"><link href="30" rel="bibliography" />Niu et al., 2021</citation>)和香料兰科植物“深圳香荚兰（<i>Vanilla </i><i>shenzhenica</i>）全基因组基因图谱”(<citation id="103"><link href="20" rel="bibliography" />Li et al., 2019</citation>)，这些物种信息填补了兰科植物基因组研究的多个空白。2017年刘仲健团队 (<citation id="104"><link href="44" rel="bibliography" />Zhang et al., 2017</citation>) 再次对深圳拟兰（<i>Apostasia</i><i> shenzhenica</i>）进行了全基因组测序，采用二代、三代和10 × Genomics数据进行混合组装，获得了高质量的组装结果。此外还对已发表的小兰屿蝴蝶兰和铁皮石斛进行重测序，同时对兰科5个具有代表性的植物进行转录组测序，测序数据用于基因功能分析和验证，该研究为兰花某些重要性状提供了遗传学基础，并揭示了兰科植物的起源和基因组进化。</p>
+                </div>
+                <h4 class="anchor-tag" id="106" name="106">2.4 其他科代表物种</h4>
+                <div class="p1">
+                    <p id="110">紫荆隶属于豆科（Fabaceae）云实亚科，由于云实亚科（Caesalpiniaceae）缺乏基因组信息，极大地限制了豆科植物的系统基因组研究，戚继团队 (<citation id="107"><link href="19" rel="bibliography" />Li et al., 2022</citation>)对中国紫荆花（<i>Cercis</i><i> chinensis</i>）进行了基因组测序，获得了352.84 Gb的基因组，并将其成功挂载到7条染色体上，共注释得到30612个蛋白编码基因，该基因组为豆科植物的进一步系统发育研究和新基因的预测提供了可靠的参考。睡莲是被子植物的重要基部类群，在演化中具有特殊地位，2020年张亮生团队 (<citation id="108"><link href="45" rel="bibliography" />Zhang et al., 2020</citation>)获得了蓝星睡莲（<i>Water lily</i>）的高质量基因组，基因组大小为409 Mb，Scaffold N50达到了27.2 Mb，95.64%的序列锚定到14条染色体上，实现了染色体水平的基因组组装。该基因组为早期被子植物的进化和睡莲科（Nymphaeaceae）的比较基因组研究奠定了基础。腊梅隶属于腊梅科（Calycanthaceae）腊梅属，是我国的传统名花，已有上千年的栽培历史，具有很高的观赏、经济和文化价值，沈植国领衔的腊梅研究团队 (<citation id="109"><link href="32" rel="bibliography" />Shen et al., 2021</citation>)对我国首个红花腊梅（<i>Chimonanthus</i><i> praecox</i> 'Hongyun'）的基因组进行了组装，通过利用PacBio测序和Hi-C技术构建了高质量染色体水平的参考基因组，基因组大小为737.03 Mb，Contig N50为8.13 Mb，BUSCO评估分数为95%，构建的该参考基因组通过整合多组学分析为木兰类植物的进化和花色发育的分子机制提供了新的见解。牡丹是我国特有的著名花卉植物，被誉为“花中之王”，2017年我国科学家首次完成了牡丹（<i>Paeonia suffruticosa</i>）基因组的精细组装，牡丹基因组非常复杂，基因组大小达12.25 Gb，Contig N50为128 Kb，共注释到了65898个蛋白质编码基因，该基因组的完成填补了芍药科植物基因组的空白，并且在牡丹基因组研究方面具有里程碑的意义。</p>
+                </div>
+                <div class="area_img" id="111">
+                    <p class="img_tit">表1 近两年已完成测序的花卉植物基因组列表 <a class="downexcel" onclick="DownLoadReportExcel(this)">导出到EXCEL</a></p>
+                    <p class="img_tit">Table 1 List of genome-sequenced flower plants species in recent two years</p>
+                    <p class="img_note"></p>
+                    <table id="111"><tr><td><p>编号</p><p>Code </p></td><td><p>物种</p><p>Species</p></td><td><p>拉丁名</p><p>Latin name</p></td><td><p>基因组大小</p><p>Genome Size</p></td><td><p>测序平台</p><p>Sequencing platform</p></td><td><p>文献出处</p><p>Reference</p></td></tr><tr><td><p>1</p></td><td><p>日本野菊</p></td><td><p>Chrysanthemum seticuspe</p></td><td><p>3.05 Gb</p></td><td><p>Illumina HiSeq 2500, PacBio Sequel II, Hi-C</p></td><td><p><citation id="136"><link href="29" rel="bibliography" />Nakano et al., 2021</citation></p></td></tr><tr><td><p>2</p></td><td><p>玫瑰</p></td><td><p>Rosa rugosa</p></td><td><p>407.1 Mb</p></td><td><p>Illumina HiSeq X Ten, PacBio Sequel II, Hi-C</p></td><td><p><citation id="137"><link href="43" rel="bibliography" />Zang et al., 2021</citation></p></td></tr><tr><td><p>3</p></td><td><p>金粟兰</p></td><td><p>Chloranthus sessilifolius</p></td><td><p>2.96 Gb</p></td><td><p>Oxford Nanopore,</p><p>BGIseq 2000, Hi-C</p></td><td><p><citation id="138"><link href="10" rel="bibliography" />Guo et al., 2021</citation></p></td></tr><tr><td><p>4</p></td><td><p>朱红大杜鹃</p></td><td><p>Rhododendron griersonianum</p></td><td><p>677 Mb</p></td><td><p>Illumina HiSeq X Ten, PacBio sequel, Oxford Nanopore, Hi-C</p></td><td><p><citation id="139"><link href="27" rel="bibliography" />Ma et al., 2021</citation></p></td></tr><tr><td><p>5</p></td><td><p>灯盏花</p></td><td><p>Erigeron breviscapus</p></td><td><p>1.41 Gb</p></td><td><p>Illumina HiSeq X Ten, PacBio RSII, Hi-C</p></td><td><p><citation id="140"><link href="11" rel="bibliography" />He et al., 2021</citation></p></td></tr><tr><td><p>6</p></td><td><p>板蓝</p></td><td><p>Strobilanthes cusia</p></td><td><p>913.74 Mb</p></td><td><p>Illumina HiSeq X Ten, PacBio Sequel II, Hi-C</p></td><td><p><citation id="141"><link href="13" rel="bibliography" />Hu et al., 2021</citation></p></td></tr><tr><td><p>7</p></td><td><p>野鸦椿</p></td><td><p>Euscaphis japonica</p></td><td><p>1.20 Gb</p></td><td><p>Illumina HiSeq X ten, PacBio Sequel II, Hi-C</p></td><td><p><citation id="142"><link href="35" rel="bibliography" />Sun et al., 2021</citation></p></td></tr><tr><td><p>8</p></td><td><p>望春花</p></td><td><p>Magnolia biondii Pamp. </p></td><td><p>2.22 Gb</p></td><td><p>PacBio RSII, BGISEQ-500, Hi-C</p></td><td><p><citation id="143"><link href="8" rel="bibliography" />Dong et al., 2021</citation></p></td></tr><tr><td><p>9</p></td><td><p>红花腊梅</p></td><td><p>Chimonanthus praecox  'Hongyun'</p></td><td><p>737.03 Mb</p></td><td><p>Illumina Novaseq 6000, PacBio Sequel II, Hi-C</p></td><td><p><citation id="144"><link href="32" rel="bibliography" />Shen et al., 2021</citation></p></td></tr><tr><td><p>10</p></td><td><p>春兰</p></td><td><p>Cymbidium goeringii</p></td><td><p>3.99 Gb</p></td><td><p>Illumina HiSeq X ten, PacBio Sequel II, Hi-C</p></td><td><p><citation id="145"><link href="6" rel="bibliography" />Chung et al., 2022</citation></p></td></tr><tr><td><p>11</p></td><td><p>木芙蓉</p></td><td><p>Hibiscus mutabilis</p></td><td><p>2.68 Gb</p></td><td><p>Illumina HiSeq X Ten, Oxford Nanopore, Hi-C</p></td><td><p><citation id="146"><link href="42" rel="bibliography" />Yang et al., 2022</citation></p></td></tr><tr><td><p>12</p></td><td><p>洋紫荆</p></td><td><p>Bauhinia variegata</p></td><td><p>326.4 Mb</p></td><td><p>Illumina NovaSeq, PacBio Sequel II, Hi-C</p></td><td><p><citation id="147"><link href="52" rel="bibliography" />Zhong et al., 2022</citation></p></td></tr><tr><td><p>13</p></td><td><p>槐花</p></td><td><p>Sophora Japonica</p></td><td><p>511.49 Mb</p></td><td><p>Illumina NovaSeq 6000, Oxford Nanopore, Hi-C</p></td><td><p><citation id="148"><link href="18" rel="bibliography" />Lei et al., 2022</citation></p></td></tr><tr><td><p>14</p></td><td><p>马兜铃</p></td><td><p>Aristolochia contorta</p></td><td><p>209.27 Mb</p></td><td><p>Illumina HiSeq X ten, Oxford Nanopore, Hi-C</p></td><td><p><citation id="149"><link href="7" rel="bibliography" />Cui et al., 2022</citation></p></td></tr><tr><td><p>15</p></td><td><p>紫云英</p></td><td><p>Astragalus sinicus</p></td><td><p>595.52 Mb</p></td><td><p>Illumina HiSeq X ten, Oxford Nanopore, Hi-C</p></td><td><p><citation id="150"><link href="5" rel="bibliography" />Chang et al., 2022</citation></p></td></tr><tr><td><p>16</p></td><td><p>满天星</p></td><td><p>Gypsophila paniculata</p></td><td><p>749.58 Mb</p></td><td><p>Illumina HiSeq X ten, Oxford Nanopore, Hi-C</p></td><td><p><citation id="151"><link href="19" rel="bibliography" />Li et al., 2022</citation></p></td></tr><tr><td><p>17</p></td><td><p>梅花</p></td><td><p>Prunus mume</p></td><td><p>237.8 Mb</p></td><td><p>BGI-seq 500, Oxford Nanopore, Hi-C</p></td><td><p><citation id="152"><link href="51" rel="bibliography" />Zheng et al., 2022</citation></p></td></tr><tr><td><p>18</p></td><td><p>冬青</p></td><td><p>Ilex latifolia</p></td><td><p>766.02 Mb</p></td><td><p>Illumina NovaSeq 6000, Oxford Nanopore, Hi-C</p></td><td><p><citation id="153"><link href="40" rel="bibliography" />Xu et al., 2022</citation></p></td></tr><tr><td><p>19</p></td><td><p>海滨木槿</p></td><td><p>Hibiscus hamabo</p></td><td><p>1.72 Gb</p></td><td><p>Illumina HiSeq X ten, PacBio Sequel II, Hi-C</p></td><td><p><citation id="154"><link href="37" rel="bibliography" />Wang et al., 2022</citation></p></td></tr><tr><td><p>20</p></td><td><p>姜荷花</p></td><td><p>Curcuma alismatifolia</p></td><td><p>994.07 Mb</p><p> </p></td><td><p>MGI-SEQ 2000, PacBio Sequel II, Hi-C</p></td><td><p><citation id="155"><link href="23" rel="bibliography" />Liao et al., 2022</citation></p></td></tr></table>
+                    <form name="form" action="/kxreader/Detail/DownloadReportExcel" method="POST" style="display:inline">
+                        <input type="hidden" name="hidTable" value="" />
+                        <input type="hidden" name="hidFileName" value="" />
+                    </form>
+                    <p class="img_note"></p>
+                    <p class="img_note"></p>
+                </div>
+                <h3 id="112" name="112" class="anchor-tag">3. 全基因组测序在花卉植物中的应用</h3>
+                <h4 class="anchor-tag" id="113" name="113">3.1 研究物种起源与进化</h4>
+                <div class="p1">
+                    <p id="119">全基因组加倍或多倍化事件通过增加多余基因组序列为生物进化提供了更加丰富的遗传信息，是推动物种进化的主要动力。研究发现在被子植物演化过程中经常发生多倍化事件，在现存被子植物和种子植物分化之前，都曾发生过基因组加倍，推测它们在开花和种子形成中起到了重要作用 (<citation id="114"><link href="15" rel="bibliography" />Jiao et al., 2011</citation>)。兰花作为植物界种类最丰富的家族之一，研究发现所有兰花的祖先都曾在6600万年前经历过一次全基因组加倍事件，由此开启了现生兰花的起源，随后兰花基因组分化而出现了5个亚科，产生更多的生物多样性进而快速适应了新的生态系统 (<citation id="115"><link href="44" rel="bibliography" />Zhang et al., 2017</citation>)。睡莲（<i>Water lily</i>）是被子植物起源和进化过程中的重要节点，张亮生等人 (<citation id="116"><link href="45" rel="bibliography" />Zhang et al., 2020</citation>) 基于睡莲基因组数据，对睡莲和无油樟进行了演化定位，从而证实了睡莲的祖先曾发生过多倍化。洋桔梗（<i>Eustoma</i><i> grandiflorum</i>）的同义替换速率分析(<citation id="117"><link href="22" rel="bibliography" />Liang et al., 2022</citation>) 发现洋桔梗在与牛角瓜分化后，还发生了一次全基因组加倍事件和一次全基因组三倍化事件（whole genome triplication, WGT），WGT事件导致了洋桔梗大量基因的扩张。金粟兰（<i>Chloranthus</i>）基因组的进化分析发现 (<citation id="118"><link href="10" rel="bibliography" />Guo et al., 2021</citation>)，金粟兰及其同类群体中的蛔形兰属、草珊瑚属植物共同经历了1.3亿年前至9800万年前的一个古老的全基因组加倍事件，同时发现金粟兰与无油樟、葡萄在基因组区域中存在高度保守性，可见基因组序列对于研究物种起源和进化提供了重要的参考资源。</p>
+                </div>
+                <h4 class="anchor-tag" id="120" name="120">3.2功能基因研究</h4>
+                <div class="p1">
+                    <p id="125">杜鹃花是我国十大传统名花之一，大多数杜鹃花没有花香，而马银花亚属 （<i>Azaleastrum</i>）的多数种类却具有花香，对马银花的香味组成进行了分析，发现萜类化合物是其主要的花香成分，马银花萜类合酶（TPS）基因家族显著扩张，特别是TPS-b具有高表达丰度 (<citation id="121"><link href="38" rel="bibliography" />Wang et al., 2021</citation>)，通过对不同品种杜鹃花TPS-b同源基因的进化分析，发现马银花并非是与其他杜鹃花分化后获得了花香，而是由于TPS基因丢失或碎片化，导致其他杜鹃花在进化过程中失去了花香。张亮生等人 (<citation id="122"><link href="45" rel="bibliography" />Zhang et al., 2020</citation>) 对睡莲的开花模型ABCE基因进行了鉴定和分析，发现ABCE基因与花器官的发育相关，睡莲ABC基因在花器官中广泛表达，并不像拟南芥在不同器官中都严格表达，说明早期被子植物的ABC基因可能是广泛表达，而在单子叶和核心双子叶中严格表达是后期进化出来的。另外，睡莲独立进化出了花香中的脂肪酸成分，SABATH是一种重要的脂肪酸合成基因家族，睡莲共有13个该家族的成员，12个是睡莲所特有的，其中一个基因在花瓣中高表达，且编码合成脂肪酸的蛋白，由此推断睡莲的花香成分起源不同于其他被子植物。通过梅花的遗传结构分析 (<citation id="123"><link href="47" rel="bibliography" />Zhang et al., 2018</citation>)，发现了控制垂枝性状的候选基因，结合梅花的全基因组关联分析，筛选出13个与木质素合成相关的候选基因，如bHLH157和CYP78A9等，为进一步深入研究垂枝性状提供了理论依据。姜荷花（<i>Curcuma </i><i>alismatifolia</i> Gagnep）的苞片颜色组成非常复杂，同一株苞片常常具有不同的形态和颜色，研究团队确定了姜荷花产生不同颜色苞片的关键基因 (<citation id="124"><link href="23" rel="bibliography" />Liao et al., 2022</citation>)，如调控花青素合成的F3'5'H、DFR、ANS和相应的转录因子MYB和bHLH，以及与苞片叶绿素合成相关的chlH和CAO基因。</p>
+                </div>
+                <h4 class="anchor-tag" id="126" name="126">3.3 遗传与育种研究</h4>
+                <div class="p1">
+                    <p id="130">小兰屿蝴蝶兰（<i>P. </i><i>equestris</i>）是我国首个完成全基因组测序的兰科植物，通过对其重要基因家族的挖掘，发现MADS-box C/D-class，B-class AP3和AGL6-class基因出现了扩张，形成了有助于兰花产生高特异性花朵形态的多样化家族。王良桂团队 (<citation id="127"><link href="41" rel="bibliography" />Yang et al., 2018</citation>) 对桂花种质进行了相关研究，其中包括桂花花粉活力、柱头可授性、花用（食用和萃取）、桂花优良品种的选择、种质创新以及杂种后代的SSR 鉴定等。通过对杜鹃花（<i>Azalea</i>）端粒到端粒的基因组组装 (<citation id="128"><link href="33" rel="bibliography" />Shuai Nie, 2022</citation>)，阐明了不同种类的杜鹃（黄色花的羊踯躅、红色花的映山红）基因组的变异特点，并利用多组学生物技术对红色系和黄色系花朵之间的遗传调控进行了研究，对其中重要的调控因子进行了鉴定，为品种间的遗传改良和选育奠定了重要的理论基础。福州单瓣茉莉花（<i>Jasminum </i><i>sambac</i>）和双瓣茉莉花的原始Pacbio HiFi 测序数据与多瓣茉莉花基因组进行比较 (<citation id="129"><link href="37" rel="bibliography" />Wang et al., 2022</citation>)，鉴定出大量的结构变异，其中单瓣与多瓣茉莉花的结构变异基因主要涉及丙酸代谢、淀粉和蔗糖代谢以及丙氨酸、天冬氨酸和谷氨酸代谢途径的代谢调节，这可能与单瓣茉莉花较弱的环境适应性有关，为福州单瓣茉莉花品种的改良提供了理论依据。</p>
+                </div>
+                <h3 id="131" name="131" class="anchor-tag">4. 讨论与展望</h3>
+                <div class="p1">
+                    <p id="132">花卉植物在人们生活中扮演着重要角色，同时也是科研工作的重要模式物种。高质量的基因组序列为花卉植物农艺和观赏性状的研究提供了重要的信息基础，这将有助于我们更好地了解花卉植物的基因组结构、基因组成和功能以及它们的演化过程。随着长读长测序技术的不断更新和发展，人们对更高质量的基因组提出了新的要求。目前，以PacBio HiFi和ONT为代表的长读长测序技术，有效解决了Sanger测序通量低、测序读长短等问题。同时，结合组装算法的不断改进为基因组的从头组装带来了巨大的便利，越来越多花卉植物基因组的复杂区域、构建单倍型基因组以及多倍体基因组的亚基因组组装得到了解析。因此，构建包含端粒到端粒、单倍型信息的基因组已成为基因组学领域的一种研究趋势。端粒到端粒的基因组组装主要通过PacBio HiFi数据和ONT数据来实现，该基因组可以有效解决着丝粒和高重复区域的组装难题，染色体的连续性和完整性也得到极大的提高。长读长测序技术可以识别出同源染色体之间的细微差异，结合其他测序数据的辅助组装，并且通过优化基因组组装策略，可以获得高质量的单倍型基因组，单倍型基因组对进一步研究等位基因的变异、研究物种的亲缘关系和演化历程具有重要意义。多倍体的亚基因组组装关键在于如何区分亚基因组，最直观的亚基因组识别方法是在有近源物种或祖先序列的情况下，通过序列比对和共线性分析确定亚基因组，序列相似度越高，共线性越好，越有可能来自同一个祖先。在没有近源物种的情况下，可以选择最近的共同祖先分化而来的物种作为参考，然后通过共线性比对确定亚基因组。亚基因组组装有助于研究多倍体物种的起源与进化，对优良品种的改良和育种也有一定的帮助。</p>
+                </div>
+                <div class="p1">
+                    <p id="133">基因组测序组装与功能研究是目前花卉植物基因组学研究的核心部分，但是如何准确、高效地完成基因组的测序与组装，并对其进行准确的功能分析是非常有挑战性的。一方面，花卉植物具有较高的遗传多样性和较多的基因组重复序列。部分花卉植物基因组具有高杂合、高重复和多倍化等特征，使基因组组装复杂化。为解决复杂基因组测序与组装问题，需要分别从基因组测序实验、测序技术平台、组装算法和组装策略三个方面进行深入探讨。另一方面，全基因组测序技术迄今经历了三代发展，测序技术和方法不断进步，测序精度和完整性得到了极大的提升，在技术和理论方面也有了一定的突破，但也存在着一定的困难，在测序数据迅速增长的今天，如何有效的对其隐藏的遗传信息进行深入挖掘，是当前研究的热点之一。高质量的基因组序列为其他功能研究奠定了基础，而表型性状的遗传机制非常复杂。因此，如何进行高效的多组学分析也是今后面临的一个重要问题。尽管面临这些挑战，但我们相信基因组学将继续成为未来几十年花卉研究的重要主题之一。</p>
+                </div>
+                <h3 id="134" name="134" class="anchor-tag">作者贡献</h3>
+                <div class="p1">
+                    <p id="135">高敏完成本综述的数据收集和论文初稿的撰写；陈玲玲对本项目的设计和构思进行指导，并修改完善论文。全体作者都已阅读并同意最终的文本。</p>
+                </div>
+
+
+<script>
+    //var img_length = $("#pic1  img").length;
+    var img_length = $(".content .area_img img:not(.pFormula)").length;
+    //if (img_length <= 1) {
+    //    var img_start = 0;
+    //} else {
+    //    var img_start = 1;
+    //}
+
+    var img_start = 0;
+    //懒加载之后看看这块需要怎么兼容
+    $(".content .area_img img:not(.pFormula)").on("load", function () {
+        img_start++;
+        if (img_start == img_length) {
+            img_start = 0;
+            $(".content .area_img img ").each(function (item, index) {
+                //var widthCavas = index.naturalWidth / document.body.clientWidth;
+                //var ratioHandW = index.naturalWidth / index.naturalHeight;
+                //var plusBoth = widthCavas + ratioHandW;
+                var item = index.naturalWidth / document.body.clientWidth;
+                switch (true) {
+                    case (item <= (400 / document.body.clientWidth)):
+                        index.id = '';
+                        break;
+                    case (item > 400 / document.body.clientWidth && item <= 450 / document.body.clientWidth):
+                        index.id = 'magnifiPower12X';
+                        break;
+                    case (item > 450 / document.body.clientWidth && item <= 500 / document.body.clientWidth):
+                        index.id = 'magnifiPower15X';
+                        break;
+                    case (item > 500 / document.body.clientWidth && item <= 550 / document.body.clientWidth):
+                        index.id = 'magnifiPower17X';
+                        break;
+                    case item > 550 / document.body.clientWidth && item <= 600 / document.body.clientWidth:
+                        index.id = 'magnifiPower19X';
+                        break;
+                    case item > 600 / document.body.clientWidth && item <= 650 / document.body.clientWidth:
+                        index.id = 'magnifiPower21X';
+                        break;
+                    case item > 650 / document.body.clientWidth && item <= 700 / document.body.clientWidth:
+                        index.id = 'magnifiPower25X';
+                        break;
+                    case item > 750 / document.body.clientWidth && item <= 800 / document.body.clientWidth:
+                        index.id = 'magnifiPower27X';
+                        break;
+                    case item > 850 / document.body.clientWidth && item <= 900 / document.body.clientWidth:
+                        index.id = 'magnifiPower29X';
+                        break;
+                    case item > 900 / document.body.clientWidth && item <= 950 / document.body.clientWidth:
+                        index.id = 'magnifiPower31X';
+                        break;
+                    case item > 950 / document.body.clientWidth && item <= 1000 / document.body.clientWidth:
+                        index.id = 'magnifiPower36X';
+                        break;
+                    case item > 1000 / document.body.clientWidth && item <= 1050 / document.body.clientWidth:
+                        index.id = 'magnifiPower40X';
+                        break;
+                    case item > 1050 / document.body.clientWidth && item <= 1100 / document.body.clientWidth:
+                        index.id = 'magnifiPower45X';
+                        break;
+                    case item > 1100 / document.body.clientWidth && item <= 1200 / document.body.clientWidth:
+                        index.id = '';
+                        break;
+                    default:
+                        index.id = '';
+                        break;
+
+                }
+            })
+        } else {
+            return;
+        }
+    });
+
+    //图片懒加载
+    //在未触发滚动事件时先判断图片是否已经出现在视窗中，打开页面时先遍历一遍
+    $(".content .area_img img:not(.pFormula)").each(function () {//在未触发滚动事件时先判断图片是否已经出现在视窗中，打开页面时先遍历一次
+        /*debugger*/
+
+    });
+
+
+
+
+    //$(".content").on('scroll', function (event) {
+    //        var clock;
+    //        debugger
+    //        event.stopPropagation;
+    //        if (clock) {
+    //            clearTimeout(clock);
+    //        }
+    //        clock = setTimeout(function () {
+    //            lazyRender();
+    //            // self.popImgFun();
+    //        }, 100);
+    //    });
+
+    //    var el = $('.content')[0];
+    //if (el.scrollWidth <= el.clientWidth) {
+    //         debugger
+    //        lazyRender();
+    //    }
+
+    //    //懒加载
+    //    function lazyRender() {
+    //        if (checkShow($(this)) && !isLoaded($(this))) {
+    //            /*debugger*/
+    //            loadImg($(this));//加载当前img  } })
+    //                debugger
+    //                $(".content .area_img img:not(.pFormula)").each(function () {//遍历img标签
+    //                    debugger
+    //                    if (checkShow($(this)) && !isLoaded($(this))) {
+    //                        loadImg($(this));//加载当前img
+    //                    }
+    //                })
+
+    //        }
+
+    //    }
+
+    //    function checkShow($img) {     //传入img对象
+    //        debugger
+    //        var scrollTop = $('.content').offset().top;   //即页面向上滚动的距离
+    //        var windowHeight = $('.content').height();     //浏览器自身的高度
+    //        var offsetTop = $img.parent().parent().offset().top;  //目标标签img相对于document顶部的位置
+    //        //对象顶部与文档顶部之间的距离，如果它小于父元素底部与文档顶部的距离，则说明垂直方向上已经进入可视区域了；
+    //        post = offsetTop - (scrollTop + windowHeight);
+    //        //对象底部与文档顶部之间的距离，如果它大于父元素顶部与文档顶部的距离，则说明垂直方向上已经进入可视区域了；
+    //        posb = offsetTop + $img.height() - scrollTop;
+    //        if (post < 0 && posb > 0) {
+    //            return true;
+    //        }
+    //        return false;
+    //    }
+
+    //    function isLoaded($img) {
+    //        debugger
+    //        return $img.attr('data-src') === $img.attr('src'); //如果data-imgurl和src相等那么就是已经加载过了  加载过了就知道了
+    //    }
+
+    //    function loadImg($img) {
+    //        debugger
+    //        /*var str = "Detail/GetImg?filename =" + $img.attr('data-src') + "&uid =" ;*/
+    //        var str = $img.attr('data-src');
+    //        $img.attr('src', str);
+
+    //    }
+
+
+
+</script>
+    <!--brief end-->
+    
+    <!--conten left  end-->
+    <!--增强附件-->
+    
+
+    <!--reference start-->
+            <div class="reference anchor-tag" id="a_bibliography">
+                    <h3>参考文献</h3>
+                                            <p id="4">
+                                <a id="bibliography_1"  style="color:#aaaaaa">
+                                        <b>[1]</b>
+                                    Cai J., Liu X., Vanneste K., Proost S., Tsai W., Liu K., Chen L., He Y., Xu Q., Bian C., Zheng Z., Sun F., Liu W., Hsiao Y., Pan Z., Hsu C., Yang Y., Hsu Y., Chuang Y., Dievart A., Dufayard J., Xu X., Wang J., Wang J., Xiao X., Zhao X., Du R., Zhang G., Wang M., Su Y., Xie G., Liu G., Li L., Huang L., Luo Y., Chen H., Van de Peer Y. and Liu Z., 2015, The genome sequence of the orchid<i>Phalaenopsis </i><i>equestris</i>, Nat. Genet., 47: 65-72.
+                                </a>
+                            </p>
+                            <p id="5">
+                                <a id="bibliography_2"  style="color:#aaaaaa">
+                                        <b>[2]</b>
+                                    Chang D., Gao S., Zhou G., Deng S., Jia J., Wang E. and Cao W., 2022, The chromosome-level genome assembly of<i>Astragalus </i><i>sinicus</i> and comparative genomic analyses provide new resources and insights for understanding legume-rhizobial interactions, Plant Commun., 3: 100263.
+                                </a>
+                            </p>
+                            <p id="6">
+                                <a id="bibliography_3"  style="color:#aaaaaa">
+                                        <b>[3]</b>
+                                    Chung O., Kim J., Bolser D., Kim H., Jun J. H., Choi J., Jang H., Cho Y. S., Bhak J. and Kwak M., 2022, A chromosome-scale genome assembly and annotation of the spring orchid (<i>Cymbidium </i><i>goeringii</i>), Mol Ecol Resour, 22: 1168-1177.
+                                </a>
+                            </p>
+                            <p id="7">
+                                <a id="bibliography_4"  style="color:#aaaaaa">
+                                        <b>[4]</b>
+                                    Cui X., Meng F., Pan X., Qiu X., Zhang S., Li C. and Lu S., 2022, Chromosome-level genome assembly of<i>Aristolochia</i><i> contorta</i> provides insights into the biosynthesis of benzylisoquinoline alkaloids and aristolochic acids, Hort. Res., 9: uhac005.
+                                </a>
+                            </p>
+                            <p id="8">
+                                <a id="bibliography_5"  style="color:#aaaaaa">
+                                        <b>[5]</b>
+                                    Dong S., Liu M., Liu Y., Chen F., Yang T., Chen L., Zhang X., Guo X., Fang D., Li L., Deng T., Yao Z., Lang X., Gong Y., Wu E., Wang Y., Shen Y., Gong X., Liu H. and Zhang S., 2021, The genome of<i>Magnolia </i><i>biondii </i>Pamp. provides insights into the evolution of Magnoliales and biosynthesis of terpenoids, Hort. Res., 8: 38.
+                                </a>
+                            </p>
+                            <p id="9">
+                                <a id="bibliography_6"  style="color:#aaaaaa">
+                                        <b>[6]</b>
+                                    Gao S. H., Yu H. Y., Wu S. Y., Wang S., Geng J. N., Luo Y. F. and Hu S. N., 2018, Advances of sequencing and assembling technologies for complex genomes, Hereditas, 40: 944-963. (高胜寒, 禹海英, 吴双阳, 王森, 耿佳宁, 骆迎峰, 胡松年, 2018, 复杂基因组测序技术研究进展,遗传, 40: 944-963.)
+                                </a>
+                            </p>
+                            <p id="10">
+                                <a id="bibliography_7"  style="color:#aaaaaa">
+                                        <b>[7]</b>
+                                    Guo X., Fang D., Sahu S. K., Yang S., Guang X., Folk R., Smith S. A., Chanderbali A. S., Chen S., Liu M., Yang T., Zhang S., Liu X., Xu X., Soltis P. S., Soltis D. E. and Liu H., 2021,<i>Chlo</i><i>ranthus</i> genome provides insights into the early diversification of angiosperms, Nat. Commun., 12: 6930.
+                                </a>
+                            </p>
+                            <p id="11">
+                                <a id="bibliography_8"  style="color:#aaaaaa">
+                                        <b>[8]</b>
+                                    He S., Dong X., Zhang G., Fan W., Duan S., Shi H., Li D., Li R., Chen G., Long G., Zhao Y., Chen M., Yan M., Yang J., Lu Y., Zhou Y., Chen W., Dong Y. and Yang S., 2021, High quality genome of<i>Erigeron </i><i>breviscapus</i> provides a reference for herbal plants in Asteraceae, Mol Ecol Resour, 21: 153-169.
+                                </a>
+                            </p>
+                            <p id="12">
+                                <a id="bibliography_9"  style="color:#aaaaaa">
+                                        <b>[9]</b>
+                                    Hibrand Saint-Oyant L., Ruttink T., Hamama L., Kirov I., Lakhwani D., Zhou N. N., Bourke P. M., Daccord N., Leus L., Schulz D., Van de Geest H., Hesselink T., Van Laere K., Debray K., Balzergue S., Thouroude T., Chastellier A., Jeauffre J., Voisine L., Gaillard S., Borm T. J. A., Arens P., Voorrips R. E., Maliepaard C., Neu E., Linde M., Le Paslier M. C., Bérard A., Bounon R., Clotault J., Choisne N., Quesneville H., Kawamura K., Aubourg S., Sakr S., Smulders M. J. M., Schijlen E., Bucher E., Debener T., De Riek J. and Foucher F., 2018, A high-quality genome sequence of<i>Rosa </i><i>chinensis</i> to elucidate ornamental traits, Nat. Plants, 4: 473-484.
+                                </a>
+                            </p>
+                            <p id="13">
+                                <a id="bibliography_10"  style="color:#aaaaaa">
+                                        <b>[10]</b>
+                                    Hu Y., Ma D., Ning S., Ye Q., Zhao X., Ding Q., Liang P., Cai G., Ma X., Qin X. and Wei D., 2021, High-quality genome of the medicinal plant<i>Strobilanthes</i><i> cusia </i>provides insights into the biosynthesis of indole alkaloids, Front. Plant Sci., 12: 742420.
+                                </a>
+                            </p>
+                            <p id="14">
+                                <a id="bibliography_11"  style="color:#aaaaaa">
+                                        <b>[11]</b>
+                                    Jaillon O., Aury J., Noel B., Policriti A., Clepet C., Casagrande A. and Choisne, 2007, The grapevine genome sequence suggests ancestral hexaploidization in major angiosperm phyla, Nature, 449: 463-467.
+                                </a>
+                            </p>
+                            <p id="15">
+                                <a id="bibliography_12"  style="color:#aaaaaa">
+                                        <b>[12]</b>
+                                    Jiao Y., Wickett N. J., Ayyampalayam S., Chanderbali A. S., Landherr L., Ralph P. E., Tomsho L. P., Hu Y., Liang H., Soltis P. S., Soltis D. E., Clifton S. W., Schlarbaum S. E., Schuster S. C., Ma H., Leebens-Mack J. and dePamphilis C. W., 2011, Ancestral polyploidy in seed plants and angiosperms, Nature, 473: 97-100.
+                                </a>
+                            </p>
+                            <p id="16">
+                                <a id="bibliography_13"  style="color:#aaaaaa">
+                                        <b>[13]</b>
+                                    Jin X. H., Peng J. S. and Lei C. M., 2019, Wonderful life world of Chinese orchids, Forest and Human, 11: 12-27. (金效华, 彭建生, 雷超铭, 2019, 中国兰花 精彩的生命世界, 森林与人类, 11: 12-27.)
+                                </a>
+                            </p>
+                            <p id="17">
+                                <a id="bibliography_14"  style="color:#aaaaaa">
+                                        <b>[14]</b>
+                                    Lam E. T., Hastie A., Lin C., Ehrlich D., Das S. K., Austin M. D., Deshpande P., Cao H., Nagarajan N., Xiao M. and Kwok P., 2012, Genome mapping on nanochannel arrays for structural variation analysis and sequence assembly, Nat. Biotechnol., 30: 771-776.
+                                </a>
+                            </p>
+                            <p id="18">
+                                <a id="bibliography_15"  style="color:#aaaaaa">
+                                        <b>[15]</b>
+                                    Lei W., Wang Z., Cao M., Zhu H., Wang M., Zou Y., Han Y., Wang D., Zheng Z., Li Y., Liu B. and Ru D., 2022, Chromosome-level genome assembly and characterization of<i>Sophora Japonica</i>, DNA Res., 29: dsac009.
+                                </a>
+                            </p>
+                            <p id="19">
+                                <a id="bibliography_16"  style="color:#aaaaaa">
+                                        <b>[16]</b>
+                                    Li F., Gao Y., Jin C., Wen X., Geng H., Cheng Y., Qu H., Liu X., Feng S., Zhang F., Ruan J., Yang C., Zhang L. and Wang J., 2022, The chromosome-level genome of<i>Gypsophila </i><i>paniculata</i> reveals the molecular mechanism of floral development and ethylene insensitivity, Hort. Res., 9: uhac176.
+                                </a>
+                            </p>
+                            <p id="20">
+                                <a id="bibliography_17"  style="color:#aaaaaa">
+                                        <b>[17]</b>
+                                    Li T., Chen L., Wang M., Chen J. and Huang J., 2019, The complete chloroplast genome of<i>Vanilla </i><i>shenzhenica</i> (Orchidaceae), Mitochondrial DNA B Resour., 4: 2610-2611.
+                                </a>
+                            </p>
+                            <p id="21">
+                                <a id="bibliography_18"  style="color:#aaaaaa">
+                                        <b>[18]</b>
+                                    Li J., Shen J., Wang R., Chen Y., Zhang T., Wang H., Guo C. and Qi J., 2022, The nearly complete assembly of the<i>Cercis</i><i> chinensis</i> genome and Fabaceae phylogenomic studies provide insights into new gene evolution, Plant Commun., 3: 100422.
+                                </a>
+                            </p>
+                            <p id="22">
+                                <a id="bibliography_19"  style="color:#aaaaaa">
+                                        <b>[19]</b>
+                                    Liang Y., Li F., Gao Q., Jin C., Dong L., Wang Q., Xu M., Sun F., Bi B., Zhao P., Li S., Ruan J., Zhou X., Zhang L. and Wang J., 2022, The genome of<i>Eustoma</i><i> grandiflorum</i> reveals the whole-genome triplication event contributing to ornamental traits in cultivated lisianthus, Plant Biotechnol. J., 20: 1856-1858.
+                                </a>
+                            </p>
+                            <p id="23">
+                                <a id="bibliography_20"  style="color:#aaaaaa">
+                                        <b>[20]</b>
+                                    Liao X., Ye Y., Zhang X., Peng D., Hou M., Fu G., Tan J., Zhao J., Jiang R., Xu Y., Liu J., Yang J., Liu W., Tembrock L. R., Zhu G. and Wu Z., 2022, The genomic and bulked segregant analysis of<i>Curc</i><i>uma </i><i>alismatifolia</i> revealed its diverse bract pigmentation, Abiotech, 3: 178-196.
+                                </a>
+                            </p>
+                            <p id="24">
+                                <a id="bibliography_21"  style="color:#aaaaaa">
+                                        <b>[21]</b>
+                                    Lian Q. L., Current Situation, Trend and Strategy of Chinese floral industry, Agricultural Engineering Technology, 3813: 28-35. (连青龙, 2018, 中国花卉产业的发展现状、趋势和战略, 农业工程技术, 3813: 28-35.)
+                                </a>
+                            </p>
+                            <p id="25">
+                                <a id="bibliography_22"  style="color:#aaaaaa">
+                                        <b>[22]</b>
+                                    Lieberman-Aiden E., van Berkum N. L., Williams L., Imakaev M., Ragoczy T., Telling A., Amit I., Lajoie B. R., Sabo P. J., Dorschner M. O., Sandstrom R., Bernstein B., Bender M. A., Groudine M., Gnirke A., Stamatoyannopoulos J., Mirny L. A., Lander E. S. and Dekker J., 2009, Comprehensive mapping of long-range interactions reveals folding principles of the human genome, Science, 326: 289-293.
+                                </a>
+                            </p>
+                            <p id="26">
+                                <a id="bibliography_23"  style="color:#aaaaaa">
+                                        <b>[23]</b>
+                                    Lu M., An H. and Li L., 2016, Genome survey sequencing for the characterization of the genetic background of<i>Rosa </i><i>roxburghii </i>Tratt and leaf ascorbate metabolism Genes, PLoS One, 11: e147530.
+                                </a>
+                            </p>
+                            <p id="27">
+                                <a id="bibliography_24"  style="color:#aaaaaa">
+                                        <b>[24]</b>
+                                    Ma H., Liu Y., Liu D., Sun W., Liu X., Wan Y., Zhang X., Zhang R., Yun Q., Wang J., Li Z. and Ma Y., 2021, Chromosome-level genome assembly and population genetic analysis of a critically endangered rhododendron provide insights into its conservation, Plant J., 107: 1533-1545.
+                                </a>
+                            </p>
+                            <p id="28">
+                                <a id="bibliography_25"  style="color:#aaaaaa">
+                                        <b>[25]</b>
+                                    Nakamura N., Hirakawa H., Sato S., Otagaki S., Matsumoto S., Tabata S. and Tanaka Y., 2018, Genome structure of<i>Rosa multiflora</i>, a wild ancestor of cultivated roses, DNA Res., 25: 113-121.
+                                </a>
+                            </p>
+                            <p id="29">
+                                <a id="bibliography_26"  style="color:#aaaaaa">
+                                        <b>[26]</b>
+                                    Nakano M., Hirakawa H., Fukai E., Toyoda A., Kajitani R., Minakuchi Y., Itoh T., Higuchi Y., Kozuka T., Bono H., Shirasawa K., Shiraiwa I., Sumitomo K., Hisamatsu T., Shibata M., Isobe S., Taniguchi K. and Kusaba M., 2021, A chromosome-level genome sequence of<i>Chrysanthemum </i><i>seticuspe</i>, a model species for hexaploid cultivated chrysanthemum, Commun. Biol., 4: 1167.
+                                </a>
+                            </p>
+                            <p id="30">
+                                <a id="bibliography_27"  style="color:#aaaaaa">
+                                        <b>[27]</b>
+                                    Niu Z., Zhu F., Fan Y., Li C., Zhang B., Zhu S., Hou Z., Wang M., Yang J., Xue Q., Liu W. and Ding X., 2021, The chromosome-level reference genome assembly for<i>Dendrobium </i><i>officinale</i> and its utility of functional genomics research and molecular breeding study, Acta Pharm. Sin. B, 11: 2080-2092.
+                                </a>
+                            </p>
+                            <p id="31">
+                                <a id="bibliography_28"  style="color:#aaaaaa">
+                                        <b>[28]</b>
+                                    Raymond O., Gouzy J., Just J., Badouin H., Verdenaud M., Lemainque A., Vergne P., Moja S., Choisne N., Pont C., Carrère S. and Caissard, 2018, The<i>Rosa</i> genome provides new insights into the domestication of modern roses, Nat. Genet., 50: 772-777.
+                                </a>
+                            </p>
+                            <p id="32">
+                                <a id="bibliography_29"  style="color:#aaaaaa">
+                                        <b>[29]</b>
+                                    Shen Z., Li W., Li Y., Liu M., Cao H., Provart N., Ding X., Sun M., Tang Z., Yue C., Cao Y., Yuan D. and Zhang L., 2021, The red flower wintersweet genome provides insights into the evolution of magnoliids and the molecular mechanism for tepal color development, Plant J., 108: 1662-1678.
+                                </a>
+                            </p>
+                            <p id="33">
+                                <a id="bibliography_30"  style="color:#aaaaaa">
+                                        <b>[30]</b>
+                                    Nie S., Zhao S. W., Shi T. L., Zhao W., 2022, Gapless genome assembly of azalea and multi-omics investigation into divergence between two species with distinct flower color, Hort. Res., 106: uhac241.
+                                </a>
+                            </p>
+                            <p id="34">
+                                <a id="bibliography_31"  style="color:#aaaaaa">
+                                        <b>[31]</b>
+                                    Song C., Liu Y., Song A., Dong G., Zhao H., Sun W., Ramakrishnan S., Wang Y., Wang S., Li T., Niu Y., Jiang J., Dong B., Xia Y., Chen S., Hu Z., Chen F. and Chen S., 2018, The<i>Chrysanthemum </i><i>nankingense </i>genome provides insights into the evolution and diversification of Chrysanthemum flowers and medicinal traits, Mol Plant, 11: 1482-1491.
+                                </a>
+                            </p>
+                            <p id="35">
+                                <a id="bibliography_32"  style="color:#aaaaaa">
+                                        <b>[32]</b>
+                                    Sun W., Li Z., Xiang S., Ni L., Zhang D., Chen D., Qiu M., Zhang Q., Xiao L., Din L., Li Y., Liao X., Liu X., Jiang Y., Zhang P., Ni H., Wang Y., Yue Y., Wu X., Din X., Huang W., Wang Z., Ma X., Liu B., Zou X., Van de Peer Y., Liu Z. and Zou S., 2021, The<i>Euscaphis</i><i> japonica</i> genome and the evolution of malvids, Plant J., 108: 1382-1399.
+                                </a>
+                            </p>
+                            <p id="36">
+                                <a id="bibliography_33"  style="color:#aaaaaa">
+                                        <b>[33]</b>
+                                    Tuskan G. A., Difazio S., Jansson S., Bohlmann J., Grigoriev I., Hellsten U., Putnam N., Ralph S., Rombauts, Martin F., Montanini B. and Napoli, 2006, The genome of black cottonwood,<i>Populus</i><i> trichocarpa</i> (Torr. &amp; Gray), Science, 313: 1596-1604.
+                                </a>
+                            </p>
+                            <p id="37">
+                                <a id="bibliography_34"  style="color:#aaaaaa">
+                                        <b>[34]</b>
+                                    Wang P., Fang J., Lin H., Yang W., Yu J., Hong Y., Jiang M., Gu M., Chen Q., Zheng Y., Liao Z., Chen G., Yang J., Jin S., Zhang X. and Ye N., 2022, Genomes of single- and double-petal jasmines (<i>Jasminum </i><i>sambac</i>) provide insights into their divergence time and structural variations, Plant Biotechnol. J., 20: 1232-1234.
+                                </a>
+                            </p>
+                            <p id="38">
+                                <a id="bibliography_35"  style="color:#aaaaaa">
+                                        <b>[35]</b>
+                                    Wang X., Gao Y., Wu X., Wen X., Li D., Zhou H., Li Z., Liu B., Wei J., Chen F., Chen F., Zhang C., Zhang L. and Xia Y., 2021, High-quality evergreen azalea genome reveals tandem duplication-facilitated low-altitude adaptability and floral scent evolution, Plant Biotechnol. J., 19: 2544-2560.
+                                </a>
+                            </p>
+                            <p id="39">
+                                <a id="bibliography_36"  style="color:#aaaaaa">
+                                        <b>[36]</b>
+                                    Wang Z., Xue J., Hu S., Zhang F., Yu R., Chen D., Van de Peer Y., Jiang J., Song A., Ni L., Hua J., Lu Z., Yu C., Yin Y. and Gu C., 2022, The genome of<i>H</i><i>ibiscus </i><i>hamabo</i> reveals its adaptation to saline and waterlogged habitat, Hort. Res., 9: uhac067.
+                                </a>
+                            </p>
+                            <p id="40">
+                                <a id="bibliography_37"  style="color:#aaaaaa">
+                                        <b>[37]</b>
+                                    Xu K., Wei X., Lin C., Zhang M., Zhang Q., Zhou P., Fang Y., Xue J. and Duan Y., 2022, The chromosome-level holly (<i>Ilex </i><i>latifolia</i>) genome reveals key enzymes in triterpenoid saponin biosynthesis and fruit color change, Front. Plant Sci., 13: 982323.
+                                </a>
+                            </p>
+                            <p id="41">
+                                <a id="bibliography_38"  style="color:#aaaaaa">
+                                        <b>[38]</b>
+                                    Yang X., Yue Y., Li H., Ding W., Chen G., Shi T., Chen J., Park M. S., Chen F. and Wang L., 2018, The chromosome-level quality genome provides insights into the evolution of the biosynthesis genes for aroma compounds of<i>Osmanthus </i><i>fragrans</i>, Hort. Res., 5: 72.
+                                </a>
+                            </p>
+                            <p id="42">
+                                <a id="bibliography_39"  style="color:#aaaaaa">
+                                        <b>[39]</b>
+                                    Yang Y., Liu X., Shi X., Ma J., Zeng X., Zhu Z., Li F., Zhou M., Guo X. and Liu X., 2022, A high-quality, chromosome-level genome provides insights into ieterminate flowering time and color of cotton rose (<i>Hibiscus </i><i>mutabilis</i>), Front. Plant Sci., 13: 818206.
+                                </a>
+                            </p>
+                            <p id="43">
+                                <a id="bibliography_40"  style="color:#aaaaaa">
+                                        <b>[40]</b>
+                                    Zang F., Ma Y., Tu X., Huang P., Wu Q., Li Z., Liu T., Lin F., Pei S., Zang D., Zhang X., Zheng Y. and Yu Y., 2021, A high-quality chromosome-level genome of wild<i>Rosa rugosa</i>, DNA Res., 28: dsab017.
+                                </a>
+                            </p>
+                            <p id="44">
+                                <a id="bibliography_41"  style="color:#aaaaaa">
+                                        <b>[41]</b>
+                                    Zhang G., Liu K., Li Z., Lohaus R., Hsiao Y., Niu S., Wang J., Lin Y., Xu Q., Chen L., Yoshida K., Fujiwara S., Wang Z., Zhang Y., Mitsuda N., Wang M., Liu G., Pecoraro L., Huang H., Xiao X., Lin M., Wu X., Wu W., Chen Y., Chang S., Sakamoto S., Ohme-Takagi M., Yagi M., Zeng S., Shen C., Yeh C., Luo Y., Tsai W., Van de Peer Y. and Liu Z., 2017, The<i>Apostasia</i> genome and the evolution of orchids, Nature, 549: 379-383.
+                                </a>
+                            </p>
+                            <p id="45">
+                                <a id="bibliography_42"  style="color:#aaaaaa">
+                                        <b>[42]</b>
+                                    Zhang L., Chen F., Zhang X., Li Z., Zhao Y., Lohaus R., Chang X., Dong W., Ho S. Y. W., Liu X., Song A., Chen J., Guo W., Wang Z., Zhuang Y., Wang H., Chen X., Hu J., Liu Y., Qin Y., Wang K., Dong S., Liu Y., Zhang S., Yu X., Wu Q., Wang L., Yan X., Jiao Y., Kong H., Zhou X., Yu C., Chen Y., Li F., Wang J., Chen W., Chen X., Jia Q., Zhang C., Jiang Y., Zhang W., Liu G., Fu J., Chen F., Ma H., Van de Peer Y. and Tang H., 2020, The water lily genome and the early evolution of flowering plants, Nature, 577: 79-84.
+                                </a>
+                            </p>
+                            <p id="46">
+                                <a id="bibliography_43"  style="color:#aaaaaa">
+                                        <b>[43]</b>
+                                    Zhang Q., Chen W., Sun L., Zhao F., Huang B., Yang W., Tao Y., Wang J., Yuan Z., Fan G., Xing Z., Han C., Pan H., Zhong X., Shi W., Liang X., Du D., Sun F., Xu Z., Hao R., Lü T., Lü Y., Zheng Z., Sun M., Luo L., Cai M., Gao Y., Wang J., Yin Y., Xu X., Cheng T. and Wang J., 2012, The genome of<i>Prunus </i><i>mume</i>, Nat. Commun., 3: 1318.
+                                </a>
+                            </p>
+                            <p id="47">
+                                <a id="bibliography_44"  style="color:#aaaaaa">
+                                        <b>[44]</b>
+                                    Zhang Q., Zhang H., Sun L., Fan G., Ye M., Jiang L., Liu X., Ma K., Shi C., Bao F., Guan R., Han Y., Fu Y., Pan H., Chen Z., Li L., Wang J., Lü M., Zheng T., Yuan C., Zhou Y., Lee S. M., Yan X., Xu X., Wu R., Chen W. and Cheng T., 2018, The genetic architecture of floral traits in the woody plant<i>Prunus </i><i>mume</i>, Nat. Commun., 9: 1702.
+                                </a>
+                            </p>
+                            <p id="48">
+                                <a id="bibliography_45"  style="color:#aaaaaa">
+                                        <b>[45]</b>
+                                    Zhang T., Zhang X., Hu S. and Yu J., 2011, An efficient procedure for plant organellar genome assembly, based on whole genome data from the 454 GS FLX sequencing platform, Plant Methods, 7: 38.
+                                </a>
+                            </p>
+                            <p id="49">
+                                <a id="bibliography_46"  style="color:#aaaaaa">
+                                        <b>[46]</b>
+                                    Zhao Y., Yin J., Guo H., Zhang Y., Xiao W., Sun C., Wu J., Qu X., Yu J., Wang X. and Xiao J., 2014, The complete chloroplast genome provides insight into the evolution and polymorphism of<i>Panax ginseng</i>, Front. Plant Sci., 5: 696.
+                                </a>
+                            </p>
+                            <p id="50">
+                                <a id="bibliography_47"  style="color:#aaaaaa">
+                                        <b>[47]</b>
+                                    Zheng T., Li P., Li L. and Zhang Q., 2021, Research advances in and prospects of ornamental plant genomics, Hort. Res., 8: 65.
+                                </a>
+                            </p>
+                            <p id="51">
+                                <a id="bibliography_48"  style="color:#aaaaaa">
+                                        <b>[48]</b>
+                                    Zheng T., Li P., Zhuo X., Liu W., Qiu L., Li L., Yuan C., Sun L., Zhang Z., Wang J., Cheng T. and Zhang Q., 2022, The chromosome-level genome provides insight into the molecular mechanism underlying the tortuous-branch phenotype of<i>Prunus </i><i>mume</i>, New Phytol., 235: 141-156.
+                                </a>
+                            </p>
+                            <p id="52">
+                                <a id="bibliography_49"  style="color:#aaaaaa">
+                                        <b>[49]</b>
+                                    Zhong Y., Chen Y., Zheng D., Pang J., Liu Y., Luo S., Meng S., Qian L., Wei D., Dai S. and Zhou R., 2022, Chromosomal-level genome assembly of the orchid tree<i>Bauhinia </i><i>variegata</i> (Leguminosae; Cercidoideae) supports the allotetraploid origin hypothesis of Bauhinia, DNA Res., 29: dsac012.
+                                </a>
+                            </p>
+            </div>
+    <!--reference end-->
+    <!--footnote start-->
+    <!--footnote end-->
+
+
+
+</div>
+
+
+
+<script type="text/javascript">
+      console.log(""+"基因组学与应用生物学");
+       console.log("Year"+"");
+     console.log("Issue"+"");
+     console.log("Volume"+"");
+     console.log("PageNum"+"");
+       console.log("PYKM"+"GXNB");
+     console.log("DOI" + "")
+      //设置15s之后展示猫头鹰  从某一个时间开始计时
+
+    //精读
+    //当前时间
+
+    function clickJd() {
+        document.cookie.split(";").forEach(function (item, index) {
+            if (item.split('=')[0] == ' Ecp_LoginStuts') {
+                var array = JSON.parse(item.split("=")[1]);
+                for (var obj in array) {
+                    //UserType == "bk"为存机构登录 
+                    //console.log(array[obj])
+                    window.UserType = array["UserType"];
+                    //BUserName == "" 就是个人账户
+                    window.BUserType = array["BUserType"];
+                }
+            }
+
+        });
+
+        if (!!window.UserType && window.UserType == "jf") {
+            //存个人
+            if (!window.BUserType && window.BUserType =="") {
+                window.open(window.yanxueUrl, "_self");
+            } else {
+                //机构+个人
+                var promotObject = {};
+                promotObject.promptName = "精读";
+                promotObject.promotContent = "进入知网研学平台，可对本文进行划线、笔记、摘录等操作，帮助您深入理解文章内容。";
+                baseMain.promptLayer(promotObject);
+            }
+        } else {
+            //存机构
+               baseMemerOffline.Clientip = '112.86.217.84';
+                baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+                baseMemerOffline.message = "";
+                baseMemerOffline.url = window.yanxueUrl;
+                baseMemerOffline.lang = "zh";
+                baseMemerOffline.regshow = false;
+                baseMemerOffline.phone = "";
+                baseMemerOffline.sourcelogincon.librarysource = 0;
+                baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+                baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+                baseMemerOffline.sourcelogincon.Token = window.Lid;
+                baseMemerOffline.sourcelogincon.DoubleLogin = true;
+                baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+                baseMemerOffline.loginshow = true;
+                baseMemerOffline.GLSearchType = "精读";
+                baseMemerOffline.GLSearchContent = "个人账号登录后，阅读文章时可进行划线、笔记、摘录等操作，帮助您深入理解文章内容。";
+                baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+                baseMemerOffline.GLSearchCopyShow = true;
+                // 点击鼠标先隐藏按钮
+                var obj = $("#GLSearch");
+                obj.css("display", "none");
+
+        }
+
+    }
+
+    function clickSc() {
+
+        document.cookie.split(";").forEach(function (item, index) {
+            if (item.split('=')[0] == ' Ecp_LoginStuts') {
+                var array = JSON.parse(item.split("=")[1]);
+                for (var obj in array) {
+                    //UserType == "bk"为存机构登录 
+                    //console.log(array[obj])
+                    window.UserType = array["UserType"];
+                    //BUserName == "" 就是个人账户
+                    window.BUserType = array["BUserType"];
+                }
+            }
+
+        });
+        if (!!window.UserType && window.UserType == "jf") {
+            //存个人
+            if (!window.BUserType && window.BUserType =="") {
+                window.open(window.yanxueUrl, "_self");
+            } else {
+                //机构+个人
+                var promotObject = {};
+                promotObject.promptName = "收藏";
+                promotObject.promotContent = "进入知网研学平台，可将本文收藏至个人学习专题。";
+                baseMain.promptLayer(promotObject);
+            }
+        } else {
+            //存机构
+                baseMemerOffline.Clientip = '112.86.217.84';
+            baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+            baseMemerOffline.message = "";
+            baseMemerOffline.url = window.yanxueUrl;
+            baseMemerOffline.lang = "zh";
+            baseMemerOffline.regshow = false;
+            baseMemerOffline.phone = "";
+            baseMemerOffline.sourcelogincon.librarysource = 0;
+            baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+            baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+            baseMemerOffline.sourcelogincon.Token = window.Lid;
+            baseMemerOffline.sourcelogincon.DoubleLogin = true;
+            baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+            baseMemerOffline.loginshow = true;
+            baseMemerOffline.GLSearchType = "收藏";
+            baseMemerOffline.GLSearchContent = "个人账号登录后，可将本文收藏至个人学习专题。";
+            baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+            baseMemerOffline.GLSearchCopyShow = true;
+            // 点击鼠标先隐藏按钮
+
+            var obj = $("#GLSearch");
+            obj.css("display", "none");
+
+        }
+    }
+
+
+    
+    var mainContent = new Vue({
+        el: "#mainContent",
+        data: {
+            mainContentShow: 'false',
+            mainContentName: "中国医科大学",
+            indiAccountShow: !("" && "1") === true ? true : false,
+            UserRealName: "中国医科大学",
+            pNt: '',
+            IsOrgUser: !(window.UserType == "jf" && window.BUserType == "") ? true:false   //猫头鹰是机构账号就显示，不是就不显示。
+        },
+
+        created: function () {
+            performance.navigation.type = 0;
+            this.pNt = localStorage.getItem('locationHash');
+            if (performance.navigation.type == 1 && this.pNt !== null) {
+                localStorage.setItem("locationHash", '43424');
+                this.pNt = localStorage.getItem('locationHash');
+            } else if (performance.navigation.type == 0 && this.pNt !== '' && this.pNt !== null) {
+                this.pNt = localStorage.getItem('locationHash');
+
+            } else if (performance.navigation.type == 0 && this.pNt == null || this.pNt == "") {
+                this.pNt = localStorage.getItem('locationHash');
+            }
+
+            //刷新的时候不出现猫头鹰，这个功能现在先屏蔽
+            //qinqi
+            if (document.cookie.indexOf("username=123") == -1) {
+                this.mainContentShow = false;
+
+                //首次打开就弹，不是首次打开就不弹---测试的时候设置少点的时间就可以了----这块的首次打开时间还得需要设置一下，设置一个范围时间点再次能够进来
+            } else {
+                //alert("再次打开！");
+                this.mainContentShow = false;
+
+            }
+
+			 //初始化的时候这个true有条件的
+
+
+        },
+
+        watch: {
+            pNt: function (val) {
+                if ((val !== '' && val !==null &&(performance.navigation.type == 1 || performance.navigation.type == 0))){
+                    this.mainContentShow = false;
+                    this.pNt = "";
+                    //localStorage.setItem("locationHash", '');
+                    window.localStorage.removeItem('locationHash');
+                }
+            }
+        },
+        methods: {
+           //非个人登录框弹出关闭功能
+            clickClosePop: function () {
+              this.mainContentShow=false;
+            },
+
+           //点击登录出现登录框
+            clickLogin: function () {
+                document.cookie.split(";").forEach(function (item, index) {
+                    if (item.split('=')[0] == ' Ecp_LoginStuts') {
+                        var array = JSON.parse(item.split("=")[1]);
+                        for (var obj in array) {
+                            //UserType == "bk"为存机构登录 
+                            //console.log(array[obj])
+                            window.UserType = array["UserType"];
+                            //BUserName == "" 就是个人账户
+                            window.BUserType = array["BUserType"];
+                        }
+                    }
+
+                });
+                //存粹机构
+                if (!!window.UserType && window.UserType == "bk") {
+                    this.mainContentShow = false;
+                    baseMemerOffline.Clientip = '112.86.217.84';
+                    baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+                    baseMemerOffline.message = "";
+                    baseMemerOffline.url = window.yanxueUrl;
+                    baseMemerOffline.lang = "zh";
+                    baseMemerOffline.regshow = false;
+                    baseMemerOffline.phone = "";
+                    baseMemerOffline.sourcelogincon.librarysource = 0;
+                    baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+                    baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+                    baseMemerOffline.sourcelogincon.Token = window.Lid;
+                    baseMemerOffline.sourcelogincon.DoubleLogin = true;
+                    baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+                    baseMemerOffline.loginshow = true;
+                    baseMemerOffline.GLSearchCopyShow = false;
+                } else {
+                    if (!window.BUserType && window.BUserType !== "") {
+                        //机构+个人
+                        var promotObject = {};
+                        promotObject.promptName = "登录";
+                        promotObject.promotContent = "进入知网研学平台，可对本文进行划线、笔记、摘录等操作，帮助您深入理解文章内容。";
+                        baseMain.promptLayer(promotObject);
+                    }
+                }
+            },
+
+            clickLoginShow: function () {
+                //初始化的时候这个true有条件的
+                 //初始化的时候这个true有条件的
+
+                this.mainContentShow = false;
+
+                //
+                var user = 'username';
+                var value = '123';
+                var exp = new Date();
+                exp.setTime(exp.getTime() + 604800000);//过期时间 7天
+                document.cookie = user + "=" + escape(value) + ";expires=" + exp.toGMTString();
+                console.log(user + "=" + escape(value) + ";expires=" + exp.toGMTString());
+                //开始倒计时
+
+            },
+
+
+
+        },
+
+    });
+
+
+    var basePromption = new Vue({
+        el: "#promptBox",
+        data: {
+            promptShow: false,
+
+        },
+
+        created: function () {
+            //前边点开也会在这里消失
+            //if (document.cookie.indexOf("username=nihaoya") == -1) {
+            //    this.promptShow = true;
+            //}
+
+        },
+        methods: {
+
+            clickPromptShow: function () {
+                var _this = this;
+                _this.promptShow = false;
+                var user = 'username2';
+                var value = 'nihaoya';
+                var exp = new Date();
+                exp.setTime(exp.getTime() + 604800000);//过期时间 7天
+                document.cookie = user + "=" + escape(value) + ";expires=" + exp.toGMTString();
+            }
+
+        }
+    });
+
+</script>
+        <input id="fileid" type="hidden" value="GXNB20221219001" />
+        <input id="dpi" type="hidden" value="300" />
+    </div>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?6e967eb120601ea41b9d312166416aa6";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
+
+
+
+<input id="hid_uid" name="hid_uid" type="hidden" value="WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!" />
+<input id="hid_kLogin_headerUrl" name="hid_kLogin_headerUrl" type="hidden" value="/KLogin/Request/GetKHeader.ashx%3Fcallback%3D%3F" />
+<input id="hid_kLogin_footerUrl" name="hid_kLogin_footerUrl" type="hidden" value="/KLogin/Request/GetKFooter.ashx%3Fcallback%3D%3F" />
+
+
+
+
+
+
+<script src="/kxreader/Scripts/annotator.js"></script>
+<script src="https://picx.cnki.net/kxreader/jquery.fly.min.js" type="text/javascript"></script>
+
+<script src="/kxreader/Scripts/render.js?v=20220105"></script>
+
+
+<div id="ueditorId" style="display:none">
+    <div class="tag-wrap">
+        <script id="editor" name="editor" type="text/plain">
+        </script>
+        
+        <sign-label v-if="isShowSignFlag" v-bind:parameter="signLabelOption"></sign-label>
+    </div>
+</div>
+
+
+
+
+
+<div class="btn-link" style="display: none"><a target="_blank" href="/kcms/detail/detail.aspx?dbcode=CAPJ&amp;filename=GXNB20221219001&amp;v=MzA1MDk3cWRaT1pzRnk3bFY3ck1KVnc9SWpYRmJMRzRITlBOclk1TVpPc09ZM2s1ekJkaDRqOTlTWHFScnhveGNNSDdS&amp;uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!">知网节</a></div>
+<div class="popflow" id="popupTips" style="display: none;">
+    <div class="popflowArr"></div>
+    <div class="popflowCot">
+        <div class="hd"><a href="javascript:void(0);" onclick="$('#popupTips').hide();$('#popupmsg').html('')" class="close">X</a></div>
+        <div class="bd">
+            <p class="mes" id="popupmsg" name="popupmsg"></p>
+            
+        </div>
+    </div>
+</div>
+<input type="hidden" id="myexport" value="//kns.cnki.net" />
+
+<input type="hidden" id="KPCAPIPATH" value="//ishufang.cnki.net" />
+<input type="hidden" id="CitedTimes" value="0" />
+
+
+<div id="readlogin" v-if="loginshow" v-cloak>
+    <div class="read-login" v-show="loginshow" v-cloak>
+        <div class="read-login-tip" v-show="loginshow&&GLSearchCopyShow">
+            <h1>【{{GLSearchType}}】说明：</h1>
+            <p>{{GLSearchContent}}</p>
+            <p class="read-login-c10">{{ commentsContent}}</p>
+        </div>
+        <login-reg v-bind:Clientip="Clientip" v-bind:ssoappid="ssoappid"
+                   v-bind:loginshow="loginshow" v-bind:url="url" v-bind:lang="lang" v-bind:message="message"
+                   v-bind:regshow="regshow" v-bind:phone="phone" v-bind:sourcelogincon="sourcelogincon" v-on:closelogin="closelogin">
+        </login-reg>
+    </div>
+    <div class="read-shaw" v-show="loginshow"></div>
+</div>
+
+<div class="link" id="GLSearch" style="display: none;">
+    <i class="icon-trangle"></i>
+    
+    <div class="inner">
+        
+        <a class="links" id="correct2">划线</a>
+        <a class="links" id="highLight2">高亮</a>
+        <a class="links" id="addnote2">笔记</a>
+        <a class="links" id="addcentor2">摘录</a>
+        <button class="encyclopediaClass" id="encyclopedia">百科</button>
+        <button class="keyWordClass" id="keyWord">词典</button>
+        <button class="ChineseClass" id="chinese">汉语</button>
+        <button class="referenceBook" id="referenceBook">工具书</button>
+        <button class="copytextClass" id="copytext">复制</button>
+    </div>
+</div>
+
+
+
+
+
+<script src="/kxreader/bundles/detail?v=ARb1N-K2uf3JwWSv0DjUE0WE4Ql7goL3kyFHfN7OK9Q1"></script>
+
+<input id="hidVirtualPath" name="hidVirtualPath" type="hidden" value="" />
+<script src="/kxreader/Scripts/kxr.js?v=20220520"></script>
+<script src="/kxreader/Scripts/kxr.refer.js?v=20220520"></script>
+<script src="/kxreader/Scripts/kxr.detail.js?v=20220520"></script>
+<script src="/kxreader/Scripts/kxr.detail.header.js?v=20220520"></script>
+<script src="/kxreader/Scripts/kxr.detail.ref.js?v=20220520"></script>
+<script src="/kxreader/Scripts/kxr.detail.btns.js?v=20220929"></script>
+<script src="/kxreader/Scripts/jquery.twbsPagination.js"></script>
+<script src="/kxreader/Scripts/clipboard.min.js"></script>
+<script src="/kxreader/Scripts/layer.min.js" type="text/javascript"></script>
+
+
+
+<div>
+    <div class="footer">
+        <div class="foot-top">
+            <ul class="footcontent">
+                <li>
+                    <b>读者服务</b>
+                    <a target="_blank" href="http://vipcard.cnki.net/ec/skwd/skwd.htm">购买知网卡</a>
+                    <a target="_blank" href="http://zhifu.cnki.net/">充值中心</a>
+                    <a target="_blank" href="http://my.cnki.net/">我的CNKI</a>
+                    <a target="_blank" href="http://service.cnki.net/helpcenter/">帮助中心</a>
+                </li>
+                <li>
+                    <b>CNKI常用软件下载</b>
+                    <a target="_blank" href="https://cajviewer.cnki.net">CAJViewer浏览器</a>
+                    <a target="_blank" href="https://estudy.cnki.net/">知网研学（原E-Study）</a>
+                    <a target="_blank" href="https://www.cnki.net/software/xzydq.htm">下载中心</a>
+                    <a target="_blank" href="https://piccache.cnki.net/2022/kdn/software/standardreader.exe">标准阅读器</a>
+                </li>
+                <li>
+                    <b>特色服务</b>
+                    <a target="_blank" href="https://wap.cnki.net/cnkiclient.aspx">手机知网</a>
+                    <a target="_blank" href="https://zwwh.cnki.net/">知网文化</a>
+                    <a target="_blank" href="https://mall.cnki.net/">知网阅读</a>
+                    <a target="_blank" href="https://bianke.cnki.net/">编创服务</a>
+                </li>
+                <li>
+                    <b>客服咨询</b>
+                    <span>订卡热线：400-819-9993</span>
+                    <span>服务热线：400-810-9888</span>
+                    <span>在线咨询：<a target="_blank" href="http://help.cnki.net">help.cnki.net</a></span>
+                    <span>邮件咨询：<a target="_blank" href="mailto:help@cnki.net">help@cnki.net</a></span>
+                </li>
+                <li class="weibo">
+                    <a target="_blank" href="https://weibo.com/u/3059308095">
+                        <img src="//piccache.cnki.net/2022/kdn/index/nvsm/nimages/logo_xl.png" alt="新浪微博客服">
+                        <span>新浪微博客服</span>
+                    </a>
+                    <a class="qrcode" href="javascript:void(0)">
+                        <img src="//piccache.cnki.net/2022/kdn/index/kns7/nimages/logo_wx.png" alt="官方微信">
+                        <span>官方微信</span>
+                    </a>
+                </li>
+            </ul>
+            <span class="wechat-qrcode">
+                <img src="//piccache.cnki.net/2022/kdn/index/kns8/nimages/qrcode.jpg" alt="官方微信">
+            </span>
+        </div>
+        <div class="foot-bot clearfix">
+            <div class="t">
+                <img src="//piccache.cnki.net/2022/kdn/index/nvsm/nimages/foot-logo.png" alt="中国知网">
+                <p class="mid">
+                    <span>
+                        <a target="_blank" href="http://cnki.net/gycnki/gycnki.htm">关于我们</a>
+                        <a target="_blank" href="http://www.cnki.net/other/gonggao/gongsirongyu.html">CNKI 荣誉</a>
+                        <a target="_blank" href="http://www.cnki.net/other/gonggao/bqsm.htm">版权公告</a>
+                        <a target="_blank" href="http://service.cnki.net/">客服中心</a>
+                        <a target="_blank" href="http://help.cnki.net/">在线咨询</a>
+                        <a target="_blank" href="http://help.cnki.net/Live800_2_2.aspx">用户建议</a>
+                        <a target="_blank" href="//piccache.cnki.net/2022/index/CNKIRecruit/index.html">知网招聘</a>
+                        <a target="_blank" href="http://a.cnki.net/">知网推广</a>
+                    </span>
+                    <span id="copyright">© 1998-2023 中国知网（CNKI）</span>
+                </p>
+                <p class="right">
+                    <!--可信网站图片LOGO安装开始-->
+                    <a id="___szfw_logo___" href="https://ss.knet.cn/verifyseal.dll?sn=e13111111010043364isll000000&amp;a=1&amp;pa=0.08881110103584755" target="_blank">
+                        <img alt="可信网站" src="//piccache.cnki.net/2022/kdn/index/nvsm/nimages/kxwz.jpg" height="33" width="86">
+                    </a>
+                    <!--可信网站图片LOGO安装结束-->
+                    <!--诚信网站图片LOGO安装开始-->
+
+                    <script type="text/javascript">(function () { document.getElementById('___szfw_logo___').oncontextmenu = function () { return false; } })();</script>
+                    <!--诚信网站图片LOGO安装结束-->
+                </p>
+            </div>
+            <div class="b">
+                <span>京 ICP 证 040431 号<a target="_blank" href="//piccache.cnki.net/2022/index/images/gb/271.jpg">网络出版服务许可证 (总)网出证(京)字第 271 号</a> 京公网安备 11010802020460 号</span>
+                <span>《中国学术期刊（光盘版）》电子杂志社有限公司</span>
+                <span>KDN 平台基础技术由 KBASE 11.0 提供.</span>
+            </div>
+        </div>
+        <!--foot-bot-->
+    </div>
+</div>
+<script>
+    //if (typeof FlushLogin == 'function') {
+    //    FlushLogin();
+    //}
+    modifyEcpHeader(true);
+</script>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+   <div class="abstract-wrap"  id="rightExtractsList"  >
+        <div class="unify-btn unify-btn1" v-on:click="showLeftExtractsList">
+            <i class="i-unify">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-wenzhai" />
+                </svg>
+            </i>
+            <span  class="unify-word">摘录</span>
+        </div>
+        <div class="abstract-ht clearfix">
+            我的摘录
+            <span class="ab-small">（共{{excerptListNumber}}条）</span>
+        </div>
+        <div class="abstract-hide "  id="js-scrollContainer">
+		     <li  v-for="(extract,index) in  extracts">
+			     <div class="bfc-l mr5">
+                    <span v-text="index+1"></span>.
+					<p class="cg5" v-html="extract.Type==1?extract.Content:decodeURIComponent(extract.Content)"></p>
+                </div>
+				<div class="ovhide">
+					 <p class="cg9">
+                        来源文献名称：
+                        <a href="javascript:void(0)"  v-text="'《'+extract.Title+'》'"></a>
+                    </p>
+
+				</div>
+
+
+			 </li>
+		
+		</div>
+    </div>
+</body>
+   <script>
+        var rightExtractsList = new Vue({
+		     el:"#rightExtractsList",
+			 data:{
+			    show:[],
+				extracts:[],
+				excerptListNumber:0
+			    
+			 },
+
+			 created:function(){
+			    $(".abstract-wrap").css("right", -450);
+			 },
+			 methods:{
+			    //打开摘录
+				showLeftExtractsList:function(){
+				     var _this = this;
+				     if(_this.show){
+					      _this.show = !_this.show;
+					       $(".abstract-wrap").css("right", 0);
+					 }else{
+					     _this.show = !_this.show;
+					     $(".abstract-wrap").css("right", -450);
+					 }
+				
+				}
+			 
+			 }
+		
+		})
+   
+   </script>
+   <style>
+    /* 外面的框 */
+    .abstract-wrap{
+        width:450px;
+        background: #626b79;
+        border-left: 5px solid #626b79;
+        right: 0px;
+        position: fixed;
+        top:0px;
+        bottom: 0px;
+		z-index:10000;
+    }
+
+    .unify-btn{
+        width:23px;
+        display: inline-block;
+        width: 40px;
+        font-size:16px;
+       
+    }
+
+    .abstract-hide{
+        position:absolute;
+        top:47px;
+        left:0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+        background: #f9f9f9;
+    }
+     
+    .abstract-ht{
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        padding: 0 10px;
+        line-height: 42px;
+        
+    }
+
+    .ab-small{
+        color:#bac1cd;
+        font-size:14px;
+        margin-left: 10px;
+        align-items: center;
+    }
+    
+    .unify-btn{
+        position: absolute;
+        left:-43px; /* 让其向左移动 */
+        color: #FFFFFF;
+        font-size: 16px;
+        background: #404040;
+        padding: 5px 8px;
+        bottom:220px; /* 向下移动 */
+        cursor: pointer;
+        border-radius: 5px 0 0 5px;
+    }
+
+    .unify-word{
+        font-size: 12px;
+        bottom: 220px;
+		width: 40px;
+        display: inline-block;
+    }
+       .cg9, a.cg9, .n-m .i {
+           color: #999;
+           margin: 2px 0px 0px 24px;
+       }
+   .cg5{color:#555;}
+
+       p.cg5 {
+           margin: -25px 0px 0px 20px;
+       }
+
+	#rightExtractsList  .bfc-l{
+	    margin-left: 5px;
+	}
+	
+	.i-unify {
+    width: 23px;
+    height: 23px;
+    display: block;
+    margin: 0 auto 7px -1px;
+    font-size: 22px;
+	}
+	
+</style>
+</html>
+
+<!--图片放大功能 start-->
+
+
+<script src="/kxreader/Scripts/vue.js" type="text/javascript"></script>
+
+
+
+<script src="https://picx.cnki.net/sta_api/v1/scripts/sensors.min.js?v=20220929"></script>
+
+
+
+<script src="https://x.cnki.net/search/common/login.js?v=20220105" type="text/javascript"></script>
+
+<script src="https://picx.cnki.net/kxreader/iconfont.js"></script>
+
+<script src="https://picx.cnki.net/kxreader/signLabel.js"></script> 
+
+<script src="/kxreader/Scripts/statisticsflow.js?v=20220729" type="text/javascript"></script>
+
+
+
+
+
+<script src="/kxreader/Scripts/ueditor/ueditor.config.js?v=20220105"></script>
+<script src="/kxreader/Scripts/ueditor/ueditor.all.js?v=20220105"></script>
+<script src="/kxreader/Scripts/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="/kxreader/Scripts/ueditor/third-party/codemirror/codemirror.js"></script>
+<script src="/kxreader/Scripts/ueditor/third-party/zeroclipboard/ZeroClipboard.js"></script>
+<script type="text/javascript" src="https://picx.cnki.net/kxreader/MathJax-2.6-latest/MathJax.js?config=MML_HTMLorMML-full"></script>
+<script type="text/javascript">
+
+    //实例化编辑器
+
+    window.ue = UE.getEditor('editor', {
+        toolbars: [['bold', 'italic', 'underline', 'strikethrough', 'removeformat', 'link']],
+        wordCount: false,
+        autoHeightEnabled: false,
+        enableContextMenu: false,
+        enableAutoSave: false,
+        elementPathEnabled: false,
+        initialFrameHeight: 260
+
+    });
+    //window.ue.loadServerConfig();
+
+</script>
+
+
+
+
+
+<script type="text/javascript" src="https://picx.cnki.net/kxreader/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/kxreader/Scripts/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="https://picx.cnki.net/kxreader/jquery.imgbox.pack.js"></script>
+
+
+<script>
+    sensors.registerPage({
+        schema: 'yanxue_log_read',
+        app_id: 'CRSP_BASIC_KXREADER_TEMP'
+    });
+
+
+
+    //setTimeout(function () {
+    //    sensors.toTrack({
+    //        event_id: "READ_view"
+    //    });
+    //}, 2000)
+    
+</script>
+<script>
+    window.DBcode = "CAPJ";
+
+    
+    
+    window.readCarefully ="1";
+    window.dbcode = "CAPJ";
+    //window.dbcode = 'CAPJ'
+    window.downloadEncrypt = '';
+    window.Clientip = "112.86.217.84";
+    //window.readCarefully = "";
+    //window.dbcode = 'CVSD';
+    //window.downloadEncrypt = null;
+    if (!!window.UserType&& window.UserType=="jf"&&window.BUserType =="") {
+        $(".main #souCang").css("display", "none");
+        $(".main #readSpecial").addClass("readOnly");
+
+    }
+    if('System.Web.Mvc.DynamicViewDataDictionary'!= null)
+	{
+        window.yanxueUrl = "https://x.cnki.net/read/readonline.ashx?dbcode=" + "CAPJ" + "&filename=" + "GXNB20221219001" + "&fileSourceType=1&fromId=CNKI_READ"
+        //测试环境换成"https://xtest.cnki.net/read/readonline.ashx?dbcode="
+	}
+
+
+    //获取cookie的LID
+    document.cookie.split(";").forEach(function (item, index) {
+        if (item.split('=')[0] == ' LID') {
+            window.Lid = item.split('=')[1] + "=" + item.split('=')[2];
+            //console.log('LID');
+            //console.log(window.Lid);
+        }
+
+    });
+
+    if (localStorage.getItem("alignmentStyle") == "leftStyle" && window.DBcode == 'CYFD') {
+        var head = document.getElementsByTagName('head')[0];
+        var link = document.createElement('link');
+        link.href = '../KXReader/Content/css/ydetail.css';
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        head.appendChild(link);
+    }
+
+
+
+    localStorage.removeItem("underLineMark1");
+    localStorage.removeItem("underHotMark1");
+    localStorage.removeItem("underNoteMark1");
+    localStorage.removeItem("underLineMark2");
+    localStorage.removeItem("underHotMark2");
+    localStorage.removeItem("underNoteMark2");
+    localStorage.removeItem("underExcerpt1");
+    localStorage.removeItem("underExcerpt2");
+    localStorage.removeItem("UnderlineMarks");
+
+
+    $(".p1 p").each(function (index, val) {
+        if (val.firstChild.nodeName == "MATHML") {
+            val.className = "code-formula"
+        }
+
+    });
+
+    if(!!$("p img[type='formula']")){
+         $("p img[type='formula']").each(function(index,val){
+                   val.parentNode.className = "code-formula"
+
+        })
+    }
+
+
+    $(function () {
+        var j = $.noConflict();
+        j("a.zoom-in").click(function(e){
+         debugger
+         var position = j("a.zoom-in").index(this);
+         var pos = position+1;
+         var srcHref = j("a.zoom-in")[position].children[0].currentSrc;
+         j(".zoom-in").imgbox(
+          {
+             src:srcHref,
+              'speedIn':0,
+	          'speedOut':0,
+	          'alignment':'center',
+	          'overlayShow':true,
+	          'allowMultiple':false
+          }
+        );
+       });
+
+
+        j(' .btn-zoomin').click(function (e) {
+            var position = j("a.btn-zoomin").index(this);
+            var pos = position + 1;
+            if (window.dbcode == 'CYFD') {
+                var srcHref = e.target.parentElement.parentElement.firstElementChild.currentSrc;
+            } else {
+                var srcHref = j("a.zoom-in")[position].children[0].currentSrc;
+            }
+            j(".zoom-in").imgbox({
+                'src': srcHref,
+                'speedIn': 0,
+		       'speedOut': 0,
+		      'alignment': 'center',
+		      'overlayShow': true,
+		      'allowMultiple': false
+            });
+        });
+
+        j("div[data-image='true'] img").click(function (e) {
+            var srcHref = e.target.currentSrc;
+            j("img").imgbox(
+                {
+                    src: srcHref,
+                    'speedIn': 0,
+                    'speedOut': 0,
+                    'alignment': 'center',
+                    'overlayShow': true,
+                    'allowMultiple': false
+                }
+            );
+        });
+
+
+
+        if ((window.readCarefully !== null || window.readCarefully !== "") && window.dbcode != "CVSD" && (window.downloadEncrypt !== null || window.downloadEncrypt !== "")) {
+            window.inter = setInterval(fun , 1000);
+        }
+
+        //浏览器关闭弹出提示框---存入一个值在localStorage里面，如果存在这个值基本上就是能够存储进去的
+
+         //10s倒计时
+    var t = 1000;
+    function fun() {
+        t=t-100;
+		if( j("#clockTime")[0]!=undefined||j("#clockTime")[0]!=null){
+		    j("#clockTime")[0].innerHTML = t/100;
+		}
+
+        if (t <= 0) {
+		    if( j("#mainContent")[0]!=undefined||j("#mainContent")[0]!=null){
+			        j("#mainContent").hide();
+			}
+            clearInterval(window.inter);
+        }
+    }
+
+
+
+    j("a#correct2.links").click(function (e) {
+        var obj = j("#GLSearch");
+        obj.css("display", "none");
+        $("#dictTransion").css("display","none");
+        var range = window.okmsReadRangeAt;//选中的范围
+        var NoteName = e.target.innerText;
+        //baseMain.layerAssembly(NoteName);
+        var paraDataId = window.okmsReadRangeAt.commonAncestorContainer.id ? window.okmsReadRangeAt.commonAncestorContainer.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.id ? window.okmsReadRangeAt.commonAncestorContainer.parentElement.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.parentElement.id;
+        window.paraId = paraDataId;
+        var rangeInfo = baseMain.setRangeInfo(window.okmsReadRangeAt, NoteName, paraDataId);
+        if (!rangeInfo) {
+            layer.msg("不允许跨段划词笔记", {
+                skin: "tip-orange"
+            });
+            return;
+        }
+
+        if (!rangeInfo.Quote) {
+            layer.msg("划词未划上，请重新划词", {
+                skin: "tip-orange"
+            });
+            return;
+        }
+
+
+        var type = 4;
+        if (!!rangeInfo && rangeInfo.html.indexOf("markline") !== -1 ) {
+            layer.msg("同种类型的笔记不能重叠！", {
+                skin: "tip-orange"
+            });
+            //清空划词内容
+            window.getSelection().empty();
+            return;
+        } else {
+            var outerHTML = rangeInfo.startContainer.parentNode ? rangeInfo.startContainer.parentNode.outerHTML : null;
+            var str = outerHTML || "";
+            var startIndex = str.indexOf("<markline");
+            var endIndex = str.indexOf("</markline>");
+            var content = str.slice(startIndex, endIndex + '</markline>'.length);
+            if (!!content && content.indexOf("xpltemp") !== - 1) {
+                if (!!outerHTML && outerHTML.indexOf("markline") !== -1 ) {
+                    layer.msg("同种类型的笔记不能重叠！", {
+                        skin: "tip-orange"
+                    });
+                    //清空划词内容
+                    window.getSelection().empty();
+                    return;
+                   };
+                }
+             }
+
+
+
+        rangeInfo.Id = generateUuid();
+        //配置笔记参数
+        baseMain.dataParam = baseMain.addNoteAssembly(paraDataId, rangeInfo, type);
+        if (baseMain.noteNumber < 2) {
+            baseMain.noteNumber++;
+            //将笔记内容存入所以笔记arr中
+            baseMain.allNoteContent.push(JSON.stringify(baseMain.dataParam));
+            baseMain.lineNoteArr.push(JSON.stringify(baseMain.dataParam));
+            console.log("划线笔记");
+            console.log(baseMain.lineNoteArr);
+            localStorage.setItem("underLineMark1", baseMain.lineNoteArr[0]);
+            if (baseMain.lineNoteArr.length == 2) {
+                localStorage.setItem("underLineMark2", baseMain.lineNoteArr[1]);
+            }
+            //渲染笔记内容
+            baseMain.RenderNotes(baseMain.allNoteContent);
+        } else if (baseMain.noteNumber >= 2) {
+             if (!!window.UserType && window.UserType == "bk"||!window.notFirstLoginLID) {
+                baseMemerOffline.Clientip = '112.86.217.84';
+                baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+                baseMemerOffline.message = "";
+                baseMemerOffline.url = window.yanxueUrl;
+                baseMemerOffline.lang = "zh";
+                baseMemerOffline.regshow = false;
+                baseMemerOffline.phone = "";
+                baseMemerOffline.sourcelogincon.librarysource = 0;
+                baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+                baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+                baseMemerOffline.sourcelogincon.Token = window.Lid;
+                baseMemerOffline.sourcelogincon.DoubleLogin = true;
+                baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+                baseMemerOffline.loginshow = true;
+                baseMemerOffline.GLSearchType = "划线";
+                baseMemerOffline.GLSearchContent = "个人账号登录后，划线内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+                baseMemerOffline.GLSearchCopyShow = true;
+
+             } else {
+                 var promotObject = {};
+                 promotObject.promptName = event.target.innerText;
+                 promotObject.promotContent = "进入研学后，可继续使用该功能，划线笔记内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                 baseMain.promptLayer(promotObject);
+              //$("#correct2").attr('href', window.yanxueUrl);
+            }
+
+        }
+
+
+
+
+        });
+          //高亮
+        j("a#highLight2.links").click(function (e) {
+        var obj = j("#GLSearch");
+            obj.css("display", "none");
+            $("#dictTransion").css("display", "none");
+        var range = window.okmsReadRangeAt;//选中的范围
+        var NoteName = e.target.innerText;
+        var paraDataId = window.okmsReadRangeAt.commonAncestorContainer.id ? window.okmsReadRangeAt.commonAncestorContainer.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.id ? window.okmsReadRangeAt.commonAncestorContainer.parentElement.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.parentElement.id;
+        window.paraId = paraDataId;
+        var rangeInfo = baseMain.setRangeInfo(range, NoteName, paraDataId);
+        if (!rangeInfo) {
+            layer.msg("不允许跨段做高亮笔记", {
+                skin: "tip-orange"
+            });
+            return;
+        }
+
+        if (!rangeInfo.Quote) {
+            layer.msg("划词未划上，请重新划词", {
+                skin: "tip-orange"
+            });
+            return;
+        }
+
+
+
+        var type = 5;
+        if (!!rangeInfo && rangeInfo && rangeInfo.html.indexOf("markline") !== -1 && rangeInfo.html.indexOf("background") !== -1) {
+            console.log("同种笔记类型的高亮笔记不能重叠");
+            //清空划词内容
+            window.getSelection().empty();
+            return;
+        } else {
+            var outerHTML = rangeInfo.startContainer.parentNode ? rangeInfo.startContainer.parentNode.outerHTML : null;
+            var str = outerHTML || "";
+            var startIndex = str.indexOf("<markline");
+            var endIndex = str.indexOf("</markline>");
+            var content = str.slice(startIndex, endIndex + '</markline>'.length);
+            if (!!content && content.indexOf("xpltemp") !== - 1) {
+                if (!!outerHTML && outerHTML.indexOf("markline") !== -1 ) {
+                    layer.msg("同种类型的笔记不能重叠！", {
+                        skin: "tip-orange"
+                    });
+                    //清空划词内容
+                    window.getSelection().empty();
+                    return;
+                   };
+                }
+             }
+
+        rangeInfo.Id = generateUuid();
+        //配置笔记参数
+        baseMain.dataParam = baseMain.addNoteAssembly(paraDataId, rangeInfo, type);
+        if (baseMain.noteNumber < 2) {
+            baseMain.noteNumber++;
+            //将笔记内容存入所以笔记arr中
+            baseMain.allNoteContent.push(JSON.stringify(baseMain.dataParam));
+            baseMain.lightNoteArr.push(JSON.stringify(baseMain.dataParam));
+            console.log("高亮笔记");
+            console.log(baseMain.lightNoteArr);
+            localStorage.setItem("underHotMark1", baseMain.lightNoteArr[0]);
+            if (baseMain.lightNoteArr.length == 2) {
+                localStorage.setItem("underHotMark2", baseMain.lightNoteArr[1]);
+            }
+            //渲染笔记内容
+            baseMain.RenderNotes(baseMain.allNoteContent);
+
+        } else if (baseMain.noteNumber >= 2) {
+
+            //将下面的抽取成一个函数，一样的都直接写死
+            if (!!window.UserType && window.UserType == "bk"||!window.notFirstLoginLID) {
+            baseMemerOffline.Clientip = '112.86.217.84';
+            baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+            baseMemerOffline.message = "";
+            baseMemerOffline.url = window.yanxueUrl;
+            baseMemerOffline.lang = "zh";
+            baseMemerOffline.regshow = false;
+            baseMemerOffline.phone = "";
+            baseMemerOffline.sourcelogincon.librarysource = 0;
+             baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+             baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+             baseMemerOffline.sourcelogincon.Token = window.Lid;
+             baseMemerOffline.sourcelogincon.DoubleLogin = true;
+             baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+            baseMemerOffline.loginshow = true;
+            baseMemerOffline.GLSearchType = "高亮";
+            baseMemerOffline.GLSearchContent = "个人账号登录后，高亮内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+            baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+            baseMemerOffline.GLSearchCopyShow = true;
+
+
+            } else {
+                var promotObject = {};
+                promotObject.promptName = event.target.innerText;
+                promotObject.promotContent = "进入研学后，可继续使用该功能，高亮笔记内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                baseMain.promptLayer(promotObject);
+              //$("#highLight2").attr('href', window.yanxueUrl);
+            }
+        }
+
+
+
+        });
+
+         //笔记
+    j("a#addnote2.links").click(function (e) {
+        var obj = j("#GLSearch");
+        obj.css("display", "none");
+        $("#dictTransion").css("display", "none");
+             //无论什么账号进来就先记录笔记，然后当记录完笔记之后再走下面的逻辑
+			 //编辑器
+        //ueAssembly();
+        var NoteName = e.target.innerText;
+        //baseMain.layerAssembly(NoteName);
+        var paraDataId = window.okmsReadRangeAt.commonAncestorContainer.id ? window.okmsReadRangeAt.commonAncestorContainer.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.id ? window.okmsReadRangeAt.commonAncestorContainer.parentElement.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.parentElement.id;
+
+            if (baseMain.noteNumber < 2 ) {
+                var rangeInfo = baseMain.setRangeInfo(window.okmsReadRangeAt, NoteName, paraDataId);
+                //paraDataId == ""的现象在这里就会被做出返回判断
+                if (!rangeInfo) {
+                    layer.msg("不允许跨段做笔记", {
+                        skin: "tip-orange"
+                    });
+                    return;
+                }
+
+
+                if (!rangeInfo.Quote) {
+                    layer.msg("划词未划上，请重新划词", {
+                        skin: "tip-orange"
+                    });
+                    return;
+                }
+
+
+                var type = 3;
+
+				//
+       if (!!rangeInfo && rangeInfo.html.indexOf("markline") !== -1 && rangeInfo.html.indexOf("background") !== -1) {
+            console.log("同种笔记类型的笔记不能重叠");
+            //清空划词内容
+            window.getSelection().empty();
+            return;
+        } else {
+            var outerHTML = rangeInfo.startContainer.parentNode ? rangeInfo.startContainer.parentNode.outerHTML : null;
+            var str = outerHTML || "";
+            var startIndex = str.indexOf("<markline");
+            var endIndex = str.indexOf("</markline>");
+            var content = str.slice(startIndex, endIndex + '</markline>'.length);
+            if (!!content && content.indexOf("xpltemp") !== - 1) {
+                if (!!outerHTML && outerHTML.indexOf("markline") !== -1 ) {
+                    layer.msg("同种类型的笔记不能重叠！", {
+                        skin: "tip-orange"
+                    });
+                    //清空划词内容
+                    window.getSelection().empty();
+                    return;
+                   };
+                }
+             }
+
+
+				//
+                //rangeInfo.Id = Number(new Date()) + String(Math.random() + Math.random()).replace(/\d\.\d{10}/, '-');
+                rangeInfo.Id = generateUuid();
+                baseMain.dataParam = baseMain.addNoteAssembly(paraDataId, rangeInfo, type);
+                //打开百度编辑框---传入标签插件参数
+                window.baseUeditor.signLabelOption.clickType = 1;
+                window.baseUeditor.signLabelOption.objectId = rangeInfo.Id;
+                window.baseUeditor.signLabelOption.appid = "CRSP_BASIC_PSMC", //測試環境為"CRSP_PSMC_RELEASE"
+                window.baseUeditor.signLabelOption.fileSourceType = 1,
+                window.baseUeditor.signLabelOption.type = 3;
+                window.baseUeditor.signLabelOption.type = 3;
+                window.baseUeditor.signLabelOption.temp = new Date().getTime();
+                window.baseUeditor.isShowSignFlag = true;
+                j("#labelcontent").css("display", "block");
+                baseMain.layerAssembly(paraDataId, rangeInfo);
+
+            } else if (baseMain.noteNumber >= 2) {
+                if (!!window.UserType && window.UserType == "bk"||!window.notFirstLoginLID) {
+                baseMemerOffline.Clientip = '112.86.217.84';
+                baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+                baseMemerOffline.message = "";
+                baseMemerOffline.url = window.yanxueUrl;
+                baseMemerOffline.lang = "zh";
+                baseMemerOffline.regshow = false;
+                baseMemerOffline.phone = "";
+                baseMemerOffline.sourcelogincon.librarysource = 0;
+                baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+                baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+                baseMemerOffline.sourcelogincon.Token = window.Lid;
+                baseMemerOffline.sourcelogincon.DoubleLogin = true;
+                baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+                baseMemerOffline.loginshow = true;
+                baseMemerOffline.GLSearchType = "笔记";
+                baseMemerOffline.GLSearchContent = "个人账号登录后，划线内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+                baseMemerOffline.GLSearchCopyShow = true;
+
+                } else {
+                    var promotObject = {};
+                    promotObject.promptName = event.target.innerText;
+                    promotObject.promotContent = "进入研学后，可继续使用该功能，笔记内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                    baseMain.promptLayer(promotObject);
+           //$("#addnote2").attr('href', window.yanxueUrl);
+            }
+          }
+    });
+
+         //摘录
+    j("a#addcentor2.links").click(function (event,type) {
+       //debugger
+        var _this = this;
+        var obj = j("#GLSearch");
+        obj.css("display", "none");
+        $("#dictTransion").css("display", "none");
+        //无论什么账号进来就先记录笔记，然后当记录完笔记之后再走下面的逻辑
+        //编辑器
+        //ueAssembly();
+        var NoteName = event.target.innerText;
+        //baseMain.layerAssembly(NoteName);
+        var paraDataId = window.okmsReadRangeAt.commonAncestorContainer.id ? window.okmsReadRangeAt.commonAncestorContainer.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.id ? window.okmsReadRangeAt.commonAncestorContainer.parentElement.id : window.okmsReadRangeAt.commonAncestorContainer.parentElement.parentElement.id;
+		if (baseMain.noteNumber < 2){
+		    baseMain.excerpt(event.pageX, event.pageY, paraDataId, NoteName);
+		}else if (baseMain.noteNumber >= 2) {
+
+            if (!!window.UserType && window.UserType == "bk"||!window.notFirstLoginLID) {
+                baseMemerOffline.Clientip = '112.86.217.84';
+                baseMemerOffline.ssoappid = "CRSP_KXREADER_APICLIENT_RELEASE";
+                baseMemerOffline.message = "";
+                baseMemerOffline.url = window.yanxueUrl;
+                baseMemerOffline.lang = "zh";
+                baseMemerOffline.regshow = false;
+                baseMemerOffline.phone = "";
+                baseMemerOffline.sourcelogincon.librarysource = 0;
+                baseMemerOffline.sourcelogincon.LoginOrgAccount = true;
+                baseMemerOffline.sourcelogincon.Fromid = 'CNKI_Read';
+                baseMemerOffline.sourcelogincon.Token = window.Lid;
+                baseMemerOffline.sourcelogincon.DoubleLogin = true;
+                baseMemerOffline.sourcelogincon.callback = window.callbackFunction;
+                baseMemerOffline.loginshow = true;
+                baseMemerOffline.GLSearchType = "摘录";
+                baseMemerOffline.GLSearchContent = "个人账号登录后，摘录内容默认保存至我的摘录库。在线创作时可将摘录内容添加到文中，自动生成引用关系，参考文献自动编号。";
+                baseMemerOffline.commentsContent = "注：该功能仅对个人账号登录用户开放，请登录个人账号使用。";
+                baseMemerOffline.GLSearchCopyShow = true;
+                // 点击鼠标先隐藏按钮
+                var obj = j("#GLSearch");
+                obj.css("display", "none");
+            } else {
+                var promotObject = {};
+                promotObject.promptName = event.target.innerText;
+                promotObject.promotContent = "进入研学后，可继续使用该功能，摘录笔记内容默认保存至我的笔记，方便您进行笔记归纳整理及回顾。";
+                baseMain.promptLayer(promotObject);
+             // $("#addcentor2").attr('href', window.yanxueUrl);
+            }
+        }
+
+     });
+
+        //生成笔记id 
+        function  generateUuid() {
+            const s = []
+            const hexDigits = '0123456789abcdef'
+            for (let i = 0; i < 36; i++) {
+                s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1)
+            }
+            s[14] = '4' // bits 12-15 of the time_hi_and_version field to 0010
+            // eslint-disable-next-line no-bitwise
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1) // bits 6-7 of the clock_seq_hi_and_reserved to 01
+            // eslint-disable-next-line no-multi-assign
+            s[8] = s[13] = s[18] = s[23] = '-'
+
+            const uuid = s.join('')
+            return uuid
+        }
+    });
+
+
+     
+    window.baseUeditor = new Vue({
+    el: "#ueditorId",
+    data: function () {
+        return {
+            signLabelOption: {
+                appid: "",
+                fileSourceType: "",
+                type: "",
+                clickType: "",
+                objectId: "",
+
+            },
+
+            isShowSignFlag: false,
+            noteNumber: 0,//笔记记录成功才会增加1 保险的方法就是存进了localStorage里面才可以
+            dataParam: [],
+            noteTreeContent: "",
+            allNoteContent: [],
+            chapterWrapContent: []
+        }
+    },
+
+
+
+    created: function () {
+
+
+    },
+
+    methods: function(){
+
+        }
+
+   });
+
+    
+    var baseMemerOffline = new Vue({
+        el: "#readlogin",
+        data: {
+            // 会员信息
+            tipshow: false,                             // 会员信息到期提示
+            tipcontent: "",                              // 显示会员到期的提示内容信息
+            showform: "mask",                           // 弹框形式 弹窗显示传mask，页面显示传html
+            lang: "",                                   // 弹框语言
+            code: "",                                    // 会员权限code码
+            environment: "",                            // 处于的环境
+            // 下线信息
+            Clientip: "",                              // 用户IP
+            loginshow: false,                         // 登录弹窗的显示与否
+            message: "",                              // 下线原因
+            sourcelogincon: {
+                librarysource: '0',
+                LoginOrgAccount: true,
+                Fromid: 'CNKI_Read',
+                Token: window.Lid,
+                DoubleLogin:true
+
+            },
+            url: "",                                  // 再次登录需要跳转的地方
+            regshow: false,                           // 是否直接显示注册页面
+            phone: "",                                // 用户手机号
+            ssoappid: "" ,                           // 系统App Id
+            //librarysource: 0,
+            GLSearchType:"",
+            GLSearchContent:"",
+            GLSearchCopyShow: false,                   //判断复制框是否出现
+            GLSearchContent: '',
+            commentsContent: "",
+            callbackObj: '',
+            browserUrl: '',
+            lineWordKey:''
+        },
+
+
+        created: function () {
+            window.callbackFunction = function callbackFunction(params, callback) {
+                var _this = this;
+                    var data = {
+                       // uid: window.Lid,
+                        uid: window.cookieAndLid
+                    };
+                    $.ajax({
+                        //请求方式
+                        type: "POST",
+                        //请求的媒体类型
+                        contentType: "application/x-www-form-urlencoded",
+                        //dataType: "json",
+                        //请求地址
+                        url: "/kxreader/login/LoginIn",
+                        //数据，json字符串
+                        data: data,
+                        //请求成功
+                        success: function (result) {
+                            var param = window.lineParam;
+                            if (!param) {
+                               sensors.toTrack({
+                                    event_id: "READ_guide_login",
+                                   ent_secondary_id: param
+                                });
+                            } else {
+                               sensors.toTrack({
+                                    event_id: "READ_login",
+                                    event_secondary_id: param
+                                });
+                            }
+
+                            baseMain.addAllCentor();
+                            baseMain.addAllNote();
+                            window.open(window.browserUrl, "_self");  //不能缺少‘self’
+                        },
+                        //请求失败，包含具体的错误信息
+                        error: function (e) {
+
+
+                        }
+
+                    });
+
+
+                    //var param = window.lineParam;
+                    //if (!param) {
+                    //    sensors.toTrack({
+                    //        event_id: "READ_guide_login",
+                    //        ent_secondary_id: param
+                    //    });
+                    //} else {
+                    //    sensors.toTrack({
+                    //        event_id: "READ_login",
+                    //        event_secondary_id: param
+                    //    });
+                    //}
+
+                    //baseMain.addAllCentor();
+                   // baseMain.addAllNote();
+                    //window.open(window.browserUrl, "_self");  //不能缺少‘self’
+
+            }
+
+        },
+
+        methods: {
+            // 关闭登录弹窗事件
+            closelogin: function (e) {
+                var _this = this;
+                var cookiesLid = e;
+                var cookieLID = "";
+                window.browserUrl = e;
+                if (!!cookiesLid) {
+                    cookiesLid.split("?")[1].split("&").forEach(function (item, index) {
+                        if (item.split('=')[0] == "LID") {
+                            console.log(item.split('=')[0]);
+                            cookieLID = item.split('=')[1] + "=" + item.split('=')[2];
+                            //console.log('LID');
+                            //console.log(window.Lid);
+                        }
+
+                    });
+
+                }
+
+                window.cookieAndLid = cookieLID;
+                _this.loginshow = false;
+
+            },
+
+
+
+
+         toTrack:function (e, param) {
+            sensors.toTrack({
+                event_id: e,
+                ent_secondary_id: param
+            }/*,function() {
+                console.log('my callback running!');
+            }*/);
+        }
+
+
+        }
+    });
+
+</script>
+<!--图片放大功能 end-->
+<div class="fixedbar">
+    <div class="backtop hiddenV" id="backtop">
+        <a id="backTopSide" href="javascript:scroll(0,0);" title=""></a>
+    </div>
+</div>
+
+    </div>
+</body>
+</html>
