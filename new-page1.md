@@ -2,54 +2,34 @@
 title: Untitled Page
 description: 
 published: true
-date: 2023-03-17T07:53:29.699Z
+date: 2023-03-17T07:55:51.044Z
 tags: 
 editor: markdown
 dateCreated: 2023-03-17T07:51:00.602Z
 ---
 
 # 花卉植物基因组学研究进展与展望
-
 ## [高敏](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=au&skey=%E9%AB%98%E6%95%8F&code=000051462355&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!) [陈玲玲](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=au&skey=%E9%99%88%E7%8E%B2%E7%8E%B2&code=000051462354&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)
-
 ## [广西大学生命科学与技术学院](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=in&skey=%E5%B9%BF%E8%A5%BF%E5%A4%A7%E5%AD%A6%E7%94%9F%E5%91%BD%E7%A7%91%E5%AD%A6%E4%B8%8E%E6%8A%80%E6%9C%AF%E5%AD%A6%E9%99%A2&code=0088702&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)
-
 **摘    要：**
-
 花卉是农业和园艺植物的重要组成部分，具有丰富的种质资源。随着高通量测序技术的发展，基因组学研究已成为花卉植物的研究热点之一。高质量的基因组序列为研究花卉植物基因组的结构与功能、起源与进化、基因定位和遗传改良等提供了重要的信息基础。本综述介绍了蔷薇科、菊科和兰科等花卉植物基因组研究进展及应用，并对花卉植物基因组的发展前景进行了展望。
-
 **关键词：**[花卉植物;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=%E8%8A%B1%E5%8D%89%E6%A4%8D%E7%89%A9&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)[高通量测序;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=%E9%AB%98%E9%80%9A%E9%87%8F%E6%B5%8B%E5%BA%8F&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)[基因组组装;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=%E5%9F%BA%E5%9B%A0%E7%BB%84%E7%BB%84%E8%A3%85&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)
-
 **作者简介：**陈玲玲,[llchen@gxu.edu.cn](https://kns.cnki.net/KXReader/llchen@gxu.edu.cn);
-
 **基金：**国家自然科学基金（32270712）资助;
-
 # Advances and prospects of genomics in ornamental floral plants
-
 ## Gao Min Chen Lingling
-
 ## College of Life Science and Technology, Guangxi University
-
 **Abstract：**
-
 Ornamental floral plants are one of the most important part of agricultural and horticultural plants, with a wide variety of species and rich germplasm resources. With the development of sequencing technology, genomics has become one of the hot sports in the study of ornamental floral plants. High quality genome sequences provide an important genic information for the study of floral genome structure and function, plant origin and evolution, gene mapping and genetic improvement. This review introduces the research progress and application of floral plant genomes of Rosaceae, Compositae and Orchidaceae, and the development prospects of floral plant genomes are discussed.
-
 **Keyword：**
-
 [Floral plant;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=Floral%20plant&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!) [High-throughput sequencing;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=High-throughput%20sequencing&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!) [Genome assembly;](https://kns.cnki.net/kcms/detail/knetsearch.aspx?dbcode=CAPJ&sfield=kw&skey=Genome%20assembly&code=&uid=WEEvREcwSlJHSldSdmVpbEs1TVF4N1F5cS9lcjVnWUszTTZSTTFMbnVDbz0=$9A4hF_YAuvQ5obgVAqNKPCYcEjKensW4ggI8Fm4gTkoUKaID8j8gFw!!)
-
 **Author：** Chen Lingling , [llchen@gxu.edu.cn](https://kns.cnki.net/KXReader/llchen@gxu.edu.cn);
 
 中国是世界上花卉栽培面积最大的国家之一，素有“世界园林之母”的美称 ([连青龙, 2018](javascript:void(0);))。广义的花卉除了具有观赏价值的草本植物外，还包括草本或木本的地被植物、花灌木、开花乔木以及盆景等 (陶传喜, 2008)。花卉植物在人类生活和农艺生产中具有重要的作用，不仅可以美化和改善生活环境，提高人们的生活品质，同时还有利于农业产业结构的调整和高质量发展。近年来，由于高通量测序技术和生物信息学研究的飞速发展，大量花卉植物基因组进行了测序。自从2012年第一株花卉植物（梅花）基因组测序完成以来 ([Zhang et al., 2012](javascript:void(0);))，十年来90多种花卉植物的全基因组完成测序和组装。基于高质量的参考基因组，科研人员在花卉的花发育调控、种群结构、演化历程和物种多样性等方面取得了极大的研究进展。另外全基因组序列也将为花卉遗传研究提供重要资源和基础，对于促进花卉植物保护、开发药用资源和培育花卉新品种具有重要意义。
-
 ### 1\. 花卉植物的基因组测序与组装
-
 #### 1.1测序技术介绍
-
 自1975年第一代Sanger测序问世以来，经过几十年的发展，测序技术取得了长足进步。从第一代测序到第二代测序再到第三代测序，测序技术的每一次变革都极大地促进了基因组学的研究。利用第一代测序技术完成了番木瓜（*Carica papaya L.*）、葡萄（*Vitis vinifera*）、毛果杨（*Populus trichocarpa*）等植物的基因组测序 ([Jaillon et al., 2007](javascript:void(0);); [Tuskan et al., 2006](javascript:void(0);))，但由于其通量低、周期长、测序成本较高，很难用于大规模的测序，目前只能作为一种辅助测序手段。第二代测序技术的出现极大地推动了全基因组测序和组装的发展，数百个动植物基因组使用二代测序技术进行了测序和组装。由于第二代测序读长较短，大多只有100-150 bp（base pairs），无法跨越基因组中的高杂合以及重复序列含量较高的区域，这为后续的基因组组装工作带来了很大的困难。另一方面，二代测序主要依靠PCR进行，而PCR扩增中往往会发生碱基错配，从而使后续的检测具有系统性的偏差。为解决二代测序技术上的不足和应用上的短板，科学家研究出一种以单分子、长读长为主要目的的三代测序技术，目前应用最广泛的三代测序是PacBio单分子荧光测序和Nanopore单分子纳米孔测序。三代测序具有较长读长（10-100 kb），可以有效提升复杂区域的组装质量，并减少拼接成本，节省内存和计算时间。此外还避免了PCR扩增引入错误，可直接读取RNA序列和包括甲基化在内的DNA修饰等。近两年发表的绝大多数花卉植物基因组测序都采用了三代测序技术。
-
 #### 1.2 基因组组装流程
-
 基因组组装是全基因组测序领域的核心问题。基因组组装就是把测序产生的短读（reads）片段经过拼接，生成完整的基因组序列。基因组组装可以根据有无参考基因组划分为有参组装和无参组装。有参组装的原理是将测序reads比对到参考基因组上，然后根据序列之间的联系进行拼接。目前，针对二代测序数据的比对软件主要有BWA和Bowtie2等，而在三代数据的有参组装中更加流行使用Minimap2和Blast等软件组装。相比于无参组装，有参组装相对容易，往往用于线粒体和叶绿体的基因组组装 ([Zhao et al., 2014](javascript:void(0);); [Zhang et al., 2011](javascript:void(0);))。无参组装较为复杂，需要根据基因组特征设计不同的组装策略，主要分为以下三个步骤：（1）从测序reads到contigs，利用测序reads之间的overlap区域进行拼接，从而获得没有gap的contig集群，基因组中大量的重复序列会对这一步产生极大的影响；（2）从contigs到scaffolds，这是个排序和定向的过程，通过Pair-end reads、Pacbio长reads或者Hi-C（High-throughput chromosome conformation capture）数据确定contigs的顺序和位置关系，并将未覆盖区域使用gap填充（用N表示）；（3）利用遗传图谱或Hi-C测序，对scaffolds进行聚类、排序和定向，并锚定到染色体上，实现染色体水平的基因组组装。
 
 #### 1.3 基因组现行组装技术
@@ -60,7 +40,7 @@ Hi-C技术是2009年由Job Dekker研究团队 ([Lieberman-Aiden et al., 2009](ja
 
 10 × Genomics Linked-Reads技术的关键是将barcode标记加入到长序列片段中。在GemCode平台上，微流控芯片准确地划分了大量高质量的基因组 DNA，并根据来自不同系统的条形码（barcode）序列信息，对各个大片段DNA模板的多个reads进行追踪，获得更有研究价值的长片段序列信息。10 × Genomics测序技术通过其独特的建库和组装技术，能够以较低成本构建高质量、高连续性的基因组序列，并在基因组结构变异、泛基因组和基于组装的遗传研究中发挥重要作用。
 
-BioNano光学图谱来源于单个DNA分子的高分辨率和有序的全基因组限制性内切酶酶切位点图谱 ([Lam et al., 2012](javascript:void(0);))。BioNano系统主要使用NLRS（Nicking, Labeling, Repairing and Staining）和 DLS（Direct Label and Stain）技术对基因组DNA进行特异性标记。BioNano技术在实现复杂基因组的组装上有着显著的优势，主要体现在以下两方面：（1）BioNano技术的最大读长可达1 Mb，平均长度也可达到200 kb；（2）利用BioNano技术在单倍体基因组中酶切位点的不同，可以将单倍体基因组序列分离，从而实现基因组高杂合区域的分离组装 ([高胜寒等, 2018](javascript:void(0);))。此外，BioNano技术在基因结构变异检测方面也表现出超高的灵敏度和分辨率。
+BioNano光学图谱来源于单个DNA分子的高分辨率和有序的全基因组限制性内切酶酶切位点图谱 ([Lam et al., 2012]())。BioNano系统主要使用NLRS（Nicking, Labeling, Repairing and Staining）和 DLS（Direct Label and Stain）技术对基因组DNA进行特异性标记。BioNano技术在实现复杂基因组的组装上有着显著的优势，主要体现在以下两方面：（1）BioNano技术的最大读长可达1 Mb，平均长度也可达到200 kb；（2）利用BioNano技术在单倍体基因组中酶切位点的不同，可以将单倍体基因组序列分离，从而实现基因组高杂合区域的分离组装 ([高胜寒等, 2018]())。此外，BioNano技术在基因结构变异检测方面也表现出超高的灵敏度和分辨率。
 
 Chicago技术是一种结合体外重组染色质构象捕获和高通量测序的Hi-C建库技术。与常规的Hi-C技术相比，Chicago技术的准确度更高，在较小的基因组中具有更高的分辨率。Chicago技术的优势在于可以任意结合组装策略，不论是二代Illumina测序，三代PacBio测序，还是10 × Genomics测序。自从2015年推出后，Chicago技术已经在许多植物和动物的基因组中得到了广泛应用，并对多种现有的基因组进行了更新。
 
